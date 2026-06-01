@@ -6,9 +6,8 @@
 <title>RVCM Worship Chords</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; transition: background 0.2s, color 0.2s; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; transition: background 0.2s; }
 
-  /* DARK MODE */
   body.dark { background: #0f0f0f; }
   body.dark .status-bar { background: #1a1a1a; border-color: #2a2a2a; color: #555; }
   body.dark .rvcm-btn { color: #f0f0f0; border-color: #333; background: #1a1a1a; }
@@ -17,7 +16,7 @@
   body.dark .mode-btn.active { background: #2563eb; color: #fff; }
   body.dark .tab-btn { background: #1a1a1a; border-color: #2a2a2a; color: #555; }
   body.dark .tab-btn.active { background: #1a1a1a; color: #f0f0f0; border-color: #f0f0f0; }
-  body.dark .song-panel, body.dark .band-screen, body.dark .capo-screen { background: #1a1a1a; border-color: #2a2a2a; }
+  body.dark .song-panel, body.dark .band-screen, body.dark .capo-screen, body.dark .lineup-screen { background: #1a1a1a; border-color: #2a2a2a; }
   body.dark .song-title-input { color: #f0f0f0; }
   body.dark .key-btn { background: #222; border-color: #333; color: #777; }
   body.dark .key-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
@@ -25,46 +24,55 @@
   body.dark .section-label { color: #555; }
   body.dark .section-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
   body.dark .section-input:focus { border-color: #555; background: #2a2a2a; }
-  body.dark .chord-preview { color: #60a5fa; }
+  body.dark .chord-preview-key { color: #555; }
+  body.dark .chord-preview-chords { color: #60a5fa; }
   body.dark .band-song-title, body.dark .capo-song-title, body.dark .capo-fret { color: #f0f0f0; }
   body.dark .band-key-badge { background: #1e3a5f; color: #60a5fa; }
   body.dark .band-section { background: #222; border-color: #2a2a2a; }
   body.dark .band-section-name, body.dark .capo-section-name { color: #444; }
   body.dark .band-chord, body.dark .capo-chord { color: #f0f0f0; }
+  body.dark .band-key-row-label { color: #555; }
+  body.dark .key-group-block { background: #222; border-color: #2a2a2a; }
+  body.dark .key-group-label { color: #555; }
   body.dark .capo-card { border-color: #2a2a2a; }
   body.dark .capo-card.preferred { border-color: #2563eb; background: #1e2a3a; }
   body.dark .capo-song-key { color: #555; }
   body.dark .capo-fret span { color: #555; }
   body.dark .capo-section-block { background: #222; border-color: #2a2a2a; }
+  body.dark .capo-key-header { color: #555; }
   body.dark .app-title { color: #f0f0f0; }
   body.dark .sync-indicator { color: #333; }
   body.dark .empty-section { color: #444; }
+  body.dark .lineup-song-row { border-color: #2a2a2a; }
+  body.dark .lineup-song-name { color: #f0f0f0; }
+  body.dark .lineup-song-key { color: #555; }
+  body.dark .lineup-yt-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
+  body.dark .lineup-yt-link { color: #60a5fa; }
+  body.dark .lineup-empty { color: #444; }
 
-  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; transition: background 0.2s, border-color 0.2s; }
+  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; }
   .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; }
   .status-dot.connected { background: #22c55e; }
   .status-dot.syncing { background: #f59e0b; }
-
-  .rvcm-btn { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 12px; cursor: pointer; color: #111; transition: all 0.2s; user-select: none; }
-  .rvcm-btn:active { transform: scale(0.96); }
+  .rvcm-btn { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 12px; cursor: pointer; color: #111; user-select: none; }
 
   .app { max-width: 700px; margin: 0 auto; padding: 16px; }
   .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
   .app-title { font-size: 16px; font-weight: 600; color: #111; }
-
   .mode-toggle { display: flex; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; }
-  .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; transition: all 0.15s; }
+  .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; }
   .mode-btn.active { background: #1d4ed8; color: #fff; font-weight: 500; }
 
   .tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; transition: all 0.15s; }
-  .tab-btn.active { background: #fff; color: #111; border-color: #111; font-weight: 500; }
+  .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; }
+  .tab-btn.active { color: #111; border-color: #111; font-weight: 500; }
 
+  /* EDIT */
   .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
   .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
   .key-selector { display: flex; gap: 4px; flex-wrap: wrap; }
-  .key-btn { padding: 4px 9px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #6b7280; cursor: pointer; transition: all 0.1s; }
+  .key-btn { padding: 4px 9px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #6b7280; cursor: pointer; }
   .key-btn.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 500; }
   .divider { height: 1px; background: #f3f4f6; margin: 12px 0; }
   .sections { display: flex; flex-direction: column; gap: 10px; }
@@ -72,27 +80,38 @@
   .section-label { font-size: 12px; color: #9ca3af; padding-top: 8px; }
   .section-input { font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; width: 100%; outline: none; font-family: 'SF Mono', 'Fira Code', monospace; }
   .section-input:focus { border-color: #6b7280; background: #fff; }
-  .chord-preview { font-size: 13px; padding: 3px 0; color: #1d4ed8; font-weight: 500; min-height: 22px; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
+  .chord-preview-wrap { min-height: 0; margin-top: 4px; }
+  .chord-preview-row { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; border-bottom: 1px solid #f3f4f6; }
+  .chord-preview-row:last-child { border-bottom: none; }
+  .chord-preview-key { font-size: 11px; color: #9ca3af; min-width: 24px; font-weight: 600; }
+  .chord-preview-chords { font-size: 13px; color: #1d4ed8; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
 
+  /* BAND */
   .band-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .band-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
-  .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; margin-bottom: 16px; font-weight: 500; }
+  .band-keys-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; font-weight: 500; }
   .band-sections { display: flex; flex-direction: column; gap: 12px; }
   .band-section { padding: 12px 14px; border-radius: 10px; border: 1px solid #f3f4f6; background: #fafafa; }
-  .band-section-name { font-size: 11px; color: #d1d5db; text-transform: lowercase; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .band-section-name { font-size: 11px; color: #d1d5db; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .key-group-block { background: #f0f4ff; border: 1px solid #e0e7ff; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
+  .key-group-block:last-child { margin-bottom: 0; }
+  .key-group-label { font-size: 10px; font-weight: 700; color: #6b7280; letter-spacing: 0.08em; margin-bottom: 4px; }
   .band-chord-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
   .band-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
   .band-chord { font-size: 26px; font-weight: 600; color: #111; line-height: 1.2; }
   .band-num { font-size: 10px; color: #111; opacity: 0.2; margin-left: 1px; }
   .empty-section { color: #9ca3af; font-size: 13px; font-style: italic; }
 
+  /* CAPO */
   .capo-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .capo-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 2px; }
   .capo-song-key { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
-  .capo-options { display: flex; flex-direction: column; gap: 12px; }
-  .capo-card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; }
+  .capo-options { display: flex; flex-direction: column; gap: 16px; }
+  .capo-key-header { font-size: 12px; font-weight: 700; color: #6b7280; letter-spacing: 0.06em; margin-bottom: 8px; text-transform: uppercase; }
+  .capo-card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .capo-card:last-child { margin-bottom: 0; }
   .capo-card.preferred { border-color: #1d4ed8; background: #eff6ff; }
-  .preferred-badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: #1d4ed8; color: #fff; border-radius: 6px; margin-bottom: 8px; }
   .capo-fret { font-size: 22px; font-weight: 600; color: #111; line-height: 1.2; }
   .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
   .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
@@ -101,6 +120,23 @@
   .capo-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
   .capo-chord { font-size: 22px; font-weight: 600; color: #111; }
   .capo-num { font-size: 10px; color: #111; opacity: 0.2; }
+  .capo-key-divider { height: 1px; background: #f3f4f6; margin: 12px 0; }
+
+  /* LINEUP */
+  .lineup-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  .lineup-song-row { padding: 14px 0; border-bottom: 1px solid #f3f4f6; display: flex; gap: 12px; align-items: flex-start; }
+  .lineup-song-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .lineup-num { font-size: 12px; color: #9ca3af; width: 18px; flex-shrink: 0; padding-top: 2px; }
+  .lineup-info { flex: 1; min-width: 0; }
+  .lineup-song-name { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 2px; }
+  .lineup-song-key { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+  .lineup-yt-input { width: 100%; font-size: 12px; padding: 5px 9px; border: 1px solid #e5e7eb; border-radius: 7px; background: #f9fafb; color: #111; outline: none; font-family: monospace; }
+  .lineup-yt-input:focus { border-color: #6b7280; background: #fff; }
+  .lineup-yt-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #1d4ed8; text-decoration: none; margin-top: 6px; word-break: break-all; }
+  .lineup-embed { margin-top: 8px; border-radius: 8px; overflow: hidden; }
+  .lineup-embed iframe { width: 100%; height: 180px; border: none; display: block; }
+  .lineup-empty { color: #9ca3af; font-size: 13px; font-style: italic; }
+
   .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
 </style>
 </head>
@@ -108,13 +144,13 @@
 
 <div class="status-bar">
   <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
-  <button class="rvcm-btn" onclick="toggleDark()" title="Toggle dark/light mode">RVCM</button>
+  <button class="rvcm-btn" onclick="toggleDark()">RVCM</button>
 </div>
 
 <div class="app">
   <div class="top-bar">
-    <div class="app-title" id="songTitleDisplay">Song 1</div>
-    <div class="mode-toggle">
+    <div class="app-title" id="songTitleDisplay">Lineup</div>
+    <div class="mode-toggle" id="modeToggle" style="display:none">
       <button class="mode-btn active" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
@@ -140,26 +176,26 @@ const firebaseConfig = {
   measurementId: "G-6CPPLBLYBT"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
 
 const KEYS = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const SECTIONS = ['intro','verse','pre-chorus','chorus','bridge','instrumental'];
 const ORDINAL = ['open','1st','2nd','3rd','4th','5th','6th','7th','8th'];
 
 const SCALE = {
-  'C':  ['C','Dm','Em','F','G','Am','Bdim'],
-  'C#': ['C#','D#m','Fm','F#','G#','A#m','Cdim'],
-  'D':  ['D','Em','F#m','G','A','Bm','C#dim'],
-  'D#': ['D#','Fm','Gm','G#','A#','Cm','Ddim'],
-  'E':  ['E','F#m','G#m','A','B','C#m','D#dim'],
-  'F':  ['F','Gm','Am','A#','C','Dm','Edim'],
-  'F#': ['F#','G#m','A#m','B','C#','D#m','Fdim'],
-  'G':  ['G','Am','Bm','C','D','Em','F#dim'],
-  'G#': ['G#','A#m','Cm','C#','D#','Fm','Gdim'],
-  'A':  ['A','Bm','C#m','D','E','F#m','G#dim'],
-  'A#': ['A#','Cm','Dm','D#','F','Gm','Adim'],
-  'B':  ['B','C#m','D#m','E','F#','G#m','A#dim'],
+  'C':['C','Dm','Em','F','G','Am','Bdim'],
+  'C#':['C#','D#m','Fm','F#','G#','A#m','Cdim'],
+  'D':['D','Em','F#m','G','A','Bm','C#dim'],
+  'D#':['D#','Fm','Gm','G#','A#','Cm','Ddim'],
+  'E':['E','F#m','G#m','A','B','C#m','D#dim'],
+  'F':['F','Gm','Am','A#','C','Dm','Edim'],
+  'F#':['F#','G#m','A#m','B','C#','D#m','Fdim'],
+  'G':['G','Am','Bm','C','D','Em','F#dim'],
+  'G#':['G#','A#m','Cm','C#','D#','Fm','Gdim'],
+  'A':['A','Bm','C#m','D','E','F#m','G#dim'],
+  'A#':['A#','Cm','Dm','D#','F','Gm','Adim'],
+  'B':['B','C#m','D#m','E','F#','G#m','A#dim'],
 };
 
 function numToChords(input, key) {
@@ -172,47 +208,59 @@ function numToChords(input, key) {
 function numToString(input, key) {
   return numToChords(input, key).map(x => x.chord).join('  ');
 }
-function transposeChord(chord, semitonesDown) {
-  const match = chord.match(/^([A-G][#]?)(.*)$/);
-  if (!match) return chord;
-  const root = match[1], suffix = match[2];
-  const idx = KEYS.indexOf(root);
+function transposeChord(chord, st) {
+  const m = chord.match(/^([A-G][#]?)(.*)$/);
+  if (!m) return chord;
+  const idx = KEYS.indexOf(m[1]);
   if (idx === -1) return chord;
-  return KEYS[((idx - semitonesDown) % 12 + 12) % 12] + suffix;
+  return KEYS[((idx - st) % 12 + 12) % 12] + m[2];
 }
 function getCapoOptions(songKey) {
-  const keyIdx = KEYS.indexOf(songKey);
-  const options = [];
-  const capoForG = ((keyIdx - KEYS.indexOf('G')) % 12 + 12) % 12;
-  const capoForC = ((keyIdx - KEYS.indexOf('C')) % 12 + 12) % 12;
-  if (capoForG <= 8) options.push({ fret: capoForG, shape: 'G' });
-  if (capoForC <= 8 && capoForC !== capoForG) options.push({ fret: capoForC, shape: 'C' });
-  options.sort((a, b) => a.fret - b.fret || (a.shape === 'G' ? -1 : 1));
-  return options;
+  const ki = KEYS.indexOf(songKey);
+  const opts = [];
+  const cG = ((ki - KEYS.indexOf('G')) % 12 + 12) % 12;
+  const cC = ((ki - KEYS.indexOf('C')) % 12 + 12) % 12;
+  if (cG <= 8) opts.push({ fret: cG, shape: 'G' });
+  if (cC <= 8 && cC !== cG) opts.push({ fret: cC, shape: 'C' });
+  opts.sort((a,b) => a.fret - b.fret || (a.shape==='G'?-1:1));
+  return opts;
+}
+function getYoutubeId(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
 }
 
-const defaultSongs = Array.from({length: 5}, (_, i) => ({
-  title: `Song ${i+1}`, key: 'C',
-  sections: { intro:'', verse:'', 'pre-chorus':'', chorus:'', bridge:'', instrumental:'' }
+const defaultSongs = Array.from({length:5},(_,i)=>({
+  title:`Song ${i+1}`, keys:['C'],
+  sections:{intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''},
+  youtube:''
 }));
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
-let active = 0, mode = 'zed';
+let active = -1; // -1 = lineup
+let mode = 'zed';
 let saveTimeout = null;
 
-// Dark mode toggle — persists in localStorage
 window.toggleDark = () => {
-  const isDark = document.body.classList.toggle('dark');
-  localStorage.setItem('rvcm-dark', isDark ? '1' : '0');
+  const d = document.body.classList.toggle('dark');
+  localStorage.setItem('rvcm-dark', d?'1':'0');
 };
-if (localStorage.getItem('rvcm-dark') === '1') document.body.classList.add('dark');
+if (localStorage.getItem('rvcm-dark')==='1') document.body.classList.add('dark');
 
 const songsRef = ref(db, 'songs');
-onValue(songsRef, (snapshot) => {
+onValue(songsRef, snap => {
   document.getElementById('statusDot').className = 'status-dot connected';
   document.getElementById('statusText').textContent = 'live';
-  const data = snapshot.val();
-  if (data) songs = data;
+  const data = snap.val();
+  if (data) {
+    const arr = Array.isArray(data) ? data : Object.values(data);
+    songs = arr.map(s => ({
+      ...s,
+      keys: s.keys ? s.keys : (s.key ? [s.key] : ['C']),
+      youtube: s.youtube || ''
+    }));
+  }
   render();
 }, () => {
   document.getElementById('statusDot').className = 'status-dot';
@@ -229,113 +277,208 @@ function saveToFirebase() {
       document.getElementById('statusText').textContent = 'live';
       document.getElementById('syncIndicator').textContent = 'saved ' + new Date().toLocaleTimeString();
     });
-  }, 400);
+  }, 600);
 }
 
-window.setMode = (m) => {
+window.setMode = m => {
   mode = m;
   ['zed','band','capo'].forEach(x =>
-    document.getElementById('btn' + x[0].toUpperCase() + x.slice(1)).classList.toggle('active', m === x)
+    document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
   );
   renderPanel();
 };
-window.setTab = (i) => {
-  active = i; renderTabs(); renderPanel();
-  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
+
+window.setTab = i => {
+  active = i;
+  renderTabs();
+  renderPanel();
+  const tog = document.getElementById('modeToggle');
+  tog.style.display = i === -1 ? 'none' : 'flex';
+  document.getElementById('songTitleDisplay').textContent = i === -1 ? 'Lineup' : (songs[i].title || `Song ${i+1}`);
 };
-window.setKey = (k) => { songs[active].key = k; saveToFirebase(); renderPanel(); };
-window.updateTitle = (v) => {
+
+window.toggleKey = k => {
+  const s = songs[active];
+  const idx = s.keys.indexOf(k);
+  if (idx === -1) { s.keys.push(k); s.keys.sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b)); }
+  else { if (s.keys.length===1) return; s.keys.splice(idx,1); }
+  saveToFirebase();
+  renderPanel();
+};
+
+// Save only on blur — no re-render while typing
+window.onTitleBlur = v => {
   songs[active].title = v || `Song ${active+1}`;
   document.getElementById('songTitleDisplay').textContent = songs[active].title;
-  renderTabs(); saveToFirebase();
-};
-window.updateSection = (sec, v) => {
-  songs[active].sections[sec] = v;
-  const el = document.getElementById('preview-' + sec);
-  if (el) el.textContent = v ? numToString(v, songs[active].key) : '';
+  renderTabs();
   saveToFirebase();
 };
 
+window.onSectionBlur = (sec, v) => {
+  songs[active].sections[sec] = v;
+  saveToFirebase();
+  // update preview without full re-render
+  const el = document.getElementById('preview-'+sec);
+  if (el) {
+    el.innerHTML = v ? songs[active].keys.map(k =>
+      `<div class="chord-preview-row"><span class="chord-preview-key">${k}</span><span class="chord-preview-chords">${numToString(v,k)}</span></div>`
+    ).join('') : '';
+  }
+};
+
+window.onYoutubeBlur = (i, v) => {
+  songs[i].youtube = v;
+  saveToFirebase();
+  renderPanel(); // re-render lineup to show embed
+};
+
 function renderTabs() {
-  document.getElementById('tabBar').innerHTML = songs.map((s, i) =>
+  const lineup = `<button class="tab-btn ${active===-1?'active':''}" onclick="setTab(-1)">Lineup</button>`;
+  const songTabs = songs.map((s,i) =>
     `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`
   ).join('');
+  document.getElementById('tabBar').innerHTML = lineup + songTabs;
 }
+
 function renderPanel() {
+  if (active === -1) {
+    document.getElementById('mainPanel').innerHTML = renderLineup();
+    return;
+  }
   document.getElementById('mainPanel').innerHTML =
     mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
 }
+
+function renderLineup() {
+  const rows = songs.map((s, i) => {
+    const hasTitle = s.title && s.title !== `Song ${i+1}`;
+    const hasAnySections = SECTIONS.some(sec => s.sections[sec]);
+    const ytId = getYoutubeId(s.youtube);
+    const keyLabel = s.keys.join(' / ');
+
+    // hide completely if no title AND no sections AND no youtube
+    if (!hasTitle && !hasAnySections && !s.youtube) return '';
+
+    return `<div class="lineup-song-row">
+      <span class="lineup-num">${i+1}</span>
+      <div class="lineup-info">
+        <div class="lineup-song-name">${s.title||'Song '+(i+1)}</div>
+        <div class="lineup-song-key">Key of ${keyLabel}</div>
+        <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
+          onblur="onYoutubeBlur(${i}, this.value)" />
+        ${ytId ? `
+          <a class="lineup-yt-link" href="https://youtube.com/watch?v=${ytId}" target="_blank">
+            ▶ youtube.com/watch?v=${ytId}
+          </a>
+          <div class="lineup-embed">
+            <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe>
+          </div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const hasAny = songs.some((s,i) => {
+    const hasTitle = s.title && s.title !== `Song ${i+1}`;
+    return hasTitle || SECTIONS.some(sec=>s.sections[sec]) || s.youtube;
+  });
+
+  return `<div class="lineup-screen">
+    ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
+  </div>`;
+}
+
 function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header">
-      <input class="song-title-input" value="${s.title}" placeholder="Song title..." oninput="updateTitle(this.value)" />
-      <div class="key-selector">${KEYS.map(k=>`<button class="key-btn ${s.key===k?'active':''}" onclick="setKey('${k}')">${k}</button>`).join('')}</div>
+      <input class="song-title-input" value="${s.title}" placeholder="Song title..."
+        onblur="onTitleBlur(this.value)" />
+      <div class="key-selector">${KEYS.map(k=>
+        `<button class="key-btn ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
+      ).join('')}</div>
     </div>
     <div class="divider"></div>
     <div class="sections">${SECTIONS.map(sec=>`
       <div class="section-row">
         <span class="section-label">${sec}</span>
         <div>
-          <input class="section-input" value="${s.sections[sec]||''}" placeholder="e.g. 1 5 6 4" oninput="updateSection('${sec}',this.value)" />
-          <div class="chord-preview" id="preview-${sec}">${s.sections[sec]?numToString(s.sections[sec],s.key):''}</div>
+          <input class="section-input" value="${s.sections[sec]||''}" placeholder="e.g. 1 5 6 4"
+            onblur="onSectionBlur('${sec}', this.value)" />
+          <div class="chord-preview-wrap" id="preview-${sec}">
+            ${s.sections[sec] ? s.keys.map(k=>
+              `<div class="chord-preview-row"><span class="chord-preview-key">${k}</span><span class="chord-preview-chords">${numToString(s.sections[sec],k)}</span></div>`
+            ).join('') : ''}
+          </div>
         </div>
       </div>`).join('')}
     </div>
   </div>`;
 }
+
 function renderBand() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
   return `<div class="band-screen">
     <div class="band-song-title">${s.title}</div>
-    <span class="band-key-badge">Key of ${s.key}</span>
+    <div class="band-keys-row">${s.keys.map(k=>`<span class="band-key-badge">Key of ${k}</span>`).join('')}</div>
     <div class="band-sections">
       ${filled.length ? filled.map(sec => {
-        const pairs = numToChords(s.sections[sec], s.key);
+        const keyBlocks = s.keys.map(k => {
+          const pairs = numToChords(s.sections[sec], k);
+          return `<div class="key-group-block">
+            <div class="key-group-label">${k}</div>
+            <div class="band-chord-row">${pairs.map(p=>`
+              <div class="band-chord-group">
+                <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
+              </div>`).join('')}
+            </div>
+          </div>`;
+        }).join('');
         return `<div class="band-section">
-          <div class="band-section-name">${sec}</div>
-          <div class="band-chord-row">${pairs.map(p=>`
-            <div class="band-chord-group">
-              <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
-            </div>`).join('')}
-          </div>
+          <div class="band-section-name">${sec}</div>${keyBlocks}
         </div>`;
       }).join('') : '<div class="empty-section">No chords entered yet.</div>'}
     </div>
   </div>`;
 }
+
 function renderCapo() {
   const s = songs[active];
-  const opts = getCapoOptions(s.key);
   const filled = SECTIONS.filter(sec => s.sections[sec]);
-  if (!opts.length) return `<div class="capo-screen"><div class="capo-song-title">${s.title}</div><div class="empty-section" style="margin-top:12px">No capo option within fret 8 for key of ${s.key}.</div></div>`;
   return `<div class="capo-screen">
     <div class="capo-song-title">${s.title}</div>
-    <div class="capo-song-key">Song key: <strong>${s.key}</strong></div>
-    <div class="capo-options">${opts.map((opt,oi) => {
-      const fretLabel = opt.fret===0 ? 'No capo' : `Capo ${ORDINAL[opt.fret]} fret`;
-      const preferred = oi===0;
-      const sectionsHtml = filled.map(sec => {
-        const transposed = numToChords(s.sections[sec], s.key).map(p=>({num:p.num,chord:transposeChord(p.chord,opt.fret)}));
-        return `<div class="capo-section-block">
-          <div class="capo-section-name">${sec}</div>
-          <div class="capo-chord-row">${transposed.map(p=>`
-            <div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`).join('')}
-          </div>
+    <div class="capo-options">${s.keys.map((songKey, ki) => {
+      const opts = getCapoOptions(songKey);
+      if (!opts.length) return `<div class="capo-key-header">Key of ${songKey}</div><div class="empty-section">No capo within fret 8.</div>`;
+      const cards = opts.map((opt,oi) => {
+        const fretLabel = opt.fret===0?'No capo':`Capo ${ORDINAL[opt.fret]} fret`;
+        const sectionsHtml = filled.map(sec => {
+          const trans = numToChords(s.sections[sec],songKey).map(p=>({num:p.num,chord:transposeChord(p.chord,opt.fret)}));
+          return `<div class="capo-section-block">
+            <div class="capo-section-name">${sec}</div>
+            <div class="capo-chord-row">${trans.map(p=>`
+              <div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`).join('')}
+            </div>
+          </div>`;
+        }).join('');
+        return `<div class="capo-card ${oi===0?'preferred':''}">
+          <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes</span></div>
+          ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords yet.</div>'}
         </div>`;
       }).join('');
-      return `<div class="capo-card ${preferred?'preferred':''}">
-
-        <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes · key of ${s.key}</span></div>
-        ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords entered yet.</div>'}
+      return `<div>
+        <div class="capo-key-header">Key of ${songKey}</div>${cards}
+        ${ki<s.keys.length-1?'<div class="capo-key-divider"></div>':''}
       </div>`;
     }).join('')}</div>
   </div>`;
 }
+
 function render() {
-  renderTabs(); renderPanel();
-  document.getElementById('songTitleDisplay').textContent = songs[active].title || `Song ${active+1}`;
+  renderTabs();
+  renderPanel();
+  document.getElementById('modeToggle').style.display = active===-1?'none':'flex';
+  document.getElementById('songTitleDisplay').textContent = active===-1?'Lineup':(songs[active].title||`Song ${active+1}`);
 }
 </script>
 </body>
