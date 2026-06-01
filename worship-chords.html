@@ -326,7 +326,7 @@ function renderCapo() {
         </div>`;
       }).join('');
       return `<div class="capo-card ${preferred?'preferred':''}">
-        ${preferred?'<div class="preferred-badge">recommended</div>':''}
+
         <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes · key of ${s.key}</span></div>
         ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords entered yet.</div>'}
       </div>`;
