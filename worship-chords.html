@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Worship Chords</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; }
+
+  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; }
+  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; }
+  .status-dot.connected { background: #22c55e; }
+  .status-dot.syncing { background: #f59e0b; }
+
+  .app { max-width: 700px; margin: 0 auto; padding: 16px; }
+
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
+  .app-title { font-size: 16px; font-weight: 600; color: #111; }
+
+  .mode-toggle { display: flex; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; }
+  .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; transition: all 0.15s; }
+  .mode-btn.active { background: #1d4ed8; color: #fff; font-weight: 500; }
+
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .tab-btn.active { background: #fff; color: #111; border-color: #111; font-weight: 500; }
+
+  /* ZED EDITOR */
+  .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
+  .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
+  .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
+  .key-selector { display: flex; gap: 4px; flex-wrap: wrap; }
+  .key-btn { padding: 4px 9px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #6b7280; cursor: pointer; transition: all 0.1s; }
+  .key-btn.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 500; }
+  .divider { height: 1px; background: #f3f4f6; margin: 12px 0; }
+  .sections { display: flex; flex-direction: column; gap: 10px; }
+  .section-row { display: grid; grid-template-columns: 100px 1fr; gap: 8px; align-items: start; }
+  .section-label { font-size: 12px; color: #9ca3af; padding-top: 8px; }
+  .section-input { font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; width: 100%; outline: none; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .section-input:focus { border-color: #6b7280; background: #fff; }
+  .chord-preview { font-size: 13px; padding: 3px 0; color: #1d4ed8; font-weight: 500; min-height: 22px; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
+
+  /* BAND VIEW */
+  .band-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  .band-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
+  .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; margin-bottom: 16px; font-weight: 500; }
+  .band-sections { display: flex; flex-direction: column; gap: 12px; }
+  .band-section { padding: 12px 14px; border-radius: 10px; border: 1px solid #f3f4f6; background: #fafafa; }
+  .band-section-name { font-size: 11px; color: #d1d5db; text-transform: lowercase; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .band-chord-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .band-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
+  .band-chord { font-size: 26px; font-weight: 600; color: #111; line-height: 1.2; }
+  .band-num { font-size: 10px; color: #111; opacity: 0.2; margin-left: 1px; }
+  .empty-section { color: #9ca3af; font-size: 13px; font-style: italic; }
+
+  /* CAPO VIEW */
+  .capo-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  .capo-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 2px; }
+  .capo-song-key { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
+  .capo-options { display: flex; flex-direction: column; gap: 12px; }
+  .capo-card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; }
+  .capo-card.preferred { border-color: #1d4ed8; background: #eff6ff; }
+  .preferred-badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: #1d4ed8; color: #fff; border-radius: 6px; margin-bottom: 8px; }
+  .capo-fret { font-size: 22px; font-weight: 600; color: #111; line-height: 1.2; }
+  .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
+  .capo-shape { font-size: 13px; color: #6b7280; margin-top: 3px; margin-bottom: 10px; }
+  .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
+  .capo-section-name { font-size: 10px; color: #9ca3af; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .capo-chord-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .capo-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
+  .capo-chord { font-size: 22px; font-weight: 600; color: #111; }
+  .capo-num { font-size: 10px; color: #111; opacity: 0.2; }
+
+  .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
+  <span style="font-weight:500;color:#111;">⛪ Worship Chords</span>
+</div>
+
+<div class="app">
+  <div class="top-bar">
+    <div class="app-title" id="songTitleDisplay">Song 1</div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btnZed" onclick="setMode('zed')">Zed</button>
+      <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
+      <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
+    </div>
+  </div>
+  <div class="tabs" id="tabBar"></div>
+  <div id="mainPanel"></div>
+  <div class="sync-indicator" id="syncIndicator"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAKLrXYXoJnW9qVB5Etx3SlTV1yfoNPkug",
+  authDomain: "worship-team-chords.firebaseapp.com",
+  databaseURL: "https://worship-team-chords-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "worship-team-chords",
+  storageBucket: "worship-team-chords.firebasestorage.app",
+  messagingSenderId: "89794495811",
+  appId: "1:89794495811:web:8826c697bd668e98765bf6",
+  measurementId: "G-6CPPLBLYBT"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const KEYS = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const SECTIONS = ['intro','verse','pre-chorus','chorus','bridge','instrumental'];
+const ORDINAL = ['open','1st','2nd','3rd','4th','5th','6th','7th','8th'];
+
+const SCALE = {
+  'C':  ['C','Dm','Em','F','G','Am','Bdim'],
+  'C#': ['C#','D#m','Fm','F#','G#','A#m','Cdim'],
+  'D':  ['D','Em','F#m','G','A','Bm','C#dim'],
+  'D#': ['D#','Fm','Gm','G#','A#','Cm','Ddim'],
+  'E':  ['E','F#m','G#m','A','B','C#m','D#dim'],
+  'F':  ['F','Gm','Am','A#','C','Dm','Edim'],
+  'F#': ['F#','G#m','A#m','B','C#','D#m','Fdim'],
+  'G':  ['G','Am','Bm','C','D','Em','F#dim'],
+  'G#': ['G#','A#m','Cm','C#','D#','Fm','Gdim'],
+  'A':  ['A','Bm','C#m','D','E','F#m','G#dim'],
+  'A#': ['A#','Cm','Dm','D#','F','Gm','Adim'],
+  'B':  ['B','C#m','D#m','E','F#','G#m','A#dim'],
+};
+
+function numToChords(input, key) {
+  const scale = SCALE[key] || SCALE['C'];
+  return input.trim().split(/\s+/).map(n => {
+    const i = parseInt(n);
+    return { num: n, chord: (!isNaN(i) && i >= 1 && i <= 7) ? scale[i-1] : n };
+  });
+}
+
+function numToString(input, key) {
+  return numToChords(input, key).map(x => x.chord).join('  ');
+}
+
+function transposeChord(chord, semitonesDown) {
+  const match = chord.match(/^([A-G][#]?)(.*)$/);
+  if (!match) return chord;
+  const root = match[1], suffix = match[2];
+  const idx = KEYS.indexOf(root);
+  if (idx === -1) return chord;
+  return KEYS[((idx - semitonesDown) % 12 + 12) % 12] + suffix;
+}
+
+function getCapoOptions(songKey) {
+  const keyIdx = KEYS.indexOf(songKey);
+  const options = [];
+  const capoForG = ((keyIdx - KEYS.indexOf('G')) % 12 + 12) % 12;
+  const capoForC = ((keyIdx - KEYS.indexOf('C')) % 12 + 12) % 12;
+  if (capoForG <= 8) options.push({ fret: capoForG, shape: 'G' });
+  if (capoForC <= 8 && capoForC !== capoForG) options.push({ fret: capoForC, shape: 'C' });
+  options.sort((a, b) => a.fret - b.fret || (a.shape === 'G' ? -1 : 1));
+  return options;
+}
+
+const defaultSongs = Array.from({length: 5}, (_, i) => ({
+  title: `Song ${i+1}`,
+  key: 'C',
+  sections: { intro:'', verse:'', 'pre-chorus':'', chorus:'', bridge:'', instrumental:'' }
+}));
+
+let songs = JSON.parse(JSON.stringify(defaultSongs));
+let active = 0;
+let mode = 'zed';
+let isSyncing = false;
+let saveTimeout = null;
+
+// Firebase sync
+const songsRef = ref(db, 'songs');
+
+onValue(songsRef, (snapshot) => {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  dot.className = 'status-dot connected';
+  txt.textContent = 'live';
+
+  const data = snapshot.val();
+  if (data) {
+    songs = data;
+  }
+  render();
+}, (error) => {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  dot.className = 'status-dot';
+  txt.textContent = 'disconnected';
+});
+
+function saveToFirebase() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    const dot = document.getElementById('statusDot');
+    const txt = document.getElementById('statusText');
+    dot.className = 'status-dot syncing';
+    txt.textContent = 'saving...';
+    set(songsRef, songs).then(() => {
+      dot.className = 'status-dot connected';
+      txt.textContent = 'live';
+      document.getElementById('syncIndicator').textContent = 'saved ' + new Date().toLocaleTimeString();
+    });
+  }, 400);
+}
+
+function setMode(m) {
+  mode = m;
+  ['zed','band','capo'].forEach(x => {
+    document.getElementById('btn' + x[0].toUpperCase() + x.slice(1)).classList.toggle('active', m === x);
+  });
+  renderPanel();
+}
+
+function setTab(i) {
+  active = i;
+  renderTabs();
+  renderPanel();
+  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
+}
+
+window.setMode = setMode;
+window.setTab = setTab;
+window.setKey = (k) => {
+  songs[active].key = k;
+  saveToFirebase();
+  renderPanel();
+};
+window.updateTitle = (v) => {
+  songs[active].title = v || `Song ${active+1}`;
+  document.getElementById('songTitleDisplay').textContent = songs[active].title;
+  renderTabs();
+  saveToFirebase();
+};
+window.updateSection = (sec, v) => {
+  songs[active].sections[sec] = v;
+  const el = document.getElementById('preview-' + sec);
+  if (el) el.textContent = v ? numToString(v, songs[active].key) : '';
+  saveToFirebase();
+};
+
+function renderTabs() {
+  document.getElementById('tabBar').innerHTML = songs.map((s, i) =>
+    `<button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})">${s.title || 'Song '+(i+1)}</button>`
+  ).join('');
+}
+
+function renderPanel() {
+  document.getElementById('mainPanel').innerHTML =
+    mode === 'zed' ? renderZed() :
+    mode === 'band' ? renderBand() : renderCapo();
+}
+
+function renderZed() {
+  const s = songs[active];
+  return `<div class="song-panel">
+    <div class="panel-header">
+      <input class="song-title-input" value="${s.title}" placeholder="Song title..." oninput="updateTitle(this.value)" />
+      <div class="key-selector">${KEYS.map(k =>
+        `<button class="key-btn ${s.key === k ? 'active' : ''}" onclick="setKey('${k}')">${k}</button>`
+      ).join('')}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="sections">${SECTIONS.map(sec => `
+      <div class="section-row">
+        <span class="section-label">${sec}</span>
+        <div>
+          <input class="section-input" value="${s.sections[sec] || ''}" placeholder="e.g. 1 5 6 4" oninput="updateSection('${sec}', this.value)" />
+          <div class="chord-preview" id="preview-${sec}">${s.sections[sec] ? numToString(s.sections[sec], s.key) : ''}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderBand() {
+  const s = songs[active];
+  const filled = SECTIONS.filter(sec => s.sections[sec]);
+  return `<div class="band-screen">
+    <div class="band-song-title">${s.title}</div>
+    <span class="band-key-badge">Key of ${s.key}</span>
+    <div class="band-sections">
+      ${filled.length ? filled.map(sec => {
+        const pairs = numToChords(s.sections[sec], s.key);
+        return `<div class="band-section">
+          <div class="band-section-name">${sec}</div>
+          <div class="band-chord-row">${pairs.map(p => `
+            <div class="band-chord-group">
+              <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
+            </div>`).join('')}
+          </div>
+        </div>`;
+      }).join('') : '<div class="empty-section">No chords entered yet.</div>'}
+    </div>
+  </div>`;
+}
+
+function renderCapo() {
+  const s = songs[active];
+  const opts = getCapoOptions(s.key);
+  const filled = SECTIONS.filter(sec => s.sections[sec]);
+
+  if (!opts.length) {
+    return `<div class="capo-screen"><div class="capo-song-title">${s.title}</div><div class="empty-section" style="margin-top:12px">No capo option within fret 8 for key of ${s.key}.</div></div>`;
+  }
+
+  const cardsHtml = opts.map((opt, oi) => {
+    const fretLabel = opt.fret === 0 ? 'No capo' : `Capo ${ORDINAL[opt.fret]} fret`;
+    const preferred = oi === 0;
+    const sectionsHtml = filled.map(sec => {
+      const pairs = numToChords(s.sections[sec], s.key);
+      const transposed = pairs.map(p => ({ num: p.num, chord: transposeChord(p.chord, opt.fret) }));
+      return `<div class="capo-section-block">
+        <div class="capo-section-name">${sec}</div>
+        <div class="capo-chord-row">${transposed.map(p => `
+          <div class="capo-chord-group">
+            <span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="capo-card ${preferred ? 'preferred' : ''}">
+      ${preferred ? '<div class="preferred-badge">recommended</div>' : ''}
+      <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes · key of ${s.key}</span></div>
+      ${sectionsHtml || '<div class="empty-section" style="margin-top:8px;font-size:13px">No chords entered yet.</div>'}
+    </div>`;
+  }).join('');
+
+  return `<div class="capo-screen">
+    <div class="capo-song-title">${s.title}</div>
+    <div class="capo-song-key">Song key: <strong>${s.key}</strong></div>
+    <div class="capo-options">${cardsHtml}</div>
+  </div>`;
+}
+
+function render() {
+  renderTabs();
+  renderPanel();
+  document.getElementById('songTitleDisplay').textContent = songs[active].title || `Song ${active+1}`;
+}
+</script>
+</body>
+</html>
