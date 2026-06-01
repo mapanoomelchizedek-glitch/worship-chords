@@ -67,6 +67,11 @@
   .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; }
   .tab-btn.active { color: #111; border-color: #111; font-weight: 500; }
 
+  .reset-btn { font-size: 11px; padding: 4px 9px; border: 1px solid #fca5a5; border-radius: 6px; background: #fff5f5; color: #ef4444; cursor: pointer; white-space: nowrap; }
+  .reset-btn:hover { background: #fee2e2; }
+  body.dark .reset-btn { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
+  body.dark .reset-btn:hover { background: #3a1a1a; }
+
   /* EDIT */
   .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
@@ -157,7 +162,8 @@
 <div class="app">
   <div class="top-bar">
     <div class="app-title" id="songTitleDisplay">Lineup</div>
-    <div class="mode-toggle" id="modeToggle" style="display:none">
+    <div class="mode-toggle" id="modeToggle">
+      <button class="mode-btn" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
       <button class="mode-btn active" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
@@ -245,8 +251,8 @@ const defaultSongs = Array.from({length:5},(_,i)=>({
 }));
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
-let active = -1; // -1 = lineup
-let mode = 'zed';
+let active = 0;
+let mode = 'lineup';
 let saveTimeout = null;
 
 window.toggleDark = () => {
@@ -289,7 +295,7 @@ function saveToFirebase() {
 
 window.setMode = m => {
   mode = m;
-  ['zed','band','capo'].forEach(x =>
+  ['lineup','zed','band','capo'].forEach(x =>
     document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
   );
   renderPanel();
@@ -299,9 +305,14 @@ window.setTab = i => {
   active = i;
   renderTabs();
   renderPanel();
-  const tog = document.getElementById('modeToggle');
-  tog.style.display = i === -1 ? 'none' : 'flex';
-  document.getElementById('songTitleDisplay').textContent = i === -1 ? 'Lineup' : (songs[i].title || `Song ${i+1}`);
+  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
+};
+
+window.resetSong = i => {
+  if (!confirm('Reset this song? All chords and links will be cleared.')) return;
+  songs[i] = { title: `Song ${i+1}`, keys: ['C'], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '' };
+  saveToFirebase();
+  render();
 };
 
 window.toggleKey = k => {
@@ -346,16 +357,20 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
-  const lineup = `<button class="tab-btn ${active===-1?'active':''}" onclick="setTab(-1)">Lineup</button>`;
   const songTabs = songs.map((s,i) => {
     if (i !== active && !songHasContent(s, i)) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
   }).join('');
-  document.getElementById('tabBar').innerHTML = lineup + songTabs;
+  // always show at least one tab so user can get back in
+  const allEmpty = songs.every((s,i) => !songHasContent(s,i));
+  const fallback = allEmpty ? songs.map((s,i) =>
+    `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">Song ${i+1}</button>`
+  ).join('') : songTabs;
+  document.getElementById('tabBar').innerHTML = fallback;
 }
 
 function renderPanel() {
-  if (active === -1) {
+  if (mode === 'lineup') {
     document.getElementById('mainPanel').innerHTML = renderLineup();
     return;
   }
@@ -407,9 +422,12 @@ function renderZed() {
     <div class="panel-header">
       <input class="song-title-input" value="${s.title}" placeholder="Song title..."
         onblur="onTitleBlur(this.value)" />
-      <div class="key-selector">${KEYS.map(k=>
-        `<button class="key-btn ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
-      ).join('')}</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <div class="key-selector">${KEYS.map(k=>
+          `<button class="key-btn ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
+        ).join('')}</div>
+        <button class="reset-btn" onclick="resetSong(${active})" title="Reset this song">↺ reset</button>
+      </div>
     </div>
     <div class="divider"></div>
     <div class="sections">${SECTIONS.map(sec=>`
@@ -490,8 +508,7 @@ function renderCapo() {
 function render() {
   renderTabs();
   renderPanel();
-  document.getElementById('modeToggle').style.display = active===-1?'none':'flex';
-  document.getElementById('songTitleDisplay').textContent = active===-1?'Lineup':(songs[active].title||`Song ${active+1}`);
+  document.getElementById('songTitleDisplay').textContent = songs[active] ? (songs[active].title || `Song ${active+1}`) : '';
 }
 </script>
 </body>
