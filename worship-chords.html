@@ -26,7 +26,7 @@
   .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .tab-btn.active { background: #fff; color: #111; border-color: #111; font-weight: 500; }
 
-  /* ZED EDITOR */
+  /* Edit EDITOR */
   .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
   .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
@@ -79,14 +79,14 @@
 
 <div class="status-bar">
   <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
-  <span style="font-weight:500;color:#111;">⛪ Worship Chords</span>
+  <span style="font-weight:500;color:#111;">RVCM</span>
 </div>
 
 <div class="app">
   <div class="top-bar">
     <div class="app-title" id="songTitleDisplay">Song 1</div>
     <div class="mode-toggle">
-      <button class="mode-btn active" id="btnZed" onclick="setMode('zed')">Zed</button>
+      <button class="mode-btn active" id="btnEdit" onclick="setMode('Edit')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
     </div>
@@ -173,7 +173,7 @@ const defaultSongs = Array.from({length: 5}, (_, i) => ({
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
-let mode = 'zed';
+let mode = 'Edit';
 let isSyncing = false;
 let saveTimeout = null;
 
@@ -215,7 +215,7 @@ function saveToFirebase() {
 
 function setMode(m) {
   mode = m;
-  ['zed','band','capo'].forEach(x => {
+  ['Edit','band','capo'].forEach(x => {
     document.getElementById('btn' + x[0].toUpperCase() + x.slice(1)).classList.toggle('active', m === x);
   });
   renderPanel();
@@ -256,11 +256,11 @@ function renderTabs() {
 
 function renderPanel() {
   document.getElementById('mainPanel').innerHTML =
-    mode === 'zed' ? renderZed() :
+    mode === 'Edit' ? renderEdit() :
     mode === 'band' ? renderBand() : renderCapo();
 }
 
-function renderZed() {
+function renderEdit() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header">
