@@ -332,11 +332,18 @@ window.onYoutubeBlur = (i, v) => {
   renderPanel(); // re-render lineup to show embed
 };
 
+function songHasContent(s, i) {
+  const hasTitle = s.title && s.title !== `Song ${i+1}`;
+  const hasSections = SECTIONS.some(sec => s.sections[sec]);
+  return hasTitle || hasSections || !!s.youtube;
+}
+
 function renderTabs() {
   const lineup = `<button class="tab-btn ${active===-1?'active':''}" onclick="setTab(-1)">Lineup</button>`;
-  const songTabs = songs.map((s,i) =>
-    `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`
-  ).join('');
+  const songTabs = songs.map((s,i) => {
+    if (i !== active && !songHasContent(s, i)) return '';
+    return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
+  }).join('');
   document.getElementById('tabBar').innerHTML = lineup + songTabs;
 }
 
