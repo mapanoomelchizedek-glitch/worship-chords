@@ -48,6 +48,9 @@
   body.dark .lineup-yt-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
   body.dark .lineup-yt-link { color: #60a5fa; }
   body.dark .lineup-empty { color: #444; }
+  body.dark .lineup-yt-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
+  body.dark .lineup-thumb-expand { color: #555; }
+  body.dark .lineup-thumb-expand:hover { color: #60a5fa; }
 
   .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; }
   .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; }
@@ -56,7 +59,7 @@
   .rvcm-btn { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 12px; cursor: pointer; color: #111; user-select: none; }
 
   .app { max-width: 700px; margin: 0 auto; padding: 16px; }
-  .top-bar { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
   .mode-toggle { display: flex; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; }
   .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; }
   .mode-btn.active { background: #1d4ed8; color: #fff; font-weight: 500; }
@@ -84,12 +87,14 @@
   .sections { display: flex; flex-direction: column; gap: 10px; }
   .section-row { display: grid; grid-template-columns: 100px 1fr; gap: 8px; align-items: start; }
   .section-label { font-size: 12px; color: #9ca3af; padding-top: 8px; }
-  .section-input { font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; width: 100%; outline: none; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .section-input { font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; width: 100%; outline: none; font-family: 'SF Mono', 'Fira Code', monospace; resize: none; overflow: hidden; min-height: 34px; line-height: 1.6; }
   .section-input:focus { border-color: #6b7280; background: #fff; }
   .chord-preview-wrap { min-height: 0; margin-top: 4px; }
-  .chord-preview-row { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; border-bottom: 1px solid #f3f4f6; }
-  .chord-preview-row:last-child { border-bottom: none; }
-  .chord-preview-key { font-size: 11px; color: #9ca3af; min-width: 24px; font-weight: 600; }
+  .chord-preview-key-block { padding: 4px 0; border-bottom: 1px solid #f3f4f6; }
+  .chord-preview-key-block:last-child { border-bottom: none; }
+  .chord-preview-key-label { font-size: 10px; color: #9ca3af; font-weight: 700; margin-bottom: 2px; }
+  .chord-preview-line { display: flex; align-items: baseline; gap: 6px; padding: 1px 0; }
+  .chord-preview-linenum { font-size: 10px; color: #d1d5db; min-width: 10px; }
   .chord-preview-chords { font-size: 13px; color: #1d4ed8; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
 
   /* BAND */
@@ -103,7 +108,9 @@
   .key-group-block { background: #f0f4ff; border: 1px solid #e0e7ff; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
   .key-group-block:last-child { margin-bottom: 0; }
   .key-group-label { font-size: 10px; font-weight: 700; color: #6b7280; letter-spacing: 0.08em; margin-bottom: 4px; }
-  .band-chord-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .band-chord-line { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding: 2px 0; }
+  .band-chord-line + .band-chord-line { border-top: 1px dashed #e5e7eb; margin-top: 4px; padding-top: 6px; }
+  body.dark .band-chord-line + .band-chord-line { border-color: #2a2a2a; }
   .band-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
   .band-chord { font-size: 26px; font-weight: 600; color: #111; line-height: 1.2; }
   .band-num { font-size: 10px; color: #111; opacity: 0.2; margin-left: 1px; }
@@ -129,7 +136,9 @@
   .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
   .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
   .capo-section-name { font-size: 10px; color: #9ca3af; margin-bottom: 4px; letter-spacing: 0.05em; }
-  .capo-chord-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .capo-chord-line { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; padding: 2px 0; }
+  .capo-chord-line + .capo-chord-line { border-top: 1px dashed #e5e7eb; margin-top: 4px; padding-top: 6px; }
+  body.dark .capo-chord-line + .capo-chord-line { border-color: #2a2a2a; }
   .capo-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
   .capo-chord { font-size: 22px; font-weight: 600; color: #111; }
   .capo-num { font-size: 10px; color: #111; opacity: 0.2; }
@@ -139,18 +148,39 @@
   .lineup-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .lineup-song-row { padding: 14px 0; border-bottom: 1px solid #f3f4f6; display: flex; gap: 12px; align-items: flex-start; }
   .lineup-song-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .lineup-num { font-size: 12px; color: #9ca3af; width: 18px; flex-shrink: 0; padding-top: 2px; }
+  .lineup-num { font-size: 37px; font-weight: 700; color: #e5e7eb; width: 46px; flex-shrink: 0; line-height: 1; padding-top: 2px; }
+  body.dark .lineup-num { color: #2a2a2a; }
+  .lineup-card { flex: 1; min-width: 0; display: flex; gap: 10px; align-items: flex-start; }
   .lineup-info { flex: 1; min-width: 0; }
-  .lineup-song-name { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 2px; }
-  .lineup-song-key { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+  .lineup-song-name { font-size: 27px; font-weight: 600; color: #111; margin-bottom: 1px; }
+  .lineup-song-key { font-size: 20px; color: #6b7280; margin-bottom: 8px; }
   .lineup-yt-input { width: 100%; font-size: 12px; padding: 5px 9px; border: 1px solid #e5e7eb; border-radius: 7px; background: #f9fafb; color: #111; outline: none; font-family: monospace; }
   .lineup-yt-input:focus { border-color: #6b7280; background: #fff; }
-  .lineup-yt-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #1d4ed8; text-decoration: none; margin-top: 6px; word-break: break-all; }
-  .lineup-embed { margin-top: 8px; border-radius: 8px; overflow: hidden; }
+  /* thumbnail: small fixed-size video in top-right of card */
+  .lineup-thumb { flex-shrink: 0; width: 112px; }
+  .lineup-thumb-video { width: 112px; height: 63px; border-radius: 7px; overflow: hidden; position: relative; background: #000; cursor: pointer; }
+  .lineup-thumb-video iframe { width: 200%; height: 200%; border: none; display: block; transform: scale(0.5); transform-origin: top left; pointer-events: none; }
+  .lineup-thumb-expand { display: block; text-align: center; font-size: 10px; color: #6b7280; margin-top: 3px; cursor: pointer; text-decoration: none; }
+  .lineup-thumb-expand:hover { color: #1d4ed8; }
+  /* expanded embed */
+  .lineup-embed { margin-top: 8px; border-radius: 8px; overflow: hidden; display: none; }
+  .lineup-embed.open { display: block; }
   .lineup-embed iframe { width: 100%; height: 180px; border: none; display: block; }
   .lineup-empty { color: #9ca3af; font-size: 13px; font-style: italic; }
 
   .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
+
+  /* DATE PICKER */
+  .date-pill { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; padding: 5px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; position: relative; }
+  .date-pill:hover { border-color: #9ca3af; }
+  .date-pill-text { font-size: 13px; font-weight: 500; color: #111; line-height: 1.2; }
+  .date-pill-week { font-size: 11px; color: #9ca3af; font-weight: 400; }
+  .date-pill-icon { font-size: 14px; color: #9ca3af; }
+  .date-hidden-input { position: absolute; opacity: 0; width: 1px; height: 1px; top: 0; left: 0; pointer-events: none; }
+  body.dark .date-pill { background: #1a1a1a; border-color: #333; }
+  body.dark .date-pill:hover { border-color: #555; }
+  body.dark .date-pill-text { color: #f0f0f0; }
+  body.dark .date-pill-week { color: #555; }
 </style>
 </head>
 <body>
@@ -162,7 +192,13 @@
 
 <div class="app">
   <div class="top-bar">
-    <!-- FIX 1: removed app-title subheading from top bar -->
+    <div class="date-pill" id="datePill" ondblclick="openDatePicker()" title="Double-click to change date">
+      <div>
+        <div class="date-pill-text" id="datePillText">Sunday</div>
+        <div class="date-pill-week" id="datePillWeek">Week —</div>
+      </div>
+      <input class="date-hidden-input" type="date" id="dateInput" onchange="onDatePicked(this.value)" />
+    </div>
     <div class="mode-toggle" id="modeToggle">
       <button class="mode-btn active" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
       <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
@@ -213,15 +249,19 @@ const SCALE = {
   'B':['B','C#m','D#m','E','F#','G#m','A#dim'],
 };
 
-function numToChords(input, key) {
+// Returns array of lines, each line is array of {num, chord}
+function numToLines(input, key) {
   const scale = SCALE[key] || SCALE['C'];
-  return input.trim().split(/\s+/).map(n => {
-    const i = parseInt(n);
-    return { num: n, chord: (!isNaN(i) && i >= 1 && i <= 7) ? scale[i-1] : n };
-  });
+  return (input || '').split('\n').map(l => l.trim()).filter(l => l).map(line =>
+    line.split(/\s+/).map(n => {
+      const i = parseInt(n);
+      return { num: n, chord: (!isNaN(i) && i >= 1 && i <= 7) ? scale[i-1] : n };
+    })
+  );
 }
+function numToChords(input, key) { return numToLines(input, key).flat(); }
 function numToString(input, key) {
-  return numToChords(input, key).map(x => x.chord).join('  ');
+  return numToLines(input, key).map(line => line.map(x => x.chord).join('  ')).join(' | ');
 }
 function transposeChord(chord, st) {
   const m = chord.match(/^([A-G][#]?)(.*)$/);
@@ -254,15 +294,77 @@ const defaultSongs = Array.from({length:5},(_,i)=>({
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
-// FIX 1 & initial state: start in lineup mode, matching the active button
 let mode = 'lineup';
 let saveTimeout = null;
+
+// DATE — default to next upcoming Sunday
+function nextSunday() {
+  const d = new Date();
+  const day = d.getDay(); // 0=Sun
+  const diff = day === 0 ? 0 : 7 - day;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+let serviceDate = nextSunday();
+
+function sundayWeekOfMonth(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  // Which Sunday of the month is this? Count Sundays up to and including this date
+  const day = d.getDate();
+  // Find first Sunday of the month
+  const first = new Date(d.getFullYear(), d.getMonth(), 1);
+  const firstSunday = first.getDay() === 0 ? 1 : 8 - first.getDay();
+  const weekNum = Math.floor((day - firstSunday) / 7) + 1;
+  const labels = ['1st','2nd','3rd','4th','5th'];
+  return labels[weekNum - 1] || weekNum + 'th';
+}
+
+function formatServiceDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `Sunday, ${months[d.getMonth()]} ${d.getDate()}`;
+}
+
+function renderDatePill() {
+  const textEl = document.getElementById('datePillText');
+  const weekEl = document.getElementById('datePillWeek');
+  if (!textEl || !weekEl) return;
+  textEl.textContent = formatServiceDate(serviceDate);
+  weekEl.textContent = sundayWeekOfMonth(serviceDate) + ' Sunday';
+}
+
+window.openDatePicker = () => {
+  const input = document.getElementById('dateInput');
+  input.value = serviceDate;
+  input.style.pointerEvents = 'auto';
+  input.showPicker ? input.showPicker() : input.click();
+  input.addEventListener('blur', () => { input.style.pointerEvents = 'none'; }, { once: true });
+};
+
+window.onDatePicked = val => {
+  if (!val) return;
+  // Snap to Sunday: if user picks a non-Sunday, shift to that week's Sunday
+  const d = new Date(val + 'T12:00:00');
+  const dow = d.getDay();
+  if (dow !== 0) d.setDate(d.getDate() - dow);
+  serviceDate = d.toISOString().slice(0, 10);
+  renderDatePill();
+  // persist to Firebase
+  set(ref(db, 'serviceDate'), serviceDate);
+};
 
 window.toggleDark = () => {
   const d = document.body.classList.toggle('dark');
   localStorage.setItem('rvcm-dark', d?'1':'0');
 };
 if (localStorage.getItem('rvcm-dark')==='1') document.body.classList.add('dark');
+
+const serviceDateRef = ref(db, 'serviceDate');
+onValue(serviceDateRef, snap => {
+  const val = snap.val();
+  if (val) serviceDate = val;
+  renderDatePill();
+});
 
 const songsRef = ref(db, 'songs');
 onValue(songsRef, snap => {
@@ -344,12 +446,25 @@ window.onSectionBlur = (sec, v) => {
   songs[active].sections[sec] = v;
   saveToFirebase();
   const el = document.getElementById('preview-'+sec);
-  if (el) {
-    el.innerHTML = v ? songs[active].keys.map(k =>
-      `<div class="chord-preview-row"><span class="chord-preview-key">${k}</span><span class="chord-preview-chords">${numToString(v,k)}</span></div>`
-    ).join('') : '';
-  }
+  if (el) el.innerHTML = buildPreviewHtml(v, songs[active].keys);
 };
+
+function buildPreviewHtml(v, keys) {
+  if (!v || !v.trim()) return '';
+  return keys.map(k => {
+    const lines = numToLines(v, k);
+    const linesHtml = lines.map((line, li) =>
+      `<div class="chord-preview-line">
+        ${lines.length > 1 ? `<span class="chord-preview-linenum">${li+1}</span>` : ''}
+        <span class="chord-preview-chords">${line.map(p => p.chord).join('  ')}</span>
+      </div>`
+    ).join('');
+    return `<div class="chord-preview-key-block">
+      ${keys.length > 1 ? `<div class="chord-preview-key-label">${k}</div>` : ''}
+      ${linesHtml}
+    </div>`;
+  }).join('');
+}
 
 window.onYoutubeBlur = (i, v) => {
   songs[i].youtube = v;
@@ -389,6 +504,14 @@ function renderPanel() {
   }
   document.getElementById('mainPanel').innerHTML =
     mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
+  if (mode === 'zed') {
+    setTimeout(() => {
+      document.querySelectorAll('.section-input').forEach(el => {
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+      });
+    }, 0);
+  }
 }
 
 function renderLineup() {
@@ -402,18 +525,22 @@ function renderLineup() {
 
     return `<div class="lineup-song-row">
       <span class="lineup-num">${i+1}</span>
-      <div class="lineup-info">
-        <div class="lineup-song-name">${s.title||'Song '+(i+1)}</div>
-        <div class="lineup-song-key">Key of ${keyLabel}</div>
-        <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
-          onblur="onYoutubeBlur(${i}, this.value)" />
-        ${ytId ? `
-          <a class="lineup-yt-link" href="https://youtube.com/watch?v=${ytId}" target="_blank">
-            ▶ youtube.com/watch?v=${ytId}
-          </a>
-          <div class="lineup-embed">
+      <div class="lineup-card">
+        <div class="lineup-info">
+          <div class="lineup-song-name">${s.title||'Song '+(i+1)}</div>
+          <div class="lineup-song-key">Key of ${keyLabel}</div>
+          <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
+            onblur="onYoutubeBlur(${i}, this.value)" />
+          ${ytId ? `<div class="lineup-embed" id="embed-${i}">
             <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe>
           </div>` : ''}
+        </div>
+        ${ytId ? `<div class="lineup-thumb">
+          <div class="lineup-thumb-video" onclick="toggleEmbed(${i})" title="Click to expand">
+            <iframe src="https://www.youtube.com/embed/${ytId}" tabindex="-1" loading="lazy"></iframe>
+          </div>
+          <a class="lineup-thumb-expand" onclick="toggleEmbed(${i})">▶ expand</a>
+        </div>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -446,12 +573,11 @@ function renderZed() {
       <div class="section-row">
         <span class="section-label">${sec}</span>
         <div>
-          <input class="section-input" value="${s.sections[sec]||''}" placeholder="e.g. 1 5 6 4"
-            onblur="onSectionBlur('${sec}', this.value)" />
+          <textarea class="section-input" rows="1" placeholder="e.g. 1 5 6 4&#10;1 6 4 5"
+            onblur="onSectionBlur('${sec}', this.value)"
+            oninput="autoGrow(this)">${s.sections[sec]||''}</textarea>
           <div class="chord-preview-wrap" id="preview-${sec}">
-            ${s.sections[sec] ? s.keys.map(k=>
-              `<div class="chord-preview-row"><span class="chord-preview-key">${k}</span><span class="chord-preview-chords">${numToString(s.sections[sec],k)}</span></div>`
-            ).join('') : ''}
+            ${buildPreviewHtml(s.sections[sec]||'', s.keys)}
           </div>
         </div>
       </div>`).join('')}
@@ -464,14 +590,15 @@ function renderBand() {
   const filled = SECTIONS.filter(sec => s.sections[sec]);
   const keyBlocks = s.keys.map((k, ki) => {
     const sections = filled.map(sec => {
-      const pairs = numToChords(s.sections[sec], k);
+      const lines = numToLines(s.sections[sec], k);
+      const linesHtml = lines.map(line =>
+        `<div class="band-chord-line">${line.map(p=>
+          `<div class="band-chord-group"><span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span></div>`
+        ).join('')}</div>`
+      ).join('');
       return `<div class="band-section">
         <div class="band-section-name">${sec}</div>
-        <div class="band-chord-row">${pairs.map(p=>`
-          <div class="band-chord-group">
-            <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
-          </div>`).join('')}
-        </div>
+        ${linesHtml}
       </div>`;
     }).join('');
     return `<div class="band-key-block ${ki > 0 ? 'band-key-block--divider' : ''}">
@@ -496,12 +623,17 @@ function renderCapo() {
       const cards = opts.map((opt,oi) => {
         const fretLabel = opt.fret===0?'No capo':`Capo ${ORDINAL[opt.fret]} fret`;
         const sectionsHtml = filled.map(sec => {
-          const trans = numToChords(s.sections[sec],songKey).map(p=>({num:p.num,chord:transposeChord(p.chord,opt.fret)}));
+          const lines = numToLines(s.sections[sec], songKey).map(line =>
+            line.map(p => ({num: p.num, chord: transposeChord(p.chord, opt.fret)}))
+          );
+          const linesHtml = lines.map(line =>
+            `<div class="capo-chord-line">${line.map(p=>
+              `<div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`
+            ).join('')}</div>`
+          ).join('');
           return `<div class="capo-section-block">
             <div class="capo-section-name">${sec}</div>
-            <div class="capo-chord-row">${trans.map(p=>`
-              <div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`).join('')}
-            </div>
+            ${linesHtml}
           </div>`;
         }).join('');
         return `<div class="capo-card ${oi===0?'preferred':''}">
@@ -517,9 +649,34 @@ function renderCapo() {
   </div>`;
 }
 
+window.toggleEmbed = i => {
+  const el = document.getElementById('embed-' + i);
+  if (!el) return;
+  el.classList.toggle('open');
+  const link = el.previousElementSibling && el.previousElementSibling.querySelector
+    ? null
+    : null;
+  // update expand label
+  const thumb = document.querySelector(`.lineup-thumb-expand[onclick="toggleEmbed(${i})"]`);
+  if (thumb) thumb.textContent = el.classList.contains('open') ? '▼ collapse' : '▶ expand';
+};
+
+window.autoGrow = el => {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+};
+
 function render() {
   renderTabs();
   renderPanel();
+  renderDatePill();
+  // auto-grow all textareas after render
+  setTimeout(() => {
+    document.querySelectorAll('.section-input').forEach(el => {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    });
+  }, 0);
 }
 </script>
 </body>
