@@ -308,7 +308,7 @@ window.toggleKey = k => {
   const s = songs[active];
   const idx = s.keys.indexOf(k);
   if (idx === -1) { s.keys.push(k); s.keys.sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b)); }
-  else { if (s.keys.length===1) return; s.keys.splice(idx,1); }
+  else { s.keys.splice(idx,1); }
   saveToFirebase();
   renderPanel();
 };
