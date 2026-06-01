@@ -40,7 +40,6 @@
   body.dark .capo-fret span { color: #555; }
   body.dark .capo-section-block { background: #222; border-color: #2a2a2a; }
   body.dark .capo-key-header { color: #555; }
-  body.dark .app-title { color: #f0f0f0; }
   body.dark .sync-indicator { color: #333; }
   body.dark .empty-section { color: #444; }
   body.dark .lineup-song-row { border-color: #2a2a2a; }
@@ -57,15 +56,17 @@
   .rvcm-btn { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 12px; cursor: pointer; color: #111; user-select: none; }
 
   .app { max-width: 700px; margin: 0 auto; padding: 16px; }
-  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
-  .app-title { font-size: 16px; font-weight: 600; color: #111; }
+  .top-bar { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
   .mode-toggle { display: flex; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; }
   .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; }
   .mode-btn.active { background: #1d4ed8; color: #fff; font-weight: 500; }
 
-  .tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; }
-  .tab-btn.active { color: #111; border-color: #111; font-weight: 500; }
+  /* FIX 6: tabs sit flush inside the panel, not floating above */
+  .tabs { display: flex; gap: 0; margin-bottom: 0; flex-wrap: wrap; padding: 0 4px; }
+  .tab-btn { padding: 8px 14px; border: 1px solid #d1d5db; border-bottom: none; border-radius: 8px 8px 0 0; background: #f0f0f0; color: #6b7280; font-size: 13px; cursor: pointer; margin-right: 4px; position: relative; bottom: -1px; }
+  .tab-btn.active { color: #111; border-color: #d1d5db; border-bottom: 1px solid #fff; background: #fff; font-weight: 500; z-index: 1; }
+  body.dark .tab-btn { background: #111; border-color: #2a2a2a; color: #555; }
+  body.dark .tab-btn.active { background: #1a1a1a; color: #f0f0f0; border-color: #444; border-bottom-color: #1a1a1a; }
 
   .reset-btn { font-size: 11px; padding: 4px 9px; border: 1px solid #fca5a5; border-radius: 6px; background: #fff5f5; color: #ef4444; cursor: pointer; white-space: nowrap; }
   .reset-btn:hover { background: #fee2e2; }
@@ -73,7 +74,7 @@
   body.dark .reset-btn:hover { background: #3a1a1a; }
 
   /* EDIT */
-  .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
+  .song-panel { background: #fff; border: 1px solid #d1d5db; border-radius: 0 12px 12px 12px; padding: 16px 20px; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
   .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
   .key-selector { display: flex; gap: 4px; flex-wrap: wrap; }
@@ -92,7 +93,7 @@
   .chord-preview-chords { font-size: 13px; color: #1d4ed8; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
 
   /* BAND */
-  .band-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  .band-screen { background: #fff; border: 1px solid #d1d5db; border-radius: 0 12px 12px 12px; padding: 20px; }
   .band-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
   .band-keys-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
   .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; font-weight: 500; }
@@ -116,7 +117,7 @@
   body.dark .band-key-header { color: #555; }
 
   /* CAPO */
-  .capo-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  .capo-screen { background: #fff; border: 1px solid #d1d5db; border-radius: 0 12px 12px 12px; padding: 20px; }
   .capo-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 2px; }
   .capo-song-key { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
   .capo-options { display: flex; flex-direction: column; gap: 16px; }
@@ -161,14 +162,15 @@
 
 <div class="app">
   <div class="top-bar">
-    <div class="app-title" id="songTitleDisplay">Lineup</div>
+    <!-- FIX 1: removed app-title subheading from top bar -->
     <div class="mode-toggle" id="modeToggle">
-      <button class="mode-btn" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
-      <button class="mode-btn active" id="btnZed" onclick="setMode('zed')">Edit</button>
+      <button class="mode-btn active" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
+      <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
     </div>
   </div>
+  <!-- FIX 3 & 6: tab bar is hidden in lineup, and sits flush against the panel below -->
   <div class="tabs" id="tabBar"></div>
   <div id="mainPanel"></div>
   <div class="sync-indicator" id="syncIndicator"></div>
@@ -252,6 +254,7 @@ const defaultSongs = Array.from({length:5},(_,i)=>({
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
+// FIX 1 & initial state: start in lineup mode, matching the active button
 let mode = 'lineup';
 let saveTimeout = null;
 
@@ -273,6 +276,8 @@ onValue(songsRef, snap => {
       keys: s.keys ? s.keys : (s.key ? [s.key] : ['C']),
       youtube: s.youtube || ''
     }));
+    // Make sure active index is still valid
+    if (active >= songs.length) active = 0;
   }
   render();
 }, () => {
@@ -298,6 +303,8 @@ window.setMode = m => {
   ['lineup','zed','band','capo'].forEach(x =>
     document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
   );
+  // FIX 4: always re-render tabs when switching mode, not just the panel
+  renderTabs();
   renderPanel();
 };
 
@@ -305,7 +312,6 @@ window.setTab = i => {
   active = i;
   renderTabs();
   renderPanel();
-  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
 };
 
 window.resetSong = i => {
@@ -319,15 +325,17 @@ window.toggleKey = k => {
   const s = songs[active];
   const idx = s.keys.indexOf(k);
   if (idx === -1) { s.keys.push(k); s.keys.sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b)); }
-  else { s.keys.splice(idx,1); }
+  else {
+    // FIX 5: prevent removing last key so there's always at least one
+    if (s.keys.length === 1) return;
+    s.keys.splice(idx,1);
+  }
   saveToFirebase();
   renderPanel();
 };
 
-// Save only on blur — no re-render while typing
 window.onTitleBlur = v => {
   songs[active].title = v || `Song ${active+1}`;
-  document.getElementById('songTitleDisplay').textContent = songs[active].title;
   renderTabs();
   saveToFirebase();
 };
@@ -335,7 +343,6 @@ window.onTitleBlur = v => {
 window.onSectionBlur = (sec, v) => {
   songs[active].sections[sec] = v;
   saveToFirebase();
-  // update preview without full re-render
   const el = document.getElementById('preview-'+sec);
   if (el) {
     el.innerHTML = v ? songs[active].keys.map(k =>
@@ -347,7 +354,7 @@ window.onSectionBlur = (sec, v) => {
 window.onYoutubeBlur = (i, v) => {
   songs[i].youtube = v;
   saveToFirebase();
-  renderPanel(); // re-render lineup to show embed
+  renderPanel();
 };
 
 function songHasContent(s, i) {
@@ -357,15 +364,22 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
+  // FIX 3: no tabs in lineup mode at all
   if (mode === 'lineup') {
     document.getElementById('tabBar').innerHTML = '';
     return;
   }
-  const songTabs = songs.map((s,i) => {
-    if (mode !== 'zed' && i !== active && !songHasContent(s, i)) return '';
+
+  // FIX 2: in band/capo, show ALL songs that have content PLUS the active one
+  // (so clicking a song won't make it disappear from the tab bar)
+  const tabBar = document.getElementById('tabBar');
+  tabBar.innerHTML = songs.map((s,i) => {
+    // In edit mode: always show all 5 tabs
+    // In band/capo: show tabs that have content, or the currently active one
+    const show = mode === 'zed' || songHasContent(s, i) || i === active;
+    if (!show) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
   }).join('');
-  document.getElementById('tabBar').innerHTML = songTabs;
 }
 
 function renderPanel() {
@@ -384,7 +398,6 @@ function renderLineup() {
     const ytId = getYoutubeId(s.youtube);
     const keyLabel = s.keys.join(' / ');
 
-    // hide completely if no title AND no sections AND no youtube
     if (!hasTitle && !hasAnySections && !s.youtube) return '';
 
     return `<div class="lineup-song-row">
@@ -507,7 +520,6 @@ function renderCapo() {
 function render() {
   renderTabs();
   renderPanel();
-  document.getElementById('songTitleDisplay').textContent = songs[active] ? (songs[active].title || `Song ${active+1}`) : '';
 }
 </script>
 </body>
