@@ -103,6 +103,13 @@
   .band-num { font-size: 10px; color: #111; opacity: 0.2; margin-left: 1px; }
   .empty-section { color: #9ca3af; font-size: 13px; font-style: italic; }
 
+  .band-key-block { margin-bottom: 16px; }
+  .band-key-block:last-child { margin-bottom: 0; }
+  .band-key-block--divider { padding-top: 16px; border-top: 1px solid #f3f4f6; }
+  body.dark .band-key-block--divider { border-color: #2a2a2a; }
+  .band-key-header { font-size: 12px; font-weight: 700; color: #6b7280; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  body.dark .band-key-header { color: #555; }
+
   /* CAPO */
   .capo-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .capo-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 2px; }
@@ -220,8 +227,8 @@ function getCapoOptions(songKey) {
   const opts = [];
   const cG = ((ki - KEYS.indexOf('G')) % 12 + 12) % 12;
   const cC = ((ki - KEYS.indexOf('C')) % 12 + 12) % 12;
-  if (cG <= 8) opts.push({ fret: cG, shape: 'G' });
-  if (cC <= 8 && cC !== cG) opts.push({ fret: cC, shape: 'C' });
+  if (cG >= 2 && cG <= 8) opts.push({ fret: cG, shape: 'G' });
+  if (cC >= 2 && cC <= 8 && cC !== cG) opts.push({ fret: cC, shape: 'C' });
   opts.sort((a,b) => a.fret - b.fret || (a.shape==='G'?-1:1));
   return opts;
 }
@@ -425,27 +432,26 @@ function renderZed() {
 function renderBand() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
+  const keyBlocks = s.keys.map((k, ki) => {
+    const sections = filled.map(sec => {
+      const pairs = numToChords(s.sections[sec], k);
+      return `<div class="band-section">
+        <div class="band-section-name">${sec}</div>
+        <div class="band-chord-row">${pairs.map(p=>`
+          <div class="band-chord-group">
+            <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="band-key-block ${ki > 0 ? 'band-key-block--divider' : ''}">
+      <div class="band-key-header">Key of ${k}</div>
+      <div class="band-sections">${sections || '<div class="empty-section">No chords yet.</div>'}</div>
+    </div>`;
+  }).join('');
   return `<div class="band-screen">
     <div class="band-song-title">${s.title}</div>
-    <div class="band-keys-row">${s.keys.map(k=>`<span class="band-key-badge">Key of ${k}</span>`).join('')}</div>
-    <div class="band-sections">
-      ${filled.length ? filled.map(sec => {
-        const keyBlocks = s.keys.map(k => {
-          const pairs = numToChords(s.sections[sec], k);
-          return `<div class="key-group-block">
-            <div class="key-group-label">${k}</div>
-            <div class="band-chord-row">${pairs.map(p=>`
-              <div class="band-chord-group">
-                <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
-              </div>`).join('')}
-            </div>
-          </div>`;
-        }).join('');
-        return `<div class="band-section">
-          <div class="band-section-name">${sec}</div>${keyBlocks}
-        </div>`;
-      }).join('') : '<div class="empty-section">No chords entered yet.</div>'}
-    </div>
+    ${filled.length || s.keys.length ? keyBlocks : '<div class="empty-section">No chords entered yet.</div>'}
   </div>`;
 }
 
