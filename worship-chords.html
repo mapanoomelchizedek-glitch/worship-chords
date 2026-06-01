@@ -3,18 +3,52 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Worship Chords</title>
+<title>RVCM Worship Chords</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; transition: background 0.2s, color 0.2s; }
 
-  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; }
+  /* DARK MODE */
+  body.dark { background: #0f0f0f; }
+  body.dark .status-bar { background: #1a1a1a; border-color: #2a2a2a; color: #555; }
+  body.dark .rvcm-btn { color: #f0f0f0; border-color: #333; background: #1a1a1a; }
+  body.dark .mode-toggle { border-color: #333; }
+  body.dark .mode-btn { background: #1a1a1a; color: #555; }
+  body.dark .mode-btn.active { background: #2563eb; color: #fff; }
+  body.dark .tab-btn { background: #1a1a1a; border-color: #2a2a2a; color: #555; }
+  body.dark .tab-btn.active { background: #1a1a1a; color: #f0f0f0; border-color: #f0f0f0; }
+  body.dark .song-panel, body.dark .band-screen, body.dark .capo-screen { background: #1a1a1a; border-color: #2a2a2a; }
+  body.dark .song-title-input { color: #f0f0f0; }
+  body.dark .key-btn { background: #222; border-color: #333; color: #777; }
+  body.dark .key-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+  body.dark .divider { background: #2a2a2a; }
+  body.dark .section-label { color: #555; }
+  body.dark .section-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
+  body.dark .section-input:focus { border-color: #555; background: #2a2a2a; }
+  body.dark .chord-preview { color: #60a5fa; }
+  body.dark .band-song-title, body.dark .capo-song-title, body.dark .capo-fret { color: #f0f0f0; }
+  body.dark .band-key-badge { background: #1e3a5f; color: #60a5fa; }
+  body.dark .band-section { background: #222; border-color: #2a2a2a; }
+  body.dark .band-section-name, body.dark .capo-section-name { color: #444; }
+  body.dark .band-chord, body.dark .capo-chord { color: #f0f0f0; }
+  body.dark .capo-card { border-color: #2a2a2a; }
+  body.dark .capo-card.preferred { border-color: #2563eb; background: #1e2a3a; }
+  body.dark .capo-song-key { color: #555; }
+  body.dark .capo-fret span { color: #555; }
+  body.dark .capo-section-block { background: #222; border-color: #2a2a2a; }
+  body.dark .app-title { color: #f0f0f0; }
+  body.dark .sync-indicator { color: #333; }
+  body.dark .empty-section { color: #444; }
+
+  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; transition: background 0.2s, border-color 0.2s; }
   .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; }
   .status-dot.connected { background: #22c55e; }
   .status-dot.syncing { background: #f59e0b; }
 
-  .app { max-width: 700px; margin: 0 auto; padding: 16px; }
+  .rvcm-btn { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 12px; cursor: pointer; color: #111; transition: all 0.2s; user-select: none; }
+  .rvcm-btn:active { transform: scale(0.96); }
 
+  .app { max-width: 700px; margin: 0 auto; padding: 16px; }
   .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
   .app-title { font-size: 16px; font-weight: 600; color: #111; }
 
@@ -26,7 +60,6 @@
   .tab-btn { padding: 6px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; color: #6b7280; font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .tab-btn.active { background: #fff; color: #111; border-color: #111; font-weight: 500; }
 
-  /* ZED EDITOR */
   .song-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
   .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
@@ -41,7 +74,6 @@
   .section-input:focus { border-color: #6b7280; background: #fff; }
   .chord-preview { font-size: 13px; padding: 3px 0; color: #1d4ed8; font-weight: 500; min-height: 22px; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
 
-  /* BAND VIEW */
   .band-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .band-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
   .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; margin-bottom: 16px; font-weight: 500; }
@@ -54,7 +86,6 @@
   .band-num { font-size: 10px; color: #111; opacity: 0.2; margin-left: 1px; }
   .empty-section { color: #9ca3af; font-size: 13px; font-style: italic; }
 
-  /* CAPO VIEW */
   .capo-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
   .capo-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 2px; }
   .capo-song-key { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
@@ -64,14 +95,12 @@
   .preferred-badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: #1d4ed8; color: #fff; border-radius: 6px; margin-bottom: 8px; }
   .capo-fret { font-size: 22px; font-weight: 600; color: #111; line-height: 1.2; }
   .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
-  .capo-shape { font-size: 13px; color: #6b7280; margin-top: 3px; margin-bottom: 10px; }
   .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
   .capo-section-name { font-size: 10px; color: #9ca3af; margin-bottom: 4px; letter-spacing: 0.05em; }
   .capo-chord-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
   .capo-chord-group { display: inline-flex; align-items: baseline; gap: 2px; }
   .capo-chord { font-size: 22px; font-weight: 600; color: #111; }
   .capo-num { font-size: 10px; color: #111; opacity: 0.2; }
-
   .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
 </style>
 </head>
@@ -79,7 +108,7 @@
 
 <div class="status-bar">
   <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
-  <span style="font-weight:500;color:#111;">RVCM</span>
+  <button class="rvcm-btn" onclick="toggleDark()" title="Toggle dark/light mode">RVCM</button>
 </div>
 
 <div class="app">
@@ -140,11 +169,9 @@ function numToChords(input, key) {
     return { num: n, chord: (!isNaN(i) && i >= 1 && i <= 7) ? scale[i-1] : n };
   });
 }
-
 function numToString(input, key) {
   return numToChords(input, key).map(x => x.chord).join('  ');
 }
-
 function transposeChord(chord, semitonesDown) {
   const match = chord.match(/^([A-G][#]?)(.*)$/);
   if (!match) return chord;
@@ -153,7 +180,6 @@ function transposeChord(chord, semitonesDown) {
   if (idx === -1) return chord;
   return KEYS[((idx - semitonesDown) % 12 + 12) % 12] + suffix;
 }
-
 function getCapoOptions(songKey) {
   const keyIdx = KEYS.indexOf(songKey);
   const options = [];
@@ -166,80 +192,62 @@ function getCapoOptions(songKey) {
 }
 
 const defaultSongs = Array.from({length: 5}, (_, i) => ({
-  title: `Song ${i+1}`,
-  key: 'C',
+  title: `Song ${i+1}`, key: 'C',
   sections: { intro:'', verse:'', 'pre-chorus':'', chorus:'', bridge:'', instrumental:'' }
 }));
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
-let active = 0;
-let mode = 'zed';
-let isSyncing = false;
+let active = 0, mode = 'zed';
 let saveTimeout = null;
 
-// Firebase sync
+// Dark mode toggle — persists in localStorage
+window.toggleDark = () => {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('rvcm-dark', isDark ? '1' : '0');
+};
+if (localStorage.getItem('rvcm-dark') === '1') document.body.classList.add('dark');
+
 const songsRef = ref(db, 'songs');
-
 onValue(songsRef, (snapshot) => {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  dot.className = 'status-dot connected';
-  txt.textContent = 'live';
-
+  document.getElementById('statusDot').className = 'status-dot connected';
+  document.getElementById('statusText').textContent = 'live';
   const data = snapshot.val();
-  if (data) {
-    songs = data;
-  }
+  if (data) songs = data;
   render();
-}, (error) => {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  dot.className = 'status-dot';
-  txt.textContent = 'disconnected';
+}, () => {
+  document.getElementById('statusDot').className = 'status-dot';
+  document.getElementById('statusText').textContent = 'disconnected';
 });
 
 function saveToFirebase() {
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
-    const dot = document.getElementById('statusDot');
-    const txt = document.getElementById('statusText');
-    dot.className = 'status-dot syncing';
-    txt.textContent = 'saving...';
+    document.getElementById('statusDot').className = 'status-dot syncing';
+    document.getElementById('statusText').textContent = 'saving...';
     set(songsRef, songs).then(() => {
-      dot.className = 'status-dot connected';
-      txt.textContent = 'live';
+      document.getElementById('statusDot').className = 'status-dot connected';
+      document.getElementById('statusText').textContent = 'live';
       document.getElementById('syncIndicator').textContent = 'saved ' + new Date().toLocaleTimeString();
     });
   }, 400);
 }
 
-function setMode(m) {
+window.setMode = (m) => {
   mode = m;
-  ['zed','band','capo'].forEach(x => {
-    document.getElementById('btn' + x[0].toUpperCase() + x.slice(1)).classList.toggle('active', m === x);
-  });
-  renderPanel();
-}
-
-function setTab(i) {
-  active = i;
-  renderTabs();
-  renderPanel();
-  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
-}
-
-window.setMode = setMode;
-window.setTab = setTab;
-window.setKey = (k) => {
-  songs[active].key = k;
-  saveToFirebase();
+  ['zed','band','capo'].forEach(x =>
+    document.getElementById('btn' + x[0].toUpperCase() + x.slice(1)).classList.toggle('active', m === x)
+  );
   renderPanel();
 };
+window.setTab = (i) => {
+  active = i; renderTabs(); renderPanel();
+  document.getElementById('songTitleDisplay').textContent = songs[i].title || `Song ${i+1}`;
+};
+window.setKey = (k) => { songs[active].key = k; saveToFirebase(); renderPanel(); };
 window.updateTitle = (v) => {
   songs[active].title = v || `Song ${active+1}`;
   document.getElementById('songTitleDisplay').textContent = songs[active].title;
-  renderTabs();
-  saveToFirebase();
+  renderTabs(); saveToFirebase();
 };
 window.updateSection = (sec, v) => {
   songs[active].sections[sec] = v;
@@ -250,38 +258,32 @@ window.updateSection = (sec, v) => {
 
 function renderTabs() {
   document.getElementById('tabBar').innerHTML = songs.map((s, i) =>
-    `<button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})">${s.title || 'Song '+(i+1)}</button>`
+    `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`
   ).join('');
 }
-
 function renderPanel() {
   document.getElementById('mainPanel').innerHTML =
-    mode === 'zed' ? renderZed() :
-    mode === 'band' ? renderBand() : renderCapo();
+    mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
 }
-
 function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header">
       <input class="song-title-input" value="${s.title}" placeholder="Song title..." oninput="updateTitle(this.value)" />
-      <div class="key-selector">${KEYS.map(k =>
-        `<button class="key-btn ${s.key === k ? 'active' : ''}" onclick="setKey('${k}')">${k}</button>`
-      ).join('')}</div>
+      <div class="key-selector">${KEYS.map(k=>`<button class="key-btn ${s.key===k?'active':''}" onclick="setKey('${k}')">${k}</button>`).join('')}</div>
     </div>
     <div class="divider"></div>
-    <div class="sections">${SECTIONS.map(sec => `
+    <div class="sections">${SECTIONS.map(sec=>`
       <div class="section-row">
         <span class="section-label">${sec}</span>
         <div>
-          <input class="section-input" value="${s.sections[sec] || ''}" placeholder="e.g. 1 5 6 4" oninput="updateSection('${sec}', this.value)" />
-          <div class="chord-preview" id="preview-${sec}">${s.sections[sec] ? numToString(s.sections[sec], s.key) : ''}</div>
+          <input class="section-input" value="${s.sections[sec]||''}" placeholder="e.g. 1 5 6 4" oninput="updateSection('${sec}',this.value)" />
+          <div class="chord-preview" id="preview-${sec}">${s.sections[sec]?numToString(s.sections[sec],s.key):''}</div>
         </div>
       </div>`).join('')}
     </div>
   </div>`;
 }
-
 function renderBand() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
@@ -293,7 +295,7 @@ function renderBand() {
         const pairs = numToChords(s.sections[sec], s.key);
         return `<div class="band-section">
           <div class="band-section-name">${sec}</div>
-          <div class="band-chord-row">${pairs.map(p => `
+          <div class="band-chord-row">${pairs.map(p=>`
             <div class="band-chord-group">
               <span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span>
             </div>`).join('')}
@@ -303,49 +305,36 @@ function renderBand() {
     </div>
   </div>`;
 }
-
 function renderCapo() {
   const s = songs[active];
   const opts = getCapoOptions(s.key);
   const filled = SECTIONS.filter(sec => s.sections[sec]);
-
-  if (!opts.length) {
-    return `<div class="capo-screen"><div class="capo-song-title">${s.title}</div><div class="empty-section" style="margin-top:12px">No capo option within fret 8 for key of ${s.key}.</div></div>`;
-  }
-
-  const cardsHtml = opts.map((opt, oi) => {
-    const fretLabel = opt.fret === 0 ? 'No capo' : `Capo ${ORDINAL[opt.fret]} fret`;
-    const preferred = oi === 0;
-    const sectionsHtml = filled.map(sec => {
-      const pairs = numToChords(s.sections[sec], s.key);
-      const transposed = pairs.map(p => ({ num: p.num, chord: transposeChord(p.chord, opt.fret) }));
-      return `<div class="capo-section-block">
-        <div class="capo-section-name">${sec}</div>
-        <div class="capo-chord-row">${transposed.map(p => `
-          <div class="capo-chord-group">
-            <span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span>
-          </div>`).join('')}
-        </div>
-      </div>`;
-    }).join('');
-
-    return `<div class="capo-card ${preferred ? 'preferred' : ''}">
-      ${preferred ? '<div class="preferred-badge">recommended</div>' : ''}
-      <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes · key of ${s.key}</span></div>
-      ${sectionsHtml || '<div class="empty-section" style="margin-top:8px;font-size:13px">No chords entered yet.</div>'}
-    </div>`;
-  }).join('');
-
+  if (!opts.length) return `<div class="capo-screen"><div class="capo-song-title">${s.title}</div><div class="empty-section" style="margin-top:12px">No capo option within fret 8 for key of ${s.key}.</div></div>`;
   return `<div class="capo-screen">
     <div class="capo-song-title">${s.title}</div>
     <div class="capo-song-key">Song key: <strong>${s.key}</strong></div>
-    <div class="capo-options">${cardsHtml}</div>
+    <div class="capo-options">${opts.map((opt,oi) => {
+      const fretLabel = opt.fret===0 ? 'No capo' : `Capo ${ORDINAL[opt.fret]} fret`;
+      const preferred = oi===0;
+      const sectionsHtml = filled.map(sec => {
+        const transposed = numToChords(s.sections[sec], s.key).map(p=>({num:p.num,chord:transposeChord(p.chord,opt.fret)}));
+        return `<div class="capo-section-block">
+          <div class="capo-section-name">${sec}</div>
+          <div class="capo-chord-row">${transposed.map(p=>`
+            <div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`).join('')}
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="capo-card ${preferred?'preferred':''}">
+        ${preferred?'<div class="preferred-badge">recommended</div>':''}
+        <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes · key of ${s.key}</span></div>
+        ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords entered yet.</div>'}
+      </div>`;
+    }).join('')}</div>
   </div>`;
 }
-
 function render() {
-  renderTabs();
-  renderPanel();
+  renderTabs(); renderPanel();
   document.getElementById('songTitleDisplay').textContent = songs[active].title || `Song ${active+1}`;
 }
 </script>
