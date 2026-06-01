@@ -357,16 +357,12 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
+  // In edit mode always show all 5 tabs. In other modes hide empty ones.
   const songTabs = songs.map((s,i) => {
-    if (i !== active && !songHasContent(s, i)) return '';
+    if (mode !== 'zed' && i !== active && !songHasContent(s, i)) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
   }).join('');
-  // always show at least one tab so user can get back in
-  const allEmpty = songs.every((s,i) => !songHasContent(s,i));
-  const fallback = allEmpty ? songs.map((s,i) =>
-    `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">Song ${i+1}</button>`
-  ).join('') : songTabs;
-  document.getElementById('tabBar').innerHTML = fallback;
+  document.getElementById('tabBar').innerHTML = songTabs;
 }
 
 function renderPanel() {
