@@ -165,7 +165,7 @@
     <!-- FIX 1: removed app-title subheading from top bar -->
     <div class="mode-toggle" id="modeToggle">
       <button class="mode-btn active" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
-      <button class="mode-btn" id="btnedit" onclick="setMode('edit')">Edit</button>
+      <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
     </div>
@@ -300,7 +300,7 @@ function saveToFirebase() {
 
 window.setMode = m => {
   mode = m;
-  ['lineup','edit','band','capo'].forEach(x =>
+  ['lineup','zed','band','capo'].forEach(x =>
     document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
   );
   // FIX 4: always re-render tabs when switching mode, not just the panel
@@ -376,7 +376,7 @@ function renderTabs() {
   tabBar.innerHTML = songs.map((s,i) => {
     // In edit mode: always show all 5 tabs
     // In band/capo: show tabs that have content, or the currently active one
-    const show = mode === 'edit' || songHasContent(s, i) || i === active;
+    const show = mode === 'zed' || songHasContent(s, i) || i === active;
     if (!show) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
   }).join('');
@@ -388,7 +388,7 @@ function renderPanel() {
     return;
   }
   document.getElementById('mainPanel').innerHTML =
-    mode==='edit' ? renderedit() : mode==='band' ? renderBand() : renderCapo();
+    mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
 }
 
 function renderLineup() {
@@ -428,7 +428,7 @@ function renderLineup() {
   </div>`;
 }
 
-function renderedit() {
+function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header">
