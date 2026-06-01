@@ -357,7 +357,10 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
-  // In edit mode always show all 5 tabs. In other modes hide empty ones.
+  if (mode === 'lineup') {
+    document.getElementById('tabBar').innerHTML = '';
+    return;
+  }
   const songTabs = songs.map((s,i) => {
     if (mode !== 'zed' && i !== active && !songHasContent(s, i)) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})">${s.title||'Song '+(i+1)}</button>`;
