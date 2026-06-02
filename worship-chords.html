@@ -831,7 +831,6 @@ function renderZed() {
         <span class="section-label">${sec}</span>
         <div>
           <textarea class="section-input" rows="1" placeholder="${sec==='intro'?'e.g. 1 5 6 4&#10;1 6 4 5':''}"
-            inputmode="numeric"
             onblur="onSectionBlur('${sec}', this.value)"
             oninput="autoGrow(this)">${s.sections[sec]||''}</textarea>
           <div class="chord-preview-wrap" id="preview-${sec}">
