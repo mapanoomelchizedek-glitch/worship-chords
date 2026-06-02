@@ -763,7 +763,7 @@ function renderLineup() {
   const rosterHtml = INSTRUMENTS.map(inst => {
     const val = roster[inst.key] || '';
     const opts = inst.members.map(m =>
-      `<option value="${m}" ${val===m?'selected':''}>${m||'— unassigned'}</option>`
+      `<option value="${m}" ${val===m?'selected':''}>${m||'— '}</option>`
     ).join('');
     return `<div class="roster-row">
       <span class="roster-instrument">${inst.label}</span>
