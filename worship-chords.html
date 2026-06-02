@@ -181,6 +181,59 @@
   body.dark .date-pill:hover { border-color: #555; }
   body.dark .date-pill-text { color: #f0f0f0; }
   body.dark .date-pill-week { color: #555; }
+
+  /* ── MOBILE ─────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .app { padding: 10px; }
+
+    /* status bar: tighter */
+    .status-bar { padding: 6px 12px; }
+
+    /* top bar: stack date above mode toggle on very small screens */
+    .top-bar { gap: 6px; }
+    .date-pill { padding: 5px 8px; }
+    .date-pill-text { font-size: 12px; }
+    .date-pill-week { font-size: 10px; }
+
+    /* mode toggle: fill width, bigger tap targets */
+    .mode-toggle { flex: 1; }
+    .mode-btn { flex: 1; padding: 9px 6px; font-size: 12px; }
+
+    /* tabs: scrollable row instead of wrapping */
+    .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0 2px; }
+    .tab-btn { flex-shrink: 0; padding: 7px 12px; font-size: 12px; }
+
+    /* panels: less padding */
+    .song-panel, .band-screen, .capo-screen, .lineup-screen { padding: 12px; border-radius: 0 10px 10px 10px; }
+
+    /* EDIT: stack label above input instead of side-by-side */
+    .section-row { grid-template-columns: 1fr; gap: 3px; }
+    .section-label { padding-top: 0; font-size: 11px; }
+    .panel-header { gap: 8px; }
+    .song-title-input { font-size: 15px; }
+
+    /* key buttons: slightly bigger tap area */
+    .key-btn { padding: 6px 10px; font-size: 12px; }
+
+    /* BAND: slightly smaller chords so they don't clip */
+    .band-chord { font-size: 22px; }
+    .band-song-title { font-size: 17px; }
+
+    /* CAPO */
+    .capo-song-title { font-size: 17px; }
+    .capo-fret { font-size: 19px; }
+    .capo-chord { font-size: 19px; }
+
+    /* LINEUP: scale down the big text a touch for phones */
+    .lineup-num { font-size: 28px; width: 36px; }
+    .lineup-song-name { font-size: 20px; }
+    .lineup-song-key { font-size: 15px; }
+
+    /* thumbnail stays, but tighter */
+    .lineup-thumb { width: 90px; }
+    .lineup-thumb-video { width: 90px; height: 51px; }
+    .lineup-embed iframe { height: 200px; }
+  }
 </style>
 </head>
 <body>
