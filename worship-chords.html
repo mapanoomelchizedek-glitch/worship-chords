@@ -97,6 +97,21 @@
   .chord-preview-linenum { font-size: 10px; color: #d1d5db; min-width: 10px; }
   .chord-preview-chords { font-size: 13px; color: #1d4ed8; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.03em; }
 
+  /* NOTES */
+  .notes-input { font-size: 13px; padding: 7px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #9ca3af; width: 100%; outline: none; font-family: inherit; resize: none; overflow: hidden; min-height: 34px; line-height: 1.6; margin-top: 4px; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .notes-input:focus { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
+  .notes-input.has-content { border: 1px solid #fde68a; background: #fffbeb; color: #92400e; }
+  .notes-input::placeholder { color: #9ca3af; opacity: 0.8; }
+  .notes-label { font-size: 11px; font-weight: 600; color: #d97706; letter-spacing: 0.05em; margin-top: 14px; margin-bottom: 3px; display: block; }
+  body.dark .notes-input { background: #222; border-color: #2a2a2a; color: #555; }
+  body.dark .notes-input:focus { background: #3a2800; border-color: #f59e0b; color: #fcd34d; }
+  body.dark .notes-input.has-content { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
+  body.dark .notes-input::placeholder { color: #555; opacity: 0.8; }
+  body.dark .notes-label { color: #f59e0b; }
+  /* notes in lineup */
+  .lineup-notes { font-size: 13px; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 5px 9px; margin-top: 6px; line-height: 1.5; white-space: pre-wrap; }
+  body.dark .lineup-notes { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
+
   /* BAND */
   .band-screen { background: #fff; border: 1px solid #d1d5db; border-radius: 0 12px 12px 12px; padding: 20px; }
   .band-song-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
@@ -167,6 +182,40 @@
   .lineup-embed.open { display: block; }
   .lineup-embed iframe { width: 100%; height: 180px; border: none; display: block; }
   .lineup-empty { color: #9ca3af; font-size: 13px; font-style: italic; }
+
+  /* LEADER SELECTOR */
+  .lineup-leader-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .lineup-leader-label { font-size: 11px; color: #9ca3af; white-space: nowrap; }
+  .leader-select { font-size: 12px; padding: 4px 8px; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb; color: #111; outline: none; cursor: pointer; }
+  .leader-select:focus { border-color: #6b7280; }
+  .leader-select.picked { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; font-weight: 500; }
+  body.dark .leader-select { background: #222; border-color: #333; color: #f0f0f0; }
+  body.dark .leader-select.picked { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
+
+  /* NOTES IN LINEUP */
+  .lineup-notes-input { width: 100%; font-size: 12px; padding: 5px 9px; border: 1px solid #e5e7eb; border-radius: 7px; background: #f9fafb; color: #9ca3af; outline: none; font-family: inherit; resize: none; overflow: hidden; min-height: 30px; line-height: 1.5; margin-top: 6px; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .lineup-notes-input:focus { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
+  .lineup-notes-input.has-content { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+  .lineup-notes-input::placeholder { color: #9ca3af; opacity: 0.8; }
+  body.dark .lineup-notes-input { background: #222; border-color: #2a2a2a; color: #555; }
+  body.dark .lineup-notes-input:focus { background: #3a2800; border-color: #f59e0b; color: #fcd34d; }
+  body.dark .lineup-notes-input.has-content { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
+  body.dark .lineup-notes-input::placeholder { color: #555; opacity: 0.8; }
+
+  /* BAND ROSTER SECTION */
+  .band-roster { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; margin-top: 16px; }
+  body.dark .band-roster { background: #1a1a1a; border-color: #2a2a2a; }
+  .band-roster-title { font-size: 12px; font-weight: 700; color: #6b7280; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+  body.dark .band-roster-title { color: #555; }
+  .roster-grid { display: flex; flex-direction: column; gap: 8px; }
+  .roster-row { display: flex; align-items: center; gap: 10px; }
+  .roster-instrument { font-size: 12px; color: #6b7280; width: 72px; flex-shrink: 0; }
+  body.dark .roster-instrument { color: #555; }
+  .roster-select { flex: 1; font-size: 13px; padding: 6px 10px; border-radius: 7px; outline: none; cursor: pointer; font-weight: 500; border: 1.5px solid #fca5a5; background: #fff5f5; color: #ef4444; transition: all 0.15s; }
+  .roster-select.assigned { border-color: #bfdbfe; background: #eff6ff; color: #1d4ed8; }
+  .roster-select:focus { outline: none; }
+  body.dark .roster-select { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
+  body.dark .roster-select.assigned { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
 
   .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
 
@@ -306,13 +355,20 @@ const SCALE = {
 };
 
 // Returns array of lines, each line is array of {num, chord}
+// Supports suffix notation: 17 = chord 1 with 7th (e.g. C7), 27 = Dm7, etc.
+function parseToken(n, scale) {
+  const m = n.match(/^([1-7])(.*)$/);
+  if (!m) return { num: n, chord: n };
+  const base = scale[parseInt(m[1]) - 1];
+  const suffix = m[2]; // e.g. '7', 'maj7', 'sus', etc.
+  // insert suffix before any existing modifier like 'm', 'dim'
+  // base could be 'Dm', 'Em', 'Bdim' — append suffix after full base
+  return { num: n, chord: base + suffix };
+}
 function numToLines(input, key) {
   const scale = SCALE[key] || SCALE['C'];
   return (input || '').split('\n').map(l => l.trim()).filter(l => l).map(line =>
-    line.split(/\s+/).map(n => {
-      const i = parseInt(n);
-      return { num: n, chord: (!isNaN(i) && i >= 1 && i <= 7) ? scale[i-1] : n };
-    })
+    line.split(/\s+/).map(n => parseToken(n, scale))
   );
 }
 function numToChords(input, key) { return numToLines(input, key).flat(); }
@@ -342,11 +398,24 @@ function getYoutubeId(url) {
   return m ? m[1] : null;
 }
 
+const LEADERS = ['','She','Xymon','Erica','JM','Patty','Francis','Women'];
+const INSTRUMENTS = [
+  { key:'drums',   label:'Drums',    members:['','Ochin','JC','Jerome'] },
+  { key:'bass',    label:'Bass',     members:['','Ochin','Xymon'] },
+  { key:'eguitar', label:'E Guitar', members:['','Ochin','JM'] },
+  { key:'aguitar', label:'A Guitar', members:['','Frankie','Ochin','JM'] },
+  { key:'piano',   label:'Piano',    members:['','Zed','Vergel'] },
+];
+
+const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
+
 const defaultSongs = Array.from({length:5},(_,i)=>({
   title:`Song ${i+1}`, keys:['C'],
   sections:{intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''},
-  youtube:''
+  youtube:'', notes:'', leader:''
 }));
+
+let roster = defaultRoster();
 
 let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
@@ -422,6 +491,12 @@ onValue(serviceDateRef, snap => {
   renderDatePill();
 });
 
+const rosterRef = ref(db, 'roster');
+onValue(rosterRef, snap => {
+  const val = snap.val();
+  if (val) roster = { ...defaultRoster(), ...val };
+});
+
 const songsRef = ref(db, 'songs');
 onValue(songsRef, snap => {
   document.getElementById('statusDot').className = 'status-dot connected';
@@ -432,9 +507,10 @@ onValue(songsRef, snap => {
     songs = arr.map(s => ({
       ...s,
       keys: s.keys ? s.keys : (s.key ? [s.key] : ['C']),
-      youtube: s.youtube || ''
+      youtube: s.youtube || '',
+      notes: s.notes || '',
+      leader: s.leader || ''
     }));
-    // Make sure active index is still valid
     if (active >= songs.length) active = 0;
   }
   render();
@@ -474,7 +550,7 @@ window.setTab = i => {
 
 window.resetSong = i => {
   if (!confirm('Reset this song? All chords and links will be cleared.')) return;
-  songs[i] = { title: `Song ${i+1}`, keys: ['C'], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '' };
+  songs[i] = { title: `Song ${i+1}`, keys: ['C'], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '', notes: '', leader: '' };
   saveToFirebase();
   render();
 };
@@ -522,6 +598,35 @@ function buildPreviewHtml(v, keys) {
   }).join('');
 }
 
+window.onLeaderChange = (i, v) => {
+  songs[i].leader = v;
+  saveToFirebase();
+  // re-style the select
+  const sel = document.getElementById('leader-' + i);
+  if (sel) sel.className = 'leader-select' + (v ? ' picked' : '');
+};
+
+window.onLineupNotesBlur = (i, el) => {
+  songs[i].notes = el.value;
+  saveToFirebase();
+};
+
+window.onRosterChange = (key, v) => {
+  roster[key] = v;
+  set(rosterRef, roster);
+  const sel = document.getElementById('roster-' + key);
+  if (sel) sel.className = 'roster-select' + (v ? ' assigned' : '');
+};
+
+window.updateNotesStyle = el => {
+  el.classList.toggle('has-content', el.value.trim().length > 0);
+};
+
+window.onNotesBlur = v => {
+  songs[active].notes = v;
+  saveToFirebase();
+};
+
 window.onYoutubeBlur = (i, v) => {
   songs[i].youtube = v;
   saveToFirebase();
@@ -562,7 +667,7 @@ function renderPanel() {
     mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
   if (mode === 'zed') {
     setTimeout(() => {
-      document.querySelectorAll('.section-input').forEach(el => {
+      document.querySelectorAll('.section-input, .notes-input').forEach(el => {
         el.style.height = 'auto';
         el.style.height = el.scrollHeight + 'px';
       });
@@ -579,14 +684,28 @@ function renderLineup() {
 
     if (!hasTitle && !hasAnySections && !s.youtube) return '';
 
+    const leaderOpts = LEADERS.map(l =>
+      `<option value="${l}" ${s.leader===l?'selected':''}>${l||'—'}</option>`
+    ).join('');
+
     return `<div class="lineup-song-row">
       <span class="lineup-num">${i+1}</span>
       <div class="lineup-card">
         <div class="lineup-info">
           <div class="lineup-song-name">${s.title||'Song '+(i+1)}</div>
           <div class="lineup-song-key">Key of ${keyLabel}</div>
+          <div class="lineup-leader-row">
+            <span class="lineup-leader-label">Worship Lead:</span>
+            <select id="leader-${i}" class="leader-select${s.leader?' picked':''}"
+              onchange="onLeaderChange(${i}, this.value)">
+              ${leaderOpts}
+            </select>
+          </div>
+          <textarea class="lineup-notes-input${s.notes?' has-content':''}" rows="1" placeholder="Notes.."
+            onblur="onLineupNotesBlur(${i}, this)"
+            oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
           <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
-            onblur="onYoutubeBlur(${i}, this.value)" />
+            onblur="onYoutubeBlur(${i}, this.value)" style="margin-top:6px;" />
           ${ytId ? `<div class="lineup-embed" id="embed-${i}">
             <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe>
           </div>` : ''}
@@ -606,8 +725,27 @@ function renderLineup() {
     return hasTitle || SECTIONS.some(sec=>s.sections[sec]) || s.youtube;
   });
 
+  // Band roster block
+  const rosterHtml = INSTRUMENTS.map(inst => {
+    const val = roster[inst.key] || '';
+    const opts = inst.members.map(m =>
+      `<option value="${m}" ${val===m?'selected':''}>${m||'— unassigned'}</option>`
+    ).join('');
+    return `<div class="roster-row">
+      <span class="roster-instrument">${inst.label}</span>
+      <select id="roster-${inst.key}" class="roster-select${val?' assigned':''}"
+        onchange="onRosterChange('${inst.key}', this.value)">
+        ${opts}
+      </select>
+    </div>`;
+  }).join('');
+
   return `<div class="lineup-screen">
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
+  </div>
+  <div class="band-roster">
+    <div class="band-roster-title">Band this Sunday</div>
+    <div class="roster-grid">${rosterHtml}</div>
   </div>`;
 }
 
@@ -629,7 +767,7 @@ function renderZed() {
       <div class="section-row">
         <span class="section-label">${sec}</span>
         <div>
-          <textarea class="section-input" rows="1" placeholder="e.g. 1 5 6 4&#10;1 6 4 5"
+          <textarea class="section-input" rows="1" placeholder="${sec==='intro'?'e.g. 1 5 6 4&#10;1 6 4 5':''}"
             onblur="onSectionBlur('${sec}', this.value)"
             oninput="autoGrow(this)">${s.sections[sec]||''}</textarea>
           <div class="chord-preview-wrap" id="preview-${sec}">
@@ -662,17 +800,30 @@ function renderBand() {
       <div class="band-sections">${sections || '<div class="empty-section">No chords yet.</div>'}</div>
     </div>`;
   }).join('');
+  const bandMeta = [
+    s.leader ? `<span style="font-size:12px;color:#6b7280;">Leader: <strong>${s.leader}</strong></span>` : '',
+    s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
+  ].filter(Boolean).join('');
   return `<div class="band-screen">
     <div class="band-song-title">${s.title}</div>
+    ${bandMeta}
+    <div style="margin-top:${bandMeta?'12px':'0'}">
     ${filled.length || s.keys.length ? keyBlocks : '<div class="empty-section">No chords entered yet.</div>'}
+    </div>
   </div>`;
 }
 
 function renderCapo() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
+  const capoMeta = [
+    s.leader ? `<span style="font-size:12px;color:#6b7280;">Leader: <strong>${s.leader}</strong></span>` : '',
+    s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
+  ].filter(Boolean).join('');
   return `<div class="capo-screen">
     <div class="capo-song-title">${s.title}</div>
+    ${capoMeta}
+    <div style="margin-top:${capoMeta?'12px':'0'}">
     <div class="capo-options">${s.keys.map((songKey, ki) => {
       const opts = getCapoOptions(songKey);
       if (!opts.length) return `<div class="capo-key-header">Key of ${songKey}</div><div class="empty-section">No capo within fret 8.</div>`;
@@ -702,6 +853,7 @@ function renderCapo() {
         ${ki<s.keys.length-1?'<div class="capo-key-divider"></div>':''}
       </div>`;
     }).join('')}</div>
+    </div>
   </div>`;
 }
 
@@ -726,9 +878,8 @@ function render() {
   renderTabs();
   renderPanel();
   renderDatePill();
-  // auto-grow all textareas after render
   setTimeout(() => {
-    document.querySelectorAll('.section-input').forEach(el => {
+    document.querySelectorAll('.section-input, .lineup-notes-input').forEach(el => {
       el.style.height = 'auto';
       el.style.height = el.scrollHeight + 'px';
     });
