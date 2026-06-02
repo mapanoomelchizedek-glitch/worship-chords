@@ -532,7 +532,7 @@ onValue(songsRef, snap => {
     const arr = Array.isArray(data) ? data : Object.values(data);
     songs = arr.map(s => ({
       ...s,
-      keys: s.keys ? s.keys : (s.key ? [s.key] : ['C']),
+      keys: s.keys ? s.keys : (s.key ? [s.key] : []),
       youtube: s.youtube || '',
       notes: s.notes || '',
       leader: s.leader || ''
