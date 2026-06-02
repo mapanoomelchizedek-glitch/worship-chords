@@ -211,14 +211,17 @@
   body.dark .overview-btn.active { border-color: #2563eb; color: #60a5fa; background: #1e3a5f; }
   /* overview mode: compact rows */
   .lineup-screen.overview .lineup-leader-row,
-  .lineup-screen.overview .lineup-notes-input,
   .lineup-screen.overview .lineup-yt-input,
   .lineup-screen.overview .lineup-embed,
   .lineup-screen.overview .lineup-thumb { display: none !important; }
+  .lineup-screen.overview .lineup-notes-input { display: none !important; }
   .lineup-screen.overview .lineup-song-name { font-size: 22px; margin-bottom: 0; }
-  .lineup-screen.overview .lineup-song-key { font-size: 16px; margin-bottom: 0; }
+  .lineup-screen.overview .lineup-song-key { font-size: 16px; margin-bottom: 2px; }
   .lineup-screen.overview .lineup-song-row { padding: 10px 0; }
   .lineup-screen.overview .lineup-num { font-size: 28px; width: 36px; }
+  .overview-notes { display: none; font-size: 12px; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 4px 9px; margin-top: 4px; line-height: 1.5; white-space: pre-wrap; }
+  .lineup-screen.overview .overview-notes.has-content { display: block; }
+  body.dark .overview-notes { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
   .overview-date { font-size: 13px; font-weight: 600; color: #111; }
   body.dark .overview-date { color: #f0f0f0; }
 
@@ -632,6 +635,12 @@ window.onLeaderChange = (i, v) => {
 window.onLineupNotesBlur = (i, el) => {
   songs[i].notes = el.value;
   saveToFirebase();
+  // sync the overview-notes read-only display
+  const overviewNotes = el.parentElement.querySelector('.overview-notes');
+  if (overviewNotes) {
+    overviewNotes.textContent = el.value;
+    overviewNotes.classList.toggle('has-content', el.value.trim().length > 0);
+  }
 };
 
 window.onRosterChange = (key, v) => {
@@ -738,6 +747,7 @@ function renderLineup() {
           <textarea class="lineup-notes-input${s.notes?' has-content':''}" rows="1" placeholder="Notes.."
             onblur="onLineupNotesBlur(${i}, this)"
             oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
+          <div class="overview-notes${s.notes?' has-content':''}">${s.notes?s.notes.replace(/</g,'&lt;'):''}</div>
           <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
             onblur="onYoutubeBlur(${i}, this.value)" style="margin-top:6px;" />
           ${ytId ? `<div class="lineup-embed" id="embed-${i}">
@@ -763,7 +773,7 @@ function renderLineup() {
   const rosterHtml = INSTRUMENTS.map(inst => {
     const val = roster[inst.key] || '';
     const opts = inst.members.map(m =>
-      `<option value="${m}" ${val===m?'selected':''}>${m||'— '}</option>`
+      `<option value="${m}" ${val===m?'selected':''}>${m||'— unassigned'}</option>`
     ).join('');
     return `<div class="roster-row">
       <span class="roster-instrument">${inst.label}</span>
