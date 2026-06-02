@@ -82,6 +82,7 @@
   .song-title-input { font-size: 16px; font-weight: 600; border: none; background: transparent; color: #111; outline: none; flex: 1; min-width: 120px; }
   .key-selector { display: flex; gap: 4px; flex-wrap: wrap; }
   .key-btn { padding: 4px 9px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #6b7280; cursor: pointer; }
+  .key-btn.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 500; }
   .key-btn.dash { color: #d1d5db; border-color: #e5e7eb; }
   .key-btn.dash.active { background: #f3f4f6; color: #9ca3af; border-color: #d1d5db; font-weight: 600; }
   body.dark .key-btn.dash { color: #444; border-color: #333; }
@@ -817,7 +818,7 @@ function renderZed() {
         onblur="onTitleBlur(this.value)" />
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
         <div class="key-selector">${KEYS.map(k=>
-          `<button class="key-btn ${k==='—'?'dash ':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
+          `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
         ).join('')}</div>
         <button class="reset-btn" onclick="resetSong(${active})" title="Reset this song">↺ reset</button>
       </div>
