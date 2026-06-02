@@ -433,7 +433,7 @@ const INSTRUMENTS = [
 const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
 
 const defaultSongs = Array.from({length:5},(_,i)=>({
-  title:`Song ${i+1}`, keys:['C'],
+  title:`Song ${i+1}`, keys:[],
   sections:{intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''},
   youtube:'', notes:'', leader:''
 }));
@@ -576,7 +576,7 @@ window.setTab = i => {
 
 window.resetSong = i => {
   if (!confirm('Reset this song? All chords and links will be cleared.')) return;
-  songs[i] = { title: `Song ${i+1}`, keys: ['C'], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '', notes: '', leader: '' };
+  songs[i] = { title: `Song ${i+1}`, keys: [], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '', notes: '', leader: '' };
   saveToFirebase();
   render();
 };
@@ -585,11 +585,7 @@ window.toggleKey = k => {
   const s = songs[active];
   const idx = s.keys.indexOf(k);
   if (idx === -1) { s.keys.push(k); s.keys.sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b)); }
-  else {
-    // FIX 5: prevent removing last key so there's always at least one
-    if (s.keys.length === 1) return;
-    s.keys.splice(idx,1);
-  }
+  else { s.keys.splice(idx,1); }
   saveToFirebase();
   renderPanel();
 };
@@ -723,7 +719,7 @@ function renderLineup() {
     const hasTitle = s.title && s.title !== `Song ${i+1}`;
     const hasAnySections = SECTIONS.some(sec => s.sections[sec]);
     const ytId = getYoutubeId(s.youtube);
-    const keyLabel = s.keys.join(' / ');
+    const keyLabel = s.keys.length ? s.keys.join(' / ') : null;
 
     if (!hasTitle && !hasAnySections && !s.youtube) return '';
 
@@ -736,7 +732,7 @@ function renderLineup() {
       <div class="lineup-card">
         <div class="lineup-info">
           <div class="lineup-song-name">${s.title||'Song '+(i+1)}</div>
-          <div class="lineup-song-key">Key of ${keyLabel}</div>
+          <div class="lineup-song-key" style="${keyLabel?'':'color:#d1d5db;font-style:italic;'}">${keyLabel?'Key of '+keyLabel:'No key yet'}</div>
           <div class="lineup-leader-row">
             <span class="lineup-leader-label">Worship Lead:</span>
             <select id="leader-${i}" class="leader-select${s.leader?' picked':''}"
@@ -773,7 +769,7 @@ function renderLineup() {
   const rosterHtml = INSTRUMENTS.map(inst => {
     const val = roster[inst.key] || '';
     const opts = inst.members.map(m =>
-      `<option value="${m}" ${val===m?'selected':''}>${m||'— unassigned'}</option>`
+      `<option value="${m}" ${val===m?'selected':''}>${m||'— '}</option>`
     ).join('');
     return `<div class="roster-row">
       <span class="roster-instrument">${inst.label}</span>
@@ -830,7 +826,9 @@ function renderZed() {
 function renderBand() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
-  const keyBlocks = s.keys.map((k, ki) => {
+  const keyBlocks = s.keys.length === 0
+    ? '<div class="empty-section" style="color:#d1d5db;font-style:italic;">No key yet.</div>'
+    : s.keys.map((k, ki) => {
     const sections = filled.map(sec => {
       const lines = numToLines(s.sections[sec], k);
       const linesHtml = lines.map(line =>
@@ -856,7 +854,7 @@ function renderBand() {
     <div class="band-song-title">${s.title}</div>
     ${bandMeta}
     <div style="margin-top:${bandMeta?'12px':'0'}">
-    ${filled.length || s.keys.length ? keyBlocks : '<div class="empty-section">No chords entered yet.</div>'}
+    ${keyBlocks}
     </div>
   </div>`;
 }
@@ -868,39 +866,42 @@ function renderCapo() {
     s.leader ? `<span style="font-size:12px;color:#6b7280;">Leader: <strong>${s.leader}</strong></span>` : '',
     s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
   ].filter(Boolean).join('');
+  const capoOptionsHtml = s.keys.length === 0
+    ? '<div class="empty-section" style="color:#d1d5db;font-style:italic;">No key yet.</div>'
+    : s.keys.map((songKey, ki) => {
+        const opts = getCapoOptions(songKey);
+        if (!opts.length) return `<div class="capo-key-header">Key of ${songKey}</div><div class="empty-section">No capo within fret 8.</div>`;
+        const cards = opts.map((opt,oi) => {
+          const fretLabel = opt.fret===0?'No capo':`Capo ${ORDINAL[opt.fret]} fret`;
+          const sectionsHtml = filled.map(sec => {
+            const lines = numToLines(s.sections[sec], songKey).map(line =>
+              line.map(p => ({num: p.num, chord: transposeChord(p.chord, opt.fret)}))
+            );
+            const linesHtml = lines.map(line =>
+              `<div class="capo-chord-line">${line.map(p=>
+                `<div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`
+              ).join('')}</div>`
+            ).join('');
+            return `<div class="capo-section-block">
+              <div class="capo-section-name">${sec}</div>
+              ${linesHtml}
+            </div>`;
+          }).join('');
+          return `<div class="capo-card ${oi===0?'preferred':''}">
+            <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes</span></div>
+            ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords yet.</div>'}
+          </div>`;
+        }).join('');
+        return `<div>
+          <div class="capo-key-header">Key of ${songKey}</div>${cards}
+          ${ki<s.keys.length-1?'<div class="capo-key-divider"></div>':''}
+        </div>`;
+      }).join('');
   return `<div class="capo-screen">
     <div class="capo-song-title">${s.title}</div>
     ${capoMeta}
     <div style="margin-top:${capoMeta?'12px':'0'}">
-    <div class="capo-options">${s.keys.map((songKey, ki) => {
-      const opts = getCapoOptions(songKey);
-      if (!opts.length) return `<div class="capo-key-header">Key of ${songKey}</div><div class="empty-section">No capo within fret 8.</div>`;
-      const cards = opts.map((opt,oi) => {
-        const fretLabel = opt.fret===0?'No capo':`Capo ${ORDINAL[opt.fret]} fret`;
-        const sectionsHtml = filled.map(sec => {
-          const lines = numToLines(s.sections[sec], songKey).map(line =>
-            line.map(p => ({num: p.num, chord: transposeChord(p.chord, opt.fret)}))
-          );
-          const linesHtml = lines.map(line =>
-            `<div class="capo-chord-line">${line.map(p=>
-              `<div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`
-            ).join('')}</div>`
-          ).join('');
-          return `<div class="capo-section-block">
-            <div class="capo-section-name">${sec}</div>
-            ${linesHtml}
-          </div>`;
-        }).join('');
-        return `<div class="capo-card ${oi===0?'preferred':''}">
-          <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes</span></div>
-          ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords yet.</div>'}
-        </div>`;
-      }).join('');
-      return `<div>
-        <div class="capo-key-header">Key of ${songKey}</div>${cards}
-        ${ki<s.keys.length-1?'<div class="capo-key-divider"></div>':''}
-      </div>`;
-    }).join('')}</div>
+    <div class="capo-options">${capoOptionsHtml}</div>
     </div>
   </div>`;
 }
