@@ -202,6 +202,26 @@
   body.dark .lineup-notes-input.has-content { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
   body.dark .lineup-notes-input::placeholder { color: #555; opacity: 0.8; }
 
+  /* OVERVIEW TOGGLE */
+  .lineup-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .overview-btn { font-size: 18px; background: none; border: 1px solid #e5e7eb; border-radius: 8px; padding: 4px 10px; cursor: pointer; color: #9ca3af; line-height: 1; transition: all 0.15s; }
+  .overview-btn:hover { border-color: #9ca3af; color: #6b7280; }
+  .overview-btn.active { border-color: #1d4ed8; color: #1d4ed8; background: #eff6ff; }
+  body.dark .overview-btn { border-color: #333; color: #555; background: none; }
+  body.dark .overview-btn.active { border-color: #2563eb; color: #60a5fa; background: #1e3a5f; }
+  /* overview mode: compact rows */
+  .lineup-screen.overview .lineup-leader-row,
+  .lineup-screen.overview .lineup-notes-input,
+  .lineup-screen.overview .lineup-yt-input,
+  .lineup-screen.overview .lineup-embed,
+  .lineup-screen.overview .lineup-thumb { display: none !important; }
+  .lineup-screen.overview .lineup-song-name { font-size: 22px; margin-bottom: 0; }
+  .lineup-screen.overview .lineup-song-key { font-size: 16px; margin-bottom: 0; }
+  .lineup-screen.overview .lineup-song-row { padding: 10px 0; }
+  .lineup-screen.overview .lineup-num { font-size: 28px; width: 36px; }
+  .overview-date { font-size: 13px; font-weight: 600; color: #111; }
+  body.dark .overview-date { color: #f0f0f0; }
+
   /* BAND ROSTER SECTION */
   .band-roster { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; margin-top: 16px; }
   body.dark .band-roster { background: #1a1a1a; border-color: #2a2a2a; }
@@ -421,6 +441,7 @@ let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
 let mode = 'lineup';
 let saveTimeout = null;
+let overviewMode = false;
 
 // DATE — default to next upcoming Sunday
 function nextSunday() {
@@ -453,9 +474,11 @@ function formatServiceDate(dateStr) {
 function renderDatePill() {
   const textEl = document.getElementById('datePillText');
   const weekEl = document.getElementById('datePillWeek');
+  const overviewLabel = document.getElementById('overviewDateLabel');
   if (!textEl || !weekEl) return;
   textEl.textContent = formatServiceDate(serviceDate);
   weekEl.textContent = sundayWeekOfMonth(serviceDate) + ' Sunday';
+  if (overviewLabel) overviewLabel.textContent = formatServiceDate(serviceDate);
 }
 
 window.openDatePicker = () => {
@@ -618,6 +641,17 @@ window.onRosterChange = (key, v) => {
   if (sel) sel.className = 'roster-select' + (v ? ' assigned' : '');
 };
 
+window.toggleOverview = () => {
+  overviewMode = !overviewMode;
+  const screen = document.querySelector('.lineup-screen');
+  const btn = document.getElementById('overviewBtn');
+  if (screen) screen.classList.toggle('overview', overviewMode);
+  if (btn) btn.classList.toggle('active', overviewMode);
+  // also hide/show band roster
+  const roster = document.querySelector('.band-roster');
+  if (roster) roster.style.display = overviewMode ? 'none' : '';
+};
+
 window.updateNotesStyle = el => {
   el.classList.toggle('has-content', el.value.trim().length > 0);
 };
@@ -740,10 +774,14 @@ function renderLineup() {
     </div>`;
   }).join('');
 
-  return `<div class="lineup-screen">
+  return `<div class="lineup-screen${overviewMode?' overview':''}">
+    <div class="lineup-header">
+      <span class="overview-date" id="overviewDateLabel"></span>
+      <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
+    </div>
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
   </div>
-  <div class="band-roster">
+  <div class="band-roster"${overviewMode?' style="display:none"':''}>
     <div class="band-roster-title">Band this Sunday</div>
     <div class="roster-grid">${rosterHtml}</div>
   </div>`;
