@@ -1139,7 +1139,7 @@ function renderCapo() {
               ${linesHtml}
             </div>`;
           }).join('');
-          return `<div class="capo-card ${oi===0?'preferred':''}">
+          return `<div class="capo-card">
             <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes</span></div>
             ${sectionsHtml||'<div class="empty-section" style="margin-top:8px;font-size:13px">No chords yet.</div>'}
           </div>`;
