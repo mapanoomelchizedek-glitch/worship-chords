@@ -456,6 +456,26 @@ body.dark .copy-lineup-btn {
   color: #60a5fa;
 }
 
+@media (max-width: 600px) {
+  .edit-key-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+
+  .edit-key-row .key-selector {
+    display: contents;
+  }
+
+  .edit-key-row .key-btn,
+  .edit-key-row .reset-btn {
+    width: 100%;
+    padding: 7px 0;
+    text-align: center;
+    font-size: 11px;
+  }
+}
 
 </style>
 </head>
@@ -510,7 +530,7 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
-const KEYS = ['—','C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const KEYS = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','—'];
 const SECTIONS = ['intro','verse','pre-chorus','chorus','chorus 2','bridge','bridge 2','instrumental'];
 const ORDINAL = ['open','1st','2nd','3rd','4th','5th','6th','7th','8th'];
 
