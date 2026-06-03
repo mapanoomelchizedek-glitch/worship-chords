@@ -580,9 +580,9 @@ window.setTab = i => {
   renderPanel();
 };
 
-window.resetSong = i => {
-  if (!confirm('Reset this song? All chords and links will be cleared.')) return;
-  songs[i] = { title: `Song ${i+1}`, keys: ['—'], sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, youtube: '', notes: '', leader: '' };
+window.clearChords = i => {
+  if (!confirm('Clear all chord sections?')) return;
+  songs[i] = {sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, notes: '',};
   saveToFirebase();
   render();
 };
@@ -822,7 +822,7 @@ function renderZed() {
         <div class="key-selector">${KEYS.map(k=>
           `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
         ).join('')}</div>
-        <button class="reset-btn" onclick="resetSong(${active})" title="Reset this song">↺ reset</button>
+        <button class="reset-btn" onclick="clearChords(${active})" title="Reset this song">clear</button>
       </div>
     </div>
     <div class="divider"></div>
