@@ -52,6 +52,7 @@
   body.dark .lineup-thumb-expand:hover { color: #60a5fa; }
 
   .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e5e5e5; font-size: 12px; color: #888; }
+  .status-date { position: absolute; left: 50%; transform: translateX(-50%); }
   .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; }
   .status-dot.connected { background: #22c55e; }
   .status-dot.syncing { background: #f59e0b; }
@@ -276,15 +277,15 @@
     justify-content: center;
     text-align: center;
     width: auto;
-    padding: 5px 10px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #fff;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
     user-select: none;
   }
   .date-pill-text { font-size: 13px; font-weight: 700; color: #111; line-height: 1.2; text-align: center; }
   .date-pill-week { font-size: 10px; text-align: center; }
-  body.dark .date-pill { background: #1a1a1a; border-color: #333; }
+  body.dark .date-pill { background: transparent; border-color: transparent; }
   body.dark .date-pill-text { color: #f0f0f0; }
   body.dark .date-pill-week { color: #555; }
 
@@ -311,7 +312,7 @@
   }
 
   .date-pill {
-    padding: 5px 10px;
+    padding: 0;
     justify-content: center;
     text-align: center;
   }
@@ -551,6 +552,26 @@ body.dark .copy-lineup-btn {
   padding: 8px 14px;
 }
 
+
+
+@media (max-width: 600px) {
+  .status-bar {
+    position: relative;
+  }
+
+  .status-date {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 58%;
+  }
+
+  .status-date .date-pill-text {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}
+
+
 .lineup-screen.overview ~ .lineup-reset-wrap {
   display: none !important;
 }
@@ -561,17 +582,19 @@ body.dark .copy-lineup-btn {
 
 <div class="status-bar">
   <button class="rvcm-btn" onclick="toggleDark()">RVCM</button>
+
+  <div class="date-pill status-date" id="datePill" title="Automatically shows upcoming Sunday">
+    <div>
+      <div class="date-pill-text" id="datePillText">Sunday</div>
+      <div class="date-pill-week" id="datePillWeek"></div>
+    </div>
+  </div>
+
   <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
 </div>
 
 <div class="app">
   <div class="top-bar">
-<div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
-  <div>
-    <div class="date-pill-text" id="datePillText">Sunday</div>
-    <div class="date-pill-week" id="datePillWeek"></div>
-  </div>
-</div>
     <div class="mode-toggle" id="modeToggle">
       <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
       <button class="mode-btn active" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
