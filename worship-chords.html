@@ -274,14 +274,11 @@
   .lineup-screen.overview .lineup-service-time { display: none; }
 
   /* DATE PICKER */
-  .date-pill { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; padding: 5px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; position: relative; }
-  .date-pill:hover { border-color: #9ca3af; }
+  .date-pill { display: flex; align-items: center; gap: 6px; cursor: default; user-select: none; padding: 5px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; position: relative; }
   .date-pill-text { font-size: 13px; font-weight: 500; color: #111; line-height: 1.2; }
   .date-pill-week { font-size: 11px; color: #9ca3af; font-weight: 400; }
   .date-pill-icon { font-size: 14px; color: #9ca3af; }
-  .date-hidden-input { position: absolute; opacity: 0; width: 1px; height: 1px; top: 0; left: 0; pointer-events: none; }
   body.dark .date-pill { background: #1a1a1a; border-color: #333; }
-  body.dark .date-pill:hover { border-color: #555; }
   body.dark .date-pill-text { color: #f0f0f0; }
   body.dark .date-pill-week { color: #555; }
 
@@ -340,6 +337,56 @@
     .lineup-thumb-video { width: 90px; height: 51px; }
     .lineup-embed iframe { height: 200px; }
   }
+
+.edit-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.edit-youtube-input {
+  width: 230px;
+  font-size: 12px;
+  padding: 6px 9px;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  background: #f9fafb;
+  color: #111;
+  outline: none;
+  font-family: monospace;
+}
+
+.edit-youtube-input:focus {
+  border-color: #6b7280;
+  background: #fff;
+}
+
+.edit-key-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+body.dark .edit-youtube-input {
+  background: #222;
+  border-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+@media (max-width: 600px) {
+  .edit-title-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-youtube-input {
+    width: 100%;
+  }
+}
 </style>
 </head>
 <body>
@@ -351,19 +398,18 @@
 
 <div class="app">
   <div class="top-bar">
-    <div class="date-pill" id="datePill" ondblclick="openDatePicker()" title="Double-click to change date">
-      <div>
-        <div class="date-pill-text" id="datePillText">Sunday</div>
-        <div class="date-pill-week" id="datePillWeek">Week —</div>
-      </div>
-      <input class="date-hidden-input" type="date" id="dateInput" onchange="onDatePicked(this.value)" />
-    </div>
+<div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
+  <div>
+    <div class="date-pill-text" id="datePillText">Sunday</div>
+    <div class="date-pill-week" id="datePillWeek"></div>
+  </div>
+</div>
     <div class="mode-toggle" id="modeToggle">
+      <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
       <button class="mode-btn active" id="btnLineup" onclick="setMode('lineup')">Lineup</button>
       <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
-      <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
     </div>
   </div>
   <!-- FIX 3 & 6: tab bar is hidden in lineup, and sits flush against the panel below -->
@@ -480,17 +526,19 @@ let mode = 'lineup';
 let saveTimeout = null;
 let overviewMode = false;
 
-// DATE — always upcoming Sunday (rolls over Monday)
+// DATE — always automatic upcoming Sunday
 function nextSunday() {
   const d = new Date();
-  const day = d.getDay(); // 0=Sun
-  // If today is Monday (1) through Saturday (6), jump to this week's Sunday
-  // If today is Sunday (0), show today (it's the service day)
-  // On Monday, roll to NEXT Sunday (7 days ahead)
-  const diff = day === 0 ? 0 : (day === 1 ? 6 : 7 - day);
+  const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+  // Sunday should show today.
+  // Monday-Saturday should show the next upcoming Sunday.
+  const diff = day === 0 ? 0 : 7 - day;
+
   d.setDate(d.getDate() + diff);
   return d.toISOString().slice(0, 10);
 }
+
 let serviceDate = nextSunday();
 
 function sundayWeekOfMonth(dateStr) {
@@ -522,38 +570,11 @@ function renderDatePill() {
   if (overviewLabel) overviewLabel.textContent = formatServiceDate(serviceDate);
 }
 
-window.openDatePicker = () => {
-  const input = document.getElementById('dateInput');
-  input.value = serviceDate;
-  input.style.pointerEvents = 'auto';
-  input.showPicker ? input.showPicker() : input.click();
-  input.addEventListener('blur', () => { input.style.pointerEvents = 'none'; }, { once: true });
-};
-
-window.onDatePicked = val => {
-  if (!val) return;
-  // Snap to Sunday: if user picks a non-Sunday, shift to that week's Sunday
-  const d = new Date(val + 'T12:00:00');
-  const dow = d.getDay();
-  if (dow !== 0) d.setDate(d.getDate() - dow);
-  serviceDate = d.toISOString().slice(0, 10);
-  renderDatePill();
-  // persist to Firebase
-  set(ref(db, 'serviceDate'), serviceDate);
-};
-
 window.toggleDark = () => {
   const d = document.body.classList.toggle('dark');
   localStorage.setItem('rvcm-dark', d?'1':'0');
 };
 if (localStorage.getItem('rvcm-dark')==='1') document.body.classList.add('dark');
-
-const serviceDateRef = ref(db, 'serviceDate');
-onValue(serviceDateRef, snap => {
-  const val = snap.val();
-  if (val) serviceDate = val;
-  renderDatePill();
-});
 
 const rosterRef = ref(db, 'roster');
 onValue(rosterRef, snap => {
@@ -612,7 +633,7 @@ window.setTab = i => {
 };
 
 window.clearChords = i => {
-  if (!confirm('Clear all chord sections?')) return;
+  if (!confirm('Clear all chords?')) return;
   songs[i] = {sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, notes: '',};
   saveToFirebase();
   render();
@@ -798,8 +819,6 @@ function renderLineup() {
             onblur="onLineupNotesBlur(${i}, this)"
             oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
           <div class="overview-notes${s.notes?' has-content':''}">${s.notes?s.notes.replace(/</g,'&lt;'):''}</div>
-          <input class="lineup-yt-input" placeholder="Paste YouTube link..." value="${s.youtube||''}"
-            onblur="onYoutubeBlur(${i}, this.value)" style="margin-top:6px;" />
           ${ytId ? `<div class="lineup-embed" id="embed-${i}">
             <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe>
           </div>` : ''}
@@ -851,16 +870,24 @@ function renderLineup() {
 function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
-    <div class="panel-header">
-      <input class="song-title-input" value="${s.title}" placeholder="Song title..."
-        onblur="onTitleBlur(this.value)" />
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-        <div class="key-selector">${KEYS.map(k=>
-          `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
-        ).join('')}</div>
-        <button class="reset-btn" onclick="clearChords(${active})" title="Reset this song">clear</button>
-      </div>
-    </div>
+    <div class="panel-header" style="display:block;">
+  <div class="edit-title-row">
+    <input class="song-title-input" value="${s.title}" placeholder="Song title..."
+      onblur="onTitleBlur(this.value)" />
+
+    <input class="edit-youtube-input" placeholder="Paste YouTube link..."
+      value="${s.youtube || ''}"
+      onblur="onYoutubeBlur(${active}, this.value)" />
+  </div>
+
+  <div class="edit-key-row">
+    <div class="key-selector">${KEYS.map(k=>
+      `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
+    ).join('')}</div>
+
+    <button class="reset-btn" onclick="clearChords(${active})" title="Reset this song">clear</button>
+  </div>
+</div>
     <div class="divider"></div>
     <div class="sections">${SECTIONS.map(sec=>`
       <div class="section-row">
@@ -1004,7 +1031,11 @@ function renderSchedule() {
   const SLOT_LABELS = ['Fri PM', 'Sat AM', 'Sat PM'];
 
   // Build rows: worship leads from LEADERS (skip empty first entry), then instruments
-  const worshipLeads = LEADERS.filter(l => l); // non-empty
+  const worshipLeads = [...new Set(
+  songs
+    .map(s => s.leader)
+    .filter(Boolean)
+)];
   const rows = [];
 
   // Worship leads group
