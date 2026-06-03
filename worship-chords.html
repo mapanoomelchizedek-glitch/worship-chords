@@ -340,7 +340,7 @@
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   bottom: 0;
   margin-right: 0;
 }
@@ -517,6 +517,17 @@ body.dark .copy-lineup-btn {
   }
 }
 
+.lineup-reset-wrap {
+  margin-top: 14px;
+  display: flex;
+  justify-content: stretch;
+}
+
+.lineup-reset-wrap .reset-sunday-btn {
+  width: 100%;
+  padding: 8px 14px;
+}
+
 </style>
 </head>
 <body>
@@ -528,15 +539,11 @@ body.dark .copy-lineup-btn {
 
 <div class="app">
   <div class="top-bar">
-<div style="display:flex; align-items:center; gap:8px;">
-  <div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
-    <div>
-      <div class="date-pill-text" id="datePillText">Sunday</div>
-      <div class="date-pill-week" id="datePillWeek"></div>
-    </div>
+<div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
+  <div>
+    <div class="date-pill-text" id="datePillText">Sunday</div>
+    <div class="date-pill-week" id="datePillWeek"></div>
   </div>
-
-  <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
 </div>
     <div class="mode-toggle" id="modeToggle">
       <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
@@ -1070,11 +1077,15 @@ function renderLineup() {
 </div>
     </div>
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
-  </div>
-  <div class="band-roster"${overviewMode?' style="display:none"':''}>
-    <div class="band-roster-title">Band this Sunday</div>
-    <div class="roster-grid">${rosterHtml}</div>
-  </div>`;
+ </div>
+<div class="band-roster"${overviewMode?' style="display:none"':''}>
+  <div class="band-roster-title">Band this Sunday</div>
+  <div class="roster-grid">${rosterHtml}</div>
+</div>
+
+<div class="lineup-reset-wrap"${overviewMode?' style="display:none"':''}>
+  <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
+</div>`;
 }
 
 function renderZed() {
