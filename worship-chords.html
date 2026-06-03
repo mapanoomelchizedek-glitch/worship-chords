@@ -246,6 +246,33 @@
 
   .sync-indicator { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 8px; }
 
+  /* SCHEDULE TAB */
+  .schedule-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  body.dark .schedule-screen { background: #1a1a1a; border-color: #2a2a2a; }
+  .schedule-service-input { font-size: 26px; font-weight: 700; border: none; background: transparent; color: #111; outline: none; width: 100%; margin-bottom: 20px; display: block; }
+  body.dark .schedule-service-input { color: #f0f0f0; }
+  .schedule-service-input::placeholder { color: #d1d5db; }
+  body.dark .schedule-service-input::placeholder { color: #444; }
+  .schedule-table { width: 100%; border-collapse: collapse; }
+  .schedule-table th { font-size: 11px; font-weight: 700; color: #6b7280; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; padding: 6px 4px 10px; }
+  body.dark .schedule-table th { color: #555; }
+  .schedule-table th:first-child { text-align: left; }
+  .schedule-role-group { font-size: 10px; font-weight: 700; color: #d1d5db; letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 4px 4px; }
+  body.dark .schedule-role-group { color: #333; }
+  .schedule-name-cell { font-size: 14px; font-weight: 500; color: #111; padding: 8px 4px; }
+  body.dark .schedule-name-cell { color: #f0f0f0; }
+  .schedule-name-cell.empty { color: #d1d5db; font-style: italic; font-size: 12px; font-weight: 400; }
+  body.dark .schedule-name-cell.empty { color: #333; }
+  .schedule-check-cell { text-align: center; padding: 6px 4px; }
+  .schedule-check { width: 20px; height: 20px; accent-color: #1d4ed8; cursor: pointer; }
+  .schedule-divider { height: 1px; background: #f3f4f6; }
+  body.dark .schedule-divider { background: #2a2a2a; }
+
+  /* Service time in lineup header */
+  .lineup-service-time { font-size: 13px; font-weight: 600; color: #1d4ed8; flex: 1; }
+  body.dark .lineup-service-time { color: #60a5fa; }
+  .lineup-screen.overview .lineup-service-time { display: none; }
+
   /* DATE PICKER */
   .date-pill { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; padding: 5px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; position: relative; }
   .date-pill:hover { border-color: #9ca3af; }
@@ -336,6 +363,7 @@
       <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
+      <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
     </div>
   </div>
   <!-- FIX 3 & 6: tab bar is hidden in lineup, and sits flush against the panel below -->
@@ -452,13 +480,16 @@ let mode = 'lineup';
 let saveTimeout = null;
 let overviewMode = false;
 
-// DATE — default to next upcoming Sunday
+// DATE — always upcoming Sunday (rolls over Monday)
 function nextSunday() {
   const d = new Date();
   const day = d.getDay(); // 0=Sun
-  const diff = day === 0 ? 0 : 7 - day;
+  // If today is Monday (1) through Saturday (6), jump to this week's Sunday
+  // If today is Sunday (0), show today (it's the service day)
+  // On Monday, roll to NEXT Sunday (7 days ahead)
+  const diff = day === 0 ? 0 : (day === 1 ? 6 : 7 - day);
   d.setDate(d.getDate() + diff);
-  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  return d.toISOString().slice(0, 10);
 }
 let serviceDate = nextSunday();
 
@@ -477,7 +508,8 @@ function sundayWeekOfMonth(dateStr) {
 function formatServiceDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  return `Sunday, ${months[d.getMonth()]} ${d.getDate()}`;
+  const ord = sundayWeekOfMonth(dateStr);
+  return `${ord} Sunday — ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
 function renderDatePill() {
@@ -486,7 +518,7 @@ function renderDatePill() {
   const overviewLabel = document.getElementById('overviewDateLabel');
   if (!textEl || !weekEl) return;
   textEl.textContent = formatServiceDate(serviceDate);
-  weekEl.textContent = sundayWeekOfMonth(serviceDate) + ' Sunday';
+  weekEl.textContent = '';
   if (overviewLabel) overviewLabel.textContent = formatServiceDate(serviceDate);
 }
 
@@ -566,10 +598,9 @@ function saveToFirebase() {
 
 window.setMode = m => {
   mode = m;
-  ['lineup','zed','band','capo'].forEach(x =>
+  ['lineup','zed','band','capo','schedule'].forEach(x =>
     document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
   );
-  // FIX 4: always re-render tabs when switching mode, not just the panel
   renderTabs();
   renderPanel();
 };
@@ -698,8 +729,8 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
-  // FIX 3: no tabs in lineup mode at all
-  if (mode === 'lineup') {
+  // No tabs in lineup or schedule mode
+  if (mode === 'lineup' || mode === 'schedule') {
     document.getElementById('tabBar').innerHTML = '';
     return;
   }
@@ -719,6 +750,10 @@ function renderTabs() {
 function renderPanel() {
   if (mode === 'lineup') {
     document.getElementById('mainPanel').innerHTML = renderLineup();
+    return;
+  }
+  if (mode === 'schedule') {
+    document.getElementById('mainPanel').innerHTML = renderSchedule();
     return;
   }
   document.getElementById('mainPanel').innerHTML =
@@ -802,6 +837,7 @@ function renderLineup() {
   return `<div class="lineup-screen${overviewMode?' overview':''}">
     <div class="lineup-header">
       <span class="overview-date" id="overviewDateLabel"></span>
+      ${scheduleData.serviceTime ? `<span class="lineup-service-time">${scheduleData.serviceTime.replace(/</g,'&lt;')}</span>` : ''}
       <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
     </div>
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
@@ -938,6 +974,90 @@ window.toggleEmbed = i => {
   const thumb = document.querySelector(`.lineup-thumb-expand[onclick="toggleEmbed(${i})"]`);
   if (thumb) thumb.textContent = el.classList.contains('open') ? '▼ collapse' : '▶ expand';
 };
+
+// SCHEDULE DATA
+let scheduleData = { serviceTime: '', checks: {} };
+const scheduleRef = ref(db, 'schedule');
+onValue(scheduleRef, snap => {
+  const val = snap.val();
+  if (val) scheduleData = { serviceTime: val.serviceTime||'', checks: val.checks||{} };
+  if (mode === 'schedule' || mode === 'lineup') renderPanel();
+});
+
+function saveSchedule() {
+  set(scheduleRef, scheduleData);
+}
+
+window.onServiceTimeBlur = v => {
+  scheduleData.serviceTime = v;
+  saveSchedule();
+};
+
+window.onScheduleCheck = (rowKey, slot, checked) => {
+  if (!scheduleData.checks[rowKey]) scheduleData.checks[rowKey] = {};
+  scheduleData.checks[rowKey][slot] = checked;
+  saveSchedule();
+};
+
+function renderSchedule() {
+  const SLOTS = ['fri-pm', 'sat-am', 'sat-pm'];
+  const SLOT_LABELS = ['Fri PM', 'Sat AM', 'Sat PM'];
+
+  // Build rows: worship leads from LEADERS (skip empty first entry), then instruments
+  const worshipLeads = LEADERS.filter(l => l); // non-empty
+  const rows = [];
+
+  // Worship leads group
+  rows.push({ type: 'group', label: 'Worship Lead' });
+  worshipLeads.forEach((name, i) => {
+    rows.push({ type: 'row', key: 'lead-' + i, name });
+  });
+
+  // Instrument group
+  rows.push({ type: 'group', label: 'Band' });
+  INSTRUMENTS.forEach(inst => {
+    const assigned = roster[inst.key] || '';
+    rows.push({ type: 'row', key: 'inst-' + inst.key, name: assigned, role: inst.label });
+  });
+
+  const tableRows = rows.map(r => {
+    if (r.type === 'group') {
+      return `<tr><td colspan="4" class="schedule-role-group">${r.label}</td></tr>`;
+    }
+    const checks = scheduleData.checks[r.key] || {};
+    const nameDisplay = r.name
+      ? `${r.name}${r.role ? `<span style="font-size:11px;color:#9ca3af;font-weight:400;margin-left:5px;">${r.role}</span>` : ''}`
+      : `<span style="color:#d1d5db;font-style:italic;font-size:12px;">${r.role || '—'}</span>`;
+    const checkboxes = SLOTS.map((slot, si) =>
+      `<td class="schedule-check-cell">
+        <input type="checkbox" class="schedule-check" ${checks[slot]?'checked':''}
+          onchange="onScheduleCheck('${r.key}','${slot}',this.checked)" />
+      </td>`
+    ).join('');
+    return `<tr>
+      <td class="schedule-name-cell">${nameDisplay}</td>
+      ${checkboxes}
+    </tr>
+    <tr><td colspan="4" class="schedule-divider" style="padding:0;height:1px;background:#f3f4f6;"></td></tr>`;
+  }).join('');
+
+  return `<div class="schedule-screen">
+    <input class="schedule-service-input" placeholder="e.g. 9pm Saturday"
+      value="${(scheduleData.serviceTime||'').replace(/"/g,'&quot;')}"
+      onblur="onServiceTimeBlur(this.value)" />
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th></th>
+          ${SLOT_LABELS.map(l=>`<th>${l}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+  </div>`;
+}
+
+window.render = render;
 
 window.autoGrow = el => {
   el.style.height = 'auto';
