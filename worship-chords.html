@@ -16,7 +16,7 @@
   body.dark .mode-btn.active { background: #2563eb; color: #fff; }
   body.dark .tab-btn { background: #1a1a1a; border-color: #2a2a2a; color: #555; }
   body.dark .tab-btn.active { background: #1a1a1a; color: #f0f0f0; border-color: #f0f0f0; }
-  body.dark .song-panel, body.dark .band-screen, body.dark .capo-screen, body.dark .lineup-screen { background: #1a1a1a; border-color: #2a2a2a; }
+  body.dark .song-panel, body.dark .band-screen, body.dark .capo-screen, body.dark .lineup-screen, body.dark .schedule-screen { background: #1a1a1a; border-color: #2a2a2a; }
   body.dark .song-title-input { color: #f0f0f0; }
   body.dark .key-btn { background: #222; border-color: #333; color: #777; }
   body.dark .key-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
@@ -29,7 +29,7 @@
   body.dark .band-song-title, body.dark .capo-song-title, body.dark .capo-fret { color: #f0f0f0; }
   body.dark .band-key-badge { background: #1e3a5f; color: #60a5fa; }
   body.dark .band-section { background: #222; border-color: #2a2a2a; }
-  body.dark .band-section-name, body.dark .capo-section-name { color: #444; }
+  body.dark .band-section-name, body.dark .capo-section-name { color: #9ca3af; }
   body.dark .band-chord, body.dark .capo-chord { color: #f0f0f0; }
   body.dark .band-key-row-label { color: #555; }
   body.dark .key-group-block { background: #222; border-color: #2a2a2a; }
@@ -123,7 +123,7 @@
   .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; font-weight: 500; }
   .band-sections { display: flex; flex-direction: column; gap: 12px; }
   .band-section { padding: 12px 14px; border-radius: 10px; border: 1px solid #f3f4f6; background: #fafafa; }
-  .band-section-name { font-size: 11px; color: #d1d5db; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .band-section-name {  font-size: 11px;  color: #6b7280;  font-weight: 700;  margin-bottom: 8px;  letter-spacing: 0.08em;  text-transform: uppercase; }
   .key-group-block { background: #f0f4ff; border: 1px solid #e0e7ff; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
   .key-group-block:last-child { margin-bottom: 0; }
   .key-group-label { font-size: 10px; font-weight: 700; color: #6b7280; letter-spacing: 0.08em; margin-bottom: 4px; }
@@ -154,7 +154,7 @@
   .capo-fret { font-size: 22px; font-weight: 600; color: #111; line-height: 1.2; }
   .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
   .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
-  .capo-section-name { font-size: 10px; color: #9ca3af; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .capo-section-name {   font-size: 11px; color: #6b7280; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;}
   .capo-chord-line { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; padding: 2px 0; }
   .capo-chord-line + .capo-chord-line { border-top: 1px dashed #e5e7eb; margin-top: 4px; padding-top: 6px; }
   body.dark .capo-chord-line + .capo-chord-line { border-color: #2a2a2a; }
@@ -265,8 +265,6 @@
   body.dark .schedule-name-cell.empty { color: #333; }
   .schedule-check-cell { text-align: center; padding: 6px 4px; }
   .schedule-check { width: 20px; height: 20px; accent-color: #1d4ed8; cursor: pointer; }
-  .schedule-divider { height: 1px; background: #f3f4f6; }
-  body.dark .schedule-divider { background: #2a2a2a; }
 
   /* Service time in lineup header */
   .lineup-service-time { font-size: 13px; font-weight: 600; color: #1d4ed8; flex: 1; }
@@ -387,6 +385,58 @@ body.dark .edit-youtube-input {
     width: 100%;
   }
 }
+
+.reset-sunday-btn {
+  font-size: 11px;
+  padding: 6px 10px;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.reset-sunday-btn:hover {
+  background: #fee2e2;
+}
+
+.copy-lineup-btn {
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.copy-lineup-btn:hover {
+  background: #dbeafe;
+}
+
+.lineup-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body.dark .reset-sunday-btn {
+  background: #2a1a1a;
+  border-color: #7f1d1d;
+  color: #f87171;
+}
+
+body.dark .copy-lineup-btn {
+  background: #1e3a5f;
+  border-color: #2563eb;
+  color: #60a5fa;
+}
+
+
 </style>
 </head>
 <body>
@@ -398,11 +448,15 @@ body.dark .edit-youtube-input {
 
 <div class="app">
   <div class="top-bar">
-<div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
-  <div>
-    <div class="date-pill-text" id="datePillText">Sunday</div>
-    <div class="date-pill-week" id="datePillWeek"></div>
+<div style="display:flex; align-items:center; gap:8px;">
+  <div class="date-pill" id="datePill" title="Automatically shows upcoming Sunday">
+    <div>
+      <div class="date-pill-text" id="datePillText">Sunday</div>
+      <div class="date-pill-week" id="datePillWeek"></div>
+    </div>
   </div>
+
+  <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
 </div>
     <div class="mode-toggle" id="modeToggle">
       <button class="mode-btn" id="btnSchedule" onclick="setMode('schedule')">Schedule</button>
@@ -437,7 +491,7 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
 const KEYS = ['—','C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-const SECTIONS = ['intro','verse','pre-chorus','chorus','bridge','instrumental'];
+const SECTIONS = ['intro','verse','pre-chorus','chorus','chorus 2','bridge','bridge 2','instrumental'];
 const ORDINAL = ['open','1st','2nd','3rd','4th','5th','6th','7th','8th'];
 
 const SCALE = {
@@ -458,15 +512,39 @@ const SCALE = {
 // Returns array of lines, each line is array of {num, chord}
 // Supports suffix notation: 17 = chord 1 with 7th (e.g. C7), 27 = Dm7, etc.
 function parseToken(n, scale) {
-  const m = n.match(/^([1-7])(.*)$/);
+  // Supports:
+  // 1      = C
+  // 17     = C7
+  // 1/3    = C/E
+  // 17/3   = C7/E
+
+  const slashParts = n.split('/');
+  const mainPart = slashParts[0];
+  const bassPart = slashParts[1];
+
+  const m = mainPart.match(/^([1-7])(.*)$/);
   if (!m) return { num: n, chord: n };
+
   const base = scale[parseInt(m[1]) - 1];
-  const suffix = m[2]; // e.g. '7', 'maj7', 'sus', etc.
-  // insert suffix before any existing modifier like 'm', 'dim'
-  // base could be 'Dm', 'Em', 'Bdim' — append suffix after full base
-  return { num: n, chord: base + suffix };
-}
-function numToLines(input, key) {
+  const suffix = m[2];
+  let chord = base + suffix;
+
+  if (bassPart) {
+    const bassMatch = bassPart.match(/^([1-7])$/);
+
+    if (bassMatch) {
+      const bassNote = scale[parseInt(bassMatch[1]) - 1]
+        .replace('m', '')
+        .replace('dim', '');
+
+      chord += '/' + bassNote;
+    } else {
+      chord += '/' + bassPart;
+    }
+  }
+
+  return { num: n, chord };
+}function numToLines(input, key) {
   const scale = SCALE[key] || SCALE['C'];
   return (input || '').split('\n').map(l => l.trim()).filter(l => l).map(line =>
     line.split(/\s+/).map(n => parseToken(n, scale))
@@ -514,7 +592,7 @@ const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
 
 const defaultSongs = Array.from({length:5},(_,i)=>({
   title:`Song ${i+1}`, keys:['—'],
-  sections:{intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''},
+  sections:{intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:''},
   youtube:'', notes:'', leader:''
 }));
 
@@ -569,6 +647,26 @@ function renderDatePill() {
   weekEl.textContent = '';
   if (overviewLabel) overviewLabel.textContent = formatServiceDate(serviceDate);
 }
+
+window.resetSunday = () => {
+  if (!confirm('Reset this Sunday lineup? This will clear songs, leaders, notes, YouTube links, chords, band roster, and schedule checks.')) return;
+
+  songs = JSON.parse(JSON.stringify(defaultSongs));
+  roster = defaultRoster();
+  scheduleData = { serviceTime: '', checks: {} };
+  active = 0;
+  overviewMode = false;
+
+  Promise.all([
+    set(songsRef, songs),
+    set(rosterRef, roster),
+    set(scheduleRef, scheduleData)
+  ]).then(() => {
+    render();
+    document.getElementById('syncIndicator').textContent = 'Sunday reset';
+  });
+};
+
 
 window.toggleDark = () => {
   const d = document.body.classList.toggle('dark');
@@ -634,7 +732,7 @@ window.setTab = i => {
 
 window.clearChords = i => {
   if (!confirm('Clear all chords?')) return;
-  songs[i] = {sections: {intro:'',verse:'','pre-chorus':'',chorus:'',bridge:'',instrumental:''}, notes: '',};
+  songs[i] = {sections: {intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:''}, notes: '',};
   saveToFirebase();
   render();
 };
@@ -717,6 +815,35 @@ window.onRosterChange = (key, v) => {
   if (sel) sel.className = 'roster-select' + (v ? ' assigned' : '');
 };
 
+window.copyLineup = async () => {
+  const activeSongs = songs
+    .map((s, i) => ({ ...s, number: i + 1 }))
+    .filter(s => {
+      const hasTitle = s.title && s.title !== `Song ${s.number}`;
+      const hasSections = SECTIONS.some(sec => s.sections && s.sections[sec]);
+      return hasTitle || hasSections || s.youtube;
+    });
+
+  const songLines = activeSongs.map(s => {
+    const keyText = s.keys && s.keys[0] !== '—'
+      ? s.keys.join(' / ')
+      : 'No key';
+
+    return `${s.title || 'Song ' + s.number} - ${keyText}`;
+  });
+
+  const text = [
+    formatServiceDate(serviceDate),
+    '',
+    songLines.join('\n') || 'No songs yet.'
+  ].join('\n');
+
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    prompt('Copy this lineup:', text);
+  }
+};
 window.toggleOverview = () => {
   overviewMode = !overviewMode;
   const screen = document.querySelector('.lineup-screen');
@@ -857,7 +984,10 @@ function renderLineup() {
     <div class="lineup-header">
       <span class="overview-date" id="overviewDateLabel"></span>
       ${scheduleData.serviceTime ? `<span class="lineup-service-time">${scheduleData.serviceTime.replace(/</g,'&lt;')}</span>` : ''}
-      <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
+      <div class="lineup-header-actions">
+  <button class="copy-lineup-btn" onclick="copyLineup()">Copy</button>
+  <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
+</div>
     </div>
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
   </div>
@@ -930,7 +1060,6 @@ function renderBand() {
     </div>`;
   }).join('');
   const bandMeta = [
-    s.leader ? `<span style="font-size:12px;color:#6b7280;">Leader: <strong>${s.leader}</strong></span>` : '',
     s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
   ].filter(Boolean).join('');
   return `<div class="band-screen">
@@ -946,7 +1075,6 @@ function renderCapo() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
   const capoMeta = [
-    s.leader ? `<span style="font-size:12px;color:#6b7280;">Leader: <strong>${s.leader}</strong></span>` : '',
     s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
   ].filter(Boolean).join('');
   const realKeys = s.keys.filter(k => k !== '—');
@@ -1068,9 +1196,8 @@ function renderSchedule() {
     return `<tr>
       <td class="schedule-name-cell">${nameDisplay}</td>
       ${checkboxes}
-    </tr>
-    <tr><td colspan="4" class="schedule-divider" style="padding:0;height:1px;background:#f3f4f6;"></td></tr>`;
-  }).join('');
+    </tr>`;
+ }).join('');
 
   return `<div class="schedule-screen">
     <input class="schedule-service-input" placeholder="e.g. 9pm Saturday"
