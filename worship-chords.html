@@ -632,18 +632,18 @@ const SECTIONS = ['intro','verse','pre-chorus','chorus','chorus 2','bridge','bri
 const ORDINAL = ['open','1st','2nd','3rd','4th','5th','6th','7th','8th'];
 
 const SCALE = {
-  'C':['C','Dm','Em','F','G','Am','Bdim'],
-  'C#':['C#','D#m','Fm','F#','G#','A#m','Cdim'],
-  'D':['D','Em','F#m','G','A','Bm','C#dim'],
-  'D#':['D#','Fm','Gm','G#','A#','Cm','Ddim'],
-  'E':['E','F#m','G#m','A','B','C#m','D#dim'],
-  'F':['F','Gm','Am','A#','C','Dm','Edim'],
-  'F#':['F#','G#m','A#m','B','C#','D#m','Fdim'],
-  'G':['G','Am','Bm','C','D','Em','F#dim'],
-  'G#':['G#','A#m','Cm','C#','D#','Fm','Gdim'],
-  'A':['A','Bm','C#m','D','E','F#m','G#dim'],
-  'A#':['A#','Cm','Dm','D#','F','Gm','Adim'],
-  'B':['B','C#m','D#m','E','F#','G#m','A#dim'],
+  'C':['C','Dm','Em','F','G','Am','B'],
+  'C#':['C#','D#m','Fm','F#','G#','A#m','C'],
+  'D':['D','Em','F#m','G','A','Bm','C#'],
+  'D#':['D#','Fm','Gm','G#','A#','Cm','D'],
+  'E':['E','F#m','G#m','A','B','C#m','D#'],
+  'F':['F','Gm','Am','A#','C','Dm','E'],
+  'F#':['F#','G#m','A#m','B','C#','D#m','F'],
+  'G':['G','Am','Bm','C','D','Em','F#'],
+  'G#':['G#','A#m','Cm','C#','D#','Fm','G'],
+  'A':['A','Bm','C#m','D','E','F#m','G#'],
+  'A#':['A#','Cm','Dm','D#','F','Gm','A'],
+  'B':['B','C#m','D#m','E','F#','G#m','A#'],
 };
 
 // Returns array of lines, each line is array of {num, chord}
@@ -652,27 +652,28 @@ function parseToken(n, scale) {
   // Supports:
   // 1      = C
   // 17     = C7
-  // 1/3    = C/E
-  // 17/3   = C7/E
+  // 1/7    = C/B
+  // 17/7   = C7/B
 
-  const slashParts = n.split('/');
-  const mainPart = slashParts[0];
-  const bassPart = slashParts[1];
+  const [mainPart, bassPart] = n.split('/');
 
-  const m = mainPart.match(/^([1-7])(.*)$/);
-  if (!m) return { num: n, chord: n };
+  const mainMatch = mainPart.match(/^([1-7])(.*)$/);
+  if (!mainMatch) return { num: n, chord: n };
 
-  const base = scale[parseInt(m[1]) - 1];
-  const suffix = m[2];
-  let chord = base + suffix;
+  const mainNumber = mainMatch[1];
+  const suffix = mainMatch[2];
+
+  const baseChord = scale[parseInt(mainNumber) - 1];
+  let chord = baseChord + suffix;
 
   if (bassPart) {
     const bassMatch = bassPart.match(/^([1-7])$/);
 
     if (bassMatch) {
-      const bassNote = scale[parseInt(bassMatch[1]) - 1]
-        .replace('m', '')
-        .replace('dim', '');
+      const bassChord = scale[parseInt(bassPart) - 1];
+
+      // Bass should be a note only, so Dm becomes D, Am becomes A, etc.
+      const bassNote = bassChord.replace('m', '');
 
       chord += '/' + bassNote;
     } else {
