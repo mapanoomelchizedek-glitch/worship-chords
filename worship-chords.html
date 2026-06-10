@@ -405,6 +405,106 @@
     .status-date .date-pill-text { font-size: 11px; white-space: nowrap; }
   }
 
+  /* ── BROADCAST OVERLAY ─────────────────────────────── */
+  /* Receiver overlay — shown to all devices when message is live */
+  .broadcast-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.82);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    animation: broadcastFadeIn 0.25s ease;
+  }
+  @keyframes broadcastFadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .broadcast-box {
+    background: #fff; border-radius: 18px; padding: 28px 24px 22px;
+    max-width: 420px; width: 100%; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .broadcast-msg {
+    font-size: 22px; font-weight: 600; color: #111; line-height: 1.4;
+    white-space: pre-wrap; word-break: break-word;
+    margin-bottom: 20px;
+  }
+  .broadcast-msg { color: #1a1a1a; }
+  .broadcast-dismiss {
+    font-size: 14px; font-weight: 600; padding: 10px 28px;
+    border-radius: 10px; border: none; background: #1d4ed8; color: #fff;
+    cursor: pointer; transition: background 0.15s;
+  }
+ 
+
+  /* Sender panel — shown in the status bar area */
+  .broadcast-sender {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 1500;
+    background: #fff; border-top: 1px solid #e5e7eb;
+    padding: 10px 14px 14px;
+    display: flex; gap: 8px; align-items: flex-end;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    transform: translateY(0);
+    transition: transform 0.2s ease;
+  }
+  .broadcast-sender.hidden { transform: translateY(110%); }
+  body.dark .broadcast-sender { background: #1a1a1a; border-color: #2a2a2a; }
+
+  .broadcast-textarea {
+    flex: 1; font-size: 14px; padding: 9px 12px;
+    border: 1.5px solid #e5e7eb; border-radius: 10px;
+    background: #f9fafb; color: #111; outline: none;
+    resize: none; overflow: hidden; min-height: 42px; max-height: 120px;
+    line-height: 1.5; font-family: inherit;
+  }
+  .broadcast-textarea:focus { border-color: #1d4ed8; background: #fff; }
+  body.dark .broadcast-textarea { background: #222; border-color: #333; color: #f0f0f0; }
+  body.dark .broadcast-textarea:focus { border-color: #2563eb; background: #2a2a2a; }
+  .broadcast-textarea::placeholder { color: #9ca3af; }
+
+  .broadcast-send-btn {
+    font-size: 13px; font-weight: 700; padding: 10px 16px;
+    border-radius: 10px; border: none; background: #1d4ed8; color: #fff;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .broadcast-send-btn:hover { background: #1e40af; }
+  .broadcast-send-btn:disabled { background: #9ca3af; cursor: default; }
+
+  .broadcast-clear-btn {
+    font-size: 12px; font-weight: 600; padding: 10px 12px;
+    border-radius: 10px; border: 1px solid #fca5a5;
+    background: #fff5f5; color: #ef4444; cursor: pointer; flex-shrink: 0;
+    transition: background 0.15s; white-space: nowrap;
+  }
+  .broadcast-clear-btn:hover { background: #fee2e2; }
+  body.dark .broadcast-clear-btn { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
+
+  /* 📣 pulse dot on RVCM button when a broadcast is live */
+  .rvcm-btn.live::after {
+    content: '';
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; background: #ef4444;
+    margin-left: 5px; vertical-align: middle;
+    animation: pulseDot 1.2s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* Broadcast toggle button in status bar */
+  .broadcast-toggle-btn {
+    font-size: 12px; padding: 4px 10px;
+    border: 1px solid #e5e7eb; border-radius: 8px;
+    background: #f9fafb; color: #6b7280; cursor: pointer;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .broadcast-toggle-btn:hover { border-color: #9ca3af; }
+  .broadcast-toggle-btn.open { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+  body.dark .broadcast-toggle-btn { background: #1a1a1a; border-color: #333; color: #555; }
+  body.dark .broadcast-toggle-btn.open { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
+
 .edit-youtube-row {
   display: flex;
   align-items: center;
@@ -495,7 +595,6 @@
   white-space: nowrap;
 }
 
-
 @media (max-width: 600px) {
   .edit-youtube-row {
     gap: 6px;
@@ -526,7 +625,22 @@
       <div class="date-pill-week" id="datePillWeek"></div>
     </div>
   </div>
-  <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="broadcast-toggle-btn" id="broadcastToggleBtn" onclick="toggleSenderPanel()" title="Broadcast a message to all devices">📣</button>
+    <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
+  </div>
+</div>
+
+<!-- ── BROADCAST RECEIVER OVERLAY ───────────────────── -->
+<div id="broadcastOverlay" style="display:none;"></div>
+
+<!-- ── BROADCAST SENDER PANEL ───────────────────────── -->
+<div class="broadcast-sender hidden" id="broadcastSender">
+  <textarea class="broadcast-textarea" id="broadcastInput" rows="1"
+    placeholder="Type a message to send to everyone…"
+    oninput="autoGrowBroadcast(this)"></textarea>
+  <button class="broadcast-clear-btn" id="broadcastClearBtn" onclick="clearBroadcast()" style="display:none;">Clear</button>
+  <button class="broadcast-send-btn" onclick="sendBroadcast()">Send</button>
 </div>
 
 <div class="app">
@@ -1146,7 +1260,7 @@ function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header" style="display:block;">
-      <div class="edit-title-row">
+<div class="edit-title-row">
   <input class="song-title-input" value="${s.title}" placeholder="Song title..."
     onblur="onTitleBlur(this.value)" />
 </div>
@@ -1277,17 +1391,15 @@ function buildLibraryListHtml(query) {
     const keys = (song.keys || ['—']).filter(k => k !== '—');
     const keyLabel = keys.length ? keys.join(' / ') : 'No key';
     const sectionCount = SECTIONS.filter(sec => song.sections && song.sections[sec]).length;
-    const sectionLabel = sectionCount ? `${sectionCount} section${sectionCount===1?'':'s'}` : 'No chords';
 
     return `<div class="library-song-row">
       <div class="library-song-info">
         <div class="library-song-name">${song.title||'Untitled'}</div>
         <div class="library-song-keys">Key of ${keyLabel}</div>
-        <div class="library-song-sections">${sectionLabel}</div>
       </div>
       <div class="library-actions">
-        <button class="lib-load-btn" onclick="promptLoadLibrarySong('${key}')">Load →</button>
-        <button class="lib-delete-btn" onclick="deleteFromLibrary('${key}')" title="Remove from library">✕</button>
+        <button class="lib-load-btn" onclick="promptLoadLibrarySong('${key}')">Load</button>
+        <button class="lib-delete-btn" onclick="deleteFromLibrary('${key}')" title="Remove from library">Del</button>
       </div>
     </div>`;
   }).join('');
@@ -1374,6 +1486,97 @@ function render() {
     });
   }, 0);
 }
+
+// ── BROADCAST ─────────────────────────────────────────
+let senderPanelOpen = false;
+let currentBroadcastMsg = '';
+
+const broadcastRef = ref(db, 'broadcast');
+
+// Listen for broadcast changes — fires on ALL devices
+onValue(broadcastRef, snap => {
+  const val = snap.val();
+  const msg = val && val.message ? val.message : '';
+  currentBroadcastMsg = msg;
+  renderBroadcastOverlay(msg);
+  updateClearBtn(msg);
+});
+
+function renderBroadcastOverlay(msg) {
+  const overlay = document.getElementById('broadcastOverlay');
+  const rvcmBtn = document.querySelector('.rvcm-btn');
+  if (!overlay) return;
+
+  if (!msg) {
+    overlay.style.display = 'none';
+    overlay.innerHTML = '';
+    if (rvcmBtn) rvcmBtn.classList.remove('live');
+    return;
+  }
+
+  // Show live dot on RVCM button
+  if (rvcmBtn) rvcmBtn.classList.add('live');
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div class="broadcast-overlay" onclick="dismissBroadcastOverlay(event)">
+      <div class="broadcast-box">
+        <div class="broadcast-msg">${msg.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
+        <button class="broadcast-dismiss" onclick="dismissBroadcastOverlay()">Okay bro</button>
+      </div>
+    </div>`;
+}
+
+// Dismiss only locally — doesn't clear Firebase (others can still see it)
+window.dismissBroadcastOverlay = (e) => {
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('broadcastOverlay');
+  if (overlay) { overlay.style.display = 'none'; overlay.innerHTML = ''; }
+};
+
+// Send: write to Firebase → fires onValue on all devices
+window.sendBroadcast = () => {
+  const input = document.getElementById('broadcastInput');
+  const msg = input ? input.value.trim() : '';
+  if (!msg) return;
+  set(broadcastRef, { message: msg, sentAt: Date.now() });
+  // Don't clear the input so you can see what you sent; show Clear btn
+};
+
+// Clear: wipes the message from Firebase → overlay disappears for everyone
+window.clearBroadcast = () => {
+  set(broadcastRef, { message: '', sentAt: null });
+  const input = document.getElementById('broadcastInput');
+  if (input) { input.value = ''; input.style.height = 'auto'; }
+};
+
+function updateClearBtn(msg) {
+  const btn = document.getElementById('broadcastClearBtn');
+  if (btn) btn.style.display = msg ? 'block' : 'none';
+}
+
+window.toggleSenderPanel = () => {
+  senderPanelOpen = !senderPanelOpen;
+  const panel = document.getElementById('broadcastSender');
+  const toggleBtn = document.getElementById('broadcastToggleBtn');
+  if (panel) panel.classList.toggle('hidden', !senderPanelOpen);
+  if (toggleBtn) toggleBtn.classList.toggle('open', senderPanelOpen);
+  if (senderPanelOpen) {
+    setTimeout(() => {
+      const input = document.getElementById('broadcastInput');
+      if (input) {
+        // Pre-fill with active broadcast if one exists
+        if (currentBroadcastMsg && !input.value) input.value = currentBroadcastMsg;
+        input.focus();
+      }
+    }, 50);
+  }
+};
+
+window.autoGrowBroadcast = el => {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+};
 </script>
 </body>
 </html>
