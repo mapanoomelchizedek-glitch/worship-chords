@@ -706,24 +706,74 @@ const SCALE = {
   'B':['B','C#m','D#m','E','F#','G#m','A#'],
 };
 
+function getNoteOnly(chord) {
+  const m = chord.match(/^([A-G][#]?)/);
+  return m ? m[1] : chord;
+}
+
+function shiftNote(note, steps) {
+  const sharpNotes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const flatNotes  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+
+  const index = sharpNotes.indexOf(note);
+  if (index === -1) return note;
+
+  const newIndex = ((index + steps) % 12 + 12) % 12;
+
+  // If going down, use flat names like Bb instead of A#
+  return steps < 0 ? flatNotes[newIndex] : sharpNotes[newIndex];
+}
+
 function parseToken(n, scale) {
+  // Supports:
+  // 1      = C
+  // 17     = C7
+  // 7b     = Bb
+  // 7b7    = Bb7
+  // 1/7    = C/B
+  // 1/7b   = C/Bb
+  // 17/7b  = C7/Bb
+
   const [mainPart, bassPart] = n.split('/');
-  const mainMatch = mainPart.match(/^([1-7])(.*)$/);
+
+  const mainMatch = mainPart.match(/^([1-7])([b#]?)(.*)$/);
   if (!mainMatch) return { num: n, chord: n };
+
   const mainNumber = mainMatch[1];
-  const suffix = mainMatch[2];
-  const baseChord = scale[parseInt(mainNumber) - 1];
+  const accidental = mainMatch[2];
+  const suffix = mainMatch[3];
+
+  let baseChord = scale[parseInt(mainNumber) - 1];
+
+  if (accidental === 'b') {
+    baseChord = shiftNote(getNoteOnly(baseChord), -1);
+  } else if (accidental === '#') {
+    baseChord = shiftNote(getNoteOnly(baseChord), 1);
+  }
+
   let chord = baseChord + suffix;
+
   if (bassPart) {
-    const bassMatch = bassPart.match(/^([1-7])$/);
+    const bassMatch = bassPart.match(/^([1-7])([b#]?)$/);
+
     if (bassMatch) {
-      const bassChord = scale[parseInt(bassPart) - 1];
-      const bassNote = bassChord.replace('m', '');
+      const bassNumber = bassMatch[1];
+      const bassAccidental = bassMatch[2];
+
+      let bassNote = getNoteOnly(scale[parseInt(bassNumber) - 1]);
+
+      if (bassAccidental === 'b') {
+        bassNote = shiftNote(bassNote, -1);
+      } else if (bassAccidental === '#') {
+        bassNote = shiftNote(bassNote, 1);
+      }
+
       chord += '/' + bassNote;
     } else {
       chord += '/' + bassPart;
     }
   }
+
   return { num: n, chord };
 }
 
