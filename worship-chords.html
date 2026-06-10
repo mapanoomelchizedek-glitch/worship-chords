@@ -64,7 +64,6 @@
   .mode-btn { padding: 7px 18px; font-size: 13px; border: none; background: #f9fafb; color: #6b7280; cursor: pointer; }
   .mode-btn.active { background: #1d4ed8; color: #fff; font-weight: 500; }
 
-  /* tabs — desktop: flush browser-tab style */
   .tabs { display: flex; gap: 0; margin-bottom: 0; flex-wrap: wrap; padding: 0 4px; }
   .tab-btn { padding: 8px 14px; border: 1px solid #d1d5db; border-bottom: none; border-radius: 8px 8px 0 0; background: #f0f0f0; color: #6b7280; font-size: 13px; cursor: pointer; margin-right: 4px; position: relative; bottom: -1px; }
   .tab-btn.active { color: #111; border-color: #d1d5db; border-bottom: 1px solid #fff; background: #fff; font-weight: 500; z-index: 1; }
@@ -112,7 +111,6 @@
   body.dark .notes-input.has-content { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
   body.dark .notes-input::placeholder { color: #555; opacity: 0.8; }
   body.dark .notes-label { color: #f59e0b; }
-  /* notes in lineup */
   .lineup-notes { font-size: 13px; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 5px 9px; margin-top: 6px; line-height: 1.5; white-space: pre-wrap; }
   body.dark .lineup-notes { background: #2a1f00; border-color: #78350f; color: #fcd34d; }
 
@@ -123,7 +121,7 @@
   .band-key-badge { display: inline-block; font-size: 12px; padding: 3px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; font-weight: 500; }
   .band-sections { display: flex; flex-direction: column; gap: 12px; }
   .band-section { padding: 12px 14px; border-radius: 10px; border: 1px solid #f3f4f6; background: #fafafa; }
-  .band-section-name {  font-size: 11px;  color: #6b7280;  font-weight: 700;  margin-bottom: 8px;  letter-spacing: 0.08em;  text-transform: uppercase; }
+  .band-section-name { font-size: 11px; color: #6b7280; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
   .key-group-block { background: #f0f4ff; border: 1px solid #e0e7ff; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
   .key-group-block:last-child { margin-bottom: 0; }
   .key-group-label { font-size: 10px; font-weight: 700; color: #6b7280; letter-spacing: 0.08em; margin-bottom: 4px; }
@@ -153,7 +151,7 @@
   .capo-fret { font-size: 22px; font-weight: 600; color: #111; line-height: 1.2; }
   .capo-fret span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 4px; }
   .capo-section-block { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; margin-top: 8px; }
-  .capo-section-name {   font-size: 11px; color: #6b7280; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;}
+  .capo-section-name { font-size: 11px; color: #6b7280; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
   .capo-chord-line { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; padding: 2px 0; }
   .capo-chord-line + .capo-chord-line { border-top: 1px dashed #e5e7eb; margin-top: 4px; padding-top: 6px; }
   body.dark .capo-chord-line + .capo-chord-line { border-color: #2a2a2a; }
@@ -174,13 +172,11 @@
   .lineup-song-key { font-size: 20px; color: #6b7280; margin-bottom: 8px; }
   .lineup-yt-input { width: 100%; font-size: 12px; padding: 5px 9px; border: 1px solid #e5e7eb; border-radius: 7px; background: #f9fafb; color: #111; outline: none; font-family: monospace; }
   .lineup-yt-input:focus { border-color: #6b7280; background: #fff; }
-  /* thumbnail: small fixed-size video in top-right of card */
   .lineup-thumb { flex-shrink: 0; width: 112px; }
   .lineup-thumb-video { width: 112px; height: 63px; border-radius: 7px; overflow: hidden; position: relative; background: #000; cursor: pointer; }
   .lineup-thumb-video iframe { width: 200%; height: 200%; border: none; display: block; transform: scale(0.5); transform-origin: top left; pointer-events: none; }
   .lineup-thumb-expand { display: block; text-align: center; font-size: 10px; color: #6b7280; margin-top: 3px; cursor: pointer; text-decoration: none; }
   .lineup-thumb-expand:hover { color: #1d4ed8; }
-  /* expanded embed */
   .lineup-embed { margin-top: 8px; border-radius: 8px; overflow: hidden; display: none; }
   .lineup-embed.open { display: block; }
   .lineup-embed iframe { width: 100%; height: 180px; border: none; display: block; }
@@ -212,7 +208,6 @@
   .overview-btn.active { border-color: #1d4ed8; color: #1d4ed8; background: #eff6ff; }
   body.dark .overview-btn { border-color: #333; color: #555; background: none; }
   body.dark .overview-btn.active { border-color: #2563eb; color: #60a5fa; background: #1e3a5f; }
-  /* overview mode: compact rows */
   .lineup-screen.overview .lineup-leader-row,
   .lineup-screen.overview .lineup-yt-input,
   .lineup-screen.overview .lineup-embed,
@@ -271,260 +266,196 @@
   .lineup-screen.overview .lineup-service-time { display: none; }
 
   /* DATE */
-  .date-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: auto;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    user-select: none;
-  }
+  .date-pill { display: inline-flex; align-items: center; justify-content: center; text-align: center; width: auto; padding: 0; border: none; border-radius: 0; background: transparent; user-select: none; }
   .date-pill-text { font-size: 13px; font-weight: 700; color: #111; line-height: 1.2; text-align: center; }
   .date-pill-week { font-size: 10px; text-align: center; }
   body.dark .date-pill { background: transparent; border-color: transparent; }
   body.dark .date-pill-text { color: #f0f0f0; }
   body.dark .date-pill-week { color: #555; }
 
- /* ── MOBILE ─────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .app { padding: 10px; }
+  /* ── SONG LIBRARY ─────────────────────────────────────── */
+  .library-screen { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+  body.dark .library-screen { background: #1a1a1a; border-color: #2a2a2a; }
 
-  /* status bar: tighter */
-  .status-bar { padding: 6px 12px; }
+  .library-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
+  .library-title { font-size: 13px; font-weight: 700; color: #6b7280; letter-spacing: 0.06em; text-transform: uppercase; }
+  body.dark .library-title { color: #555; }
 
-  /* top bar: date first line, mode buttons second line */
-  .top-bar {
-    gap: 6px;
-    flex-direction: column;
-    align-items: stretch;
-  }
+  .library-search { flex: 1; min-width: 140px; font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; outline: none; }
+  .library-search:focus { border-color: #6b7280; background: #fff; }
+  body.dark .library-search { background: #222; border-color: #333; color: #f0f0f0; }
+  body.dark .library-search:focus { background: #2a2a2a; border-color: #555; }
+  .library-search::placeholder { color: #9ca3af; }
 
-  .top-bar > .date-pill {
-    display: inline-flex;
-    width: auto !important;
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  .library-empty { color: #9ca3af; font-size: 13px; font-style: italic; padding: 20px 0; text-align: center; }
 
-  .date-pill {
-    padding: 0;
-    justify-content: center;
-    text-align: center;
-  }
+  .library-song-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+  body.dark .library-song-row { border-color: #2a2a2a; }
+  .library-song-row:last-child { border-bottom: none; padding-bottom: 0; }
 
-  .date-pill-text {
-    font-size: 12px;
-    font-weight: 700;
-    text-align: center;
-  }
+  .library-song-info { flex: 1; min-width: 0; }
+  .library-song-name { font-size: 16px; font-weight: 600; color: #111; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body.dark .library-song-name { color: #f0f0f0; }
+  .library-song-keys { font-size: 12px; color: #6b7280; }
+  body.dark .library-song-keys { color: #555; }
+  .library-song-sections { font-size: 11px; color: #9ca3af; margin-top: 1px; }
 
-  .date-pill-week {
-    font-size: 10px;
-    text-align: center;
-  }
+  .library-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
 
-  .mode-toggle {
-    width: 100%;
-    flex: none;
-    display: flex;
-  }
+  .lib-load-btn { font-size: 12px; padding: 5px 10px; border: 1px solid #bfdbfe; border-radius: 7px; background: #eff6ff; color: #1d4ed8; cursor: pointer; font-weight: 500; white-space: nowrap; }
+  .lib-load-btn:hover { background: #dbeafe; }
+  body.dark .lib-load-btn { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
+  body.dark .lib-load-btn:hover { background: #1e40af; }
 
-  .mode-btn {
-    flex: 1;
-    padding: 9px 4px;
-    font-size: 11px;
-    text-align: center;
-  }
+  .lib-delete-btn { font-size: 12px; padding: 5px 8px; border: 1px solid #fca5a5; border-radius: 7px; background: #fff5f5; color: #ef4444; cursor: pointer; line-height: 1; }
+  .lib-delete-btn:hover { background: #fee2e2; }
+  body.dark .lib-delete-btn { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
+  body.dark .lib-delete-btn:hover { background: #3a1a1a; }
 
-    /* mobile song tabs: equal width from left to right */
-.tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 5px;
-  padding: 0 2px;
-  margin-bottom: 6px;
-  width: 100%;
-}
+  /* Save to Library button in Edit mode */
+  .save-to-lib-btn { font-size: 11px; padding: 5px 10px; border: 1px solid #a7f3d0; border-radius: 7px; background: #ecfdf5; color: #059669; cursor: pointer; font-weight: 600; white-space: nowrap; transition: all 0.15s; }
+  .save-to-lib-btn:hover { background: #d1fae5; }
+  .save-to-lib-btn.saved { background: #d1fae5; border-color: #6ee7b7; color: #047857; }
+  body.dark .save-to-lib-btn { background: #052e16; border-color: #065f46; color: #34d399; }
+  body.dark .save-to-lib-btn:hover { background: #064e3b; }
+  body.dark .save-to-lib-btn.saved { background: #064e3b; }
 
-.tab-btn {
-  flex: 1 1 0;
-  width: auto;
-  height: 34px;
-  padding: 0;
-  border-radius: 8px;
-  border: 1.5px solid #d1d5db;
-  border-bottom: 1.5px solid #d1d5db;
-  background: #f0f0f0;
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 0;
-  margin-right: 0;
-}
+  /* Load slot picker overlay */
+  .slot-picker { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 999; }
+  .slot-picker-box { background: #fff; border-radius: 14px; padding: 20px 24px; min-width: 260px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+  body.dark .slot-picker-box { background: #1a1a1a; border: 1px solid #333; }
+  .slot-picker-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  body.dark .slot-picker-title { color: #f0f0f0; }
+  .slot-picker-sub { font-size: 12px; color: #6b7280; margin-bottom: 14px; }
+  .slot-picker-grid { display: flex; flex-direction: column; gap: 7px; }
+  .slot-picker-btn { font-size: 13px; padding: 9px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #f9fafb; color: #111; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+  .slot-picker-btn:hover { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+  body.dark .slot-picker-btn { background: #222; border-color: #333; color: #f0f0f0; }
+  body.dark .slot-picker-btn:hover { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
+  .slot-picker-btn-key { font-size: 11px; color: #9ca3af; }
+  .slot-picker-cancel { margin-top: 10px; width: 100%; font-size: 12px; padding: 8px; border-radius: 8px; border: 1px solid #e5e7eb; background: transparent; color: #6b7280; cursor: pointer; }
+  .slot-picker-cancel:hover { background: #f3f4f6; }
+  body.dark .slot-picker-cancel { border-color: #333; color: #555; }
+  body.dark .slot-picker-cancel:hover { background: #222; }
 
-.tab-btn.active {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
-  color: #fff;
-  border-bottom-color: #1d4ed8;
-}
+  /* ── MOBILE ─────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .app { padding: 10px; }
+    .status-bar { padding: 6px 12px; }
+    .top-bar { gap: 6px; flex-direction: column; align-items: stretch; }
+    .top-bar > .date-pill { display: inline-flex; width: auto !important; align-self: center; margin-left: auto; margin-right: auto; }
+    .date-pill { padding: 0; justify-content: center; text-align: center; }
+    .date-pill-text { font-size: 12px; font-weight: 700; text-align: center; }
+    .date-pill-week { font-size: 10px; text-align: center; }
+    .mode-toggle { width: 100%; flex: none; display: flex; }
+    .mode-btn { flex: 1; padding: 9px 4px; font-size: 11px; text-align: center; }
 
-body.dark .tab-btn {
-  background: #222;
-  border-color: #333;
-  color: #666;
-}
+    .tabs { display: flex; flex-wrap: nowrap; gap: 5px; padding: 0 2px; margin-bottom: 6px; width: 100%; }
+    .tab-btn { flex: 1 1 0; width: auto; height: 34px; padding: 0; border-radius: 8px; border: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; background: #f0f0f0; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; bottom: 0; margin-right: 0; }
+    .tab-btn.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; border-bottom-color: #1d4ed8; }
+    body.dark .tab-btn { background: #222; border-color: #333; color: #666; }
+    body.dark .tab-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
 
-body.dark .tab-btn.active {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: #fff;
-}	
-
-    /* panels: less padding */
     .song-panel, .band-screen, .capo-screen, .lineup-screen { padding: 12px; border-radius: 0 10px 10px 10px; }
-
-    /* EDIT: stack label above input instead of side-by-side */
     .section-row { grid-template-columns: 1fr; gap: 3px; }
     .section-label { padding-top: 0; font-size: 11px; }
     .panel-header { gap: 8px; }
     .song-title-input { font-size: 15px; }
-
-    /* key buttons: slightly bigger tap area */
     .key-btn { padding: 6px 10px; font-size: 12px; }
-
-    /* BAND: slightly smaller chords so they don't clip */
     .band-chord { font-size: 22px; }
     .band-song-title { font-size: 17px; }
-
-    /* CAPO */
     .capo-song-title { font-size: 17px; }
     .capo-fret { font-size: 19px; }
     .capo-chord { font-size: 19px; }
-
-    /* LINEUP: scale down the big text a touch for phones */
     .lineup-num { font-size: 28px; width: 36px; }
     .lineup-song-name { font-size: 20px; }
     .lineup-song-key { font-size: 15px; }
-
-    /* thumbnail stays, but tighter */
     .lineup-thumb { width: 90px; }
     .lineup-thumb-video { width: 90px; height: 51px; }
     .lineup-embed iframe { height: 200px; }
+
+    .edit-key-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; width: 100%; }
+    .edit-key-row .key-selector { display: contents; }
+    .edit-key-row .key-btn, .edit-key-row .reset-btn { width: 100%; padding: 7px 0; text-align: center; font-size: 11px; }
+    .edit-title-row { flex-direction: column; align-items: stretch; }
+    .edit-youtube-input { width: 100%; }
   }
 
-.edit-title-row {
+  .edit-title-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-bottom: 10px; }
+  .edit-youtube-input { width: 230px; font-size: 12px; padding: 6px 9px; border: 1px solid #e5e7eb; border-radius: 7px; background: #f9fafb; color: #111; outline: none; font-family: monospace; }
+  .edit-youtube-input:focus { border-color: #6b7280; background: #fff; }
+  .edit-key-row { display: flex; justify-content: flex-start; gap: 6px; align-items: center; flex-wrap: wrap; }
+  body.dark .edit-youtube-input { background: #222; border-color: #2a2a2a; color: #f0f0f0; }
+
+  .reset-sunday-btn { font-size: 11px; padding: 6px 10px; border: 1px solid #fca5a5; border-radius: 8px; background: #fff5f5; color: #ef4444; cursor: pointer; font-weight: 600; white-space: nowrap; }
+  .reset-sunday-btn:hover { background: #fee2e2; }
+  .copy-lineup-btn { font-size: 12px; padding: 5px 10px; border: 1px solid #bfdbfe; border-radius: 8px; background: #eff6ff; color: #1d4ed8; cursor: pointer; font-weight: 600; white-space: nowrap; }
+  .copy-lineup-btn:hover { background: #dbeafe; }
+  .lineup-header-actions { display: flex; align-items: center; gap: 8px; }
+  body.dark .reset-sunday-btn { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
+  body.dark .copy-lineup-btn { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
+
+  .lineup-reset-wrap { margin-top: 14px; display: flex; justify-content: stretch; }
+  .lineup-reset-wrap .reset-sunday-btn { width: 100%; padding: 8px 14px; }
+  .lineup-screen.overview ~ .lineup-reset-wrap { display: none !important; }
+
+  @media (max-width: 600px) {
+    .status-bar { position: relative; }
+    .status-date { left: 50%; transform: translateX(-50%); max-width: 58%; }
+    .status-date .date-pill-text { font-size: 11px; white-space: nowrap; }
+  }
+
+.edit-youtube-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  margin-bottom: 10px;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.edit-youtube-input {
-  width: 230px;
-  font-size: 12px;
-  padding: 6px 9px;
-  border: 1px solid #e5e7eb;
-  border-radius: 7px;
-  background: #f9fafb;
-  color: #111;
-  outline: none;
-  font-family: monospace;
-}
-
-.edit-youtube-input:focus {
-  border-color: #6b7280;
-  background: #fff;
-}
-
-.edit-key-row {
-  display: flex;
-  justify-content: flex-start;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-body.dark .edit-youtube-input {
-  background: #222;
-  border-color: #2a2a2a;
-  color: #f0f0f0;
+.edit-youtube-row .edit-youtube-input {
+  width: 290px;
 }
 
 @media (max-width: 600px) {
   .edit-title-row {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row !important;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 12px;
   }
 
-  .edit-youtube-input {
+  .song-title-input {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .edit-youtube-row {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
     width: 100%;
   }
-}
 
-.reset-sunday-btn {
-  font-size: 11px;
-  padding: 6px 10px;
-  border: 1px solid #fca5a5;
-  border-radius: 8px;
-  background: #fff5f5;
-  color: #ef4444;
-  cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
-}
+  .edit-youtube-row .edit-youtube-input {
+    flex: 1;
+    width: auto !important;
+    height: 34px;
+  }
 
-.reset-sunday-btn:hover {
-  background: #fee2e2;
-}
+  .edit-youtube-row .save-to-lib-btn {
+    width: auto;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
 
-.copy-lineup-btn {
-  font-size: 12px;
-  padding: 5px 10px;
-  border: 1px solid #bfdbfe;
-  border-radius: 8px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.copy-lineup-btn:hover {
-  background: #dbeafe;
-}
-
-.lineup-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-body.dark .reset-sunday-btn {
-  background: #2a1a1a;
-  border-color: #7f1d1d;
-  color: #f87171;
-}
-
-body.dark .copy-lineup-btn {
-  background: #1e3a5f;
-  border-color: #2563eb;
-  color: #60a5fa;
-}
-
-@media (max-width: 600px) {
   .edit-key-row {
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 6px;
     width: 100%;
   }
 
@@ -535,45 +466,52 @@ body.dark .copy-lineup-btn {
   .edit-key-row .key-btn,
   .edit-key-row .reset-btn {
     width: 100%;
-    padding: 7px 0;
+    height: 34px;
+    padding: 0;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px;
+    border-radius: 7px;
   }
 }
 
-.lineup-reset-wrap {
-  margin-top: 14px;
+/* YouTube + Save button full width on desktop */
+.edit-youtube-row {
   display: flex;
-  justify-content: stretch;
-}
-
-.lineup-reset-wrap .reset-sunday-btn {
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  padding: 8px 14px;
+  margin-bottom: 12px;
 }
 
+.edit-youtube-row .edit-youtube-input {
+  flex: 1;
+  width: auto !important;
+  height: 36px;
+}
+
+.edit-youtube-row .save-to-lib-btn {
+  height: 36px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
 
 
 @media (max-width: 600px) {
-  .status-bar {
-    position: relative;
+  .edit-youtube-row {
+    gap: 6px;
   }
 
-  .status-date {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 58%;
+  .edit-youtube-row .edit-youtube-input {
+    flex: 1;
+    width: auto !important;
+    height: 34px;
   }
 
-  .status-date .date-pill-text {
+  .edit-youtube-row .save-to-lib-btn {
+    height: 34px;
+    padding: 0 10px;
     font-size: 11px;
-    white-space: nowrap;
   }
-}
-
-
-.lineup-screen.overview ~ .lineup-reset-wrap {
-  display: none !important;
 }
 
 </style>
@@ -582,14 +520,12 @@ body.dark .copy-lineup-btn {
 
 <div class="status-bar">
   <button class="rvcm-btn" onclick="toggleDark()">RVCM</button>
-
   <div class="date-pill status-date" id="datePill" title="Automatically shows upcoming Sunday">
     <div>
       <div class="date-pill-text" id="datePillText">Sunday</div>
       <div class="date-pill-week" id="datePillWeek"></div>
     </div>
   </div>
-
   <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting...</span></span>
 </div>
 
@@ -601,17 +537,27 @@ body.dark .copy-lineup-btn {
       <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
+      <button class="mode-btn" id="btnLibrary" onclick="setMode('library')">Library</button>
     </div>
   </div>
-  <!-- FIX 3 & 6: tab bar is hidden in lineup, and sits flush against the panel below -->
   <div class="tabs" id="tabBar"></div>
   <div id="mainPanel"></div>
   <div class="sync-indicator" id="syncIndicator"></div>
 </div>
 
+<!-- Slot picker overlay (hidden by default) -->
+<div class="slot-picker" id="slotPicker" style="display:none;" onclick="closeSlotPicker(event)">
+  <div class="slot-picker-box">
+    <div class="slot-picker-title" id="slotPickerTitle">Load into slot</div>
+    <div class="slot-picker-sub">Choose which song slot to replace</div>
+    <div class="slot-picker-grid" id="slotPickerGrid"></div>
+    <button class="slot-picker-cancel" onclick="closeSlotPicker()">Cancel</button>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, set, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAKLrXYXoJnW9qVB5Etx3SlTV1yfoNPkug",
@@ -646,43 +592,27 @@ const SCALE = {
   'B':['B','C#m','D#m','E','F#','G#m','A#'],
 };
 
-// Returns array of lines, each line is array of {num, chord}
-// Supports suffix notation: 17 = chord 1 with 7th (e.g. C7), 27 = Dm7, etc.
 function parseToken(n, scale) {
-  // Supports:
-  // 1      = C
-  // 17     = C7
-  // 1/7    = C/B
-  // 17/7   = C7/B
-
   const [mainPart, bassPart] = n.split('/');
-
   const mainMatch = mainPart.match(/^([1-7])(.*)$/);
   if (!mainMatch) return { num: n, chord: n };
-
   const mainNumber = mainMatch[1];
   const suffix = mainMatch[2];
-
   const baseChord = scale[parseInt(mainNumber) - 1];
   let chord = baseChord + suffix;
-
   if (bassPart) {
     const bassMatch = bassPart.match(/^([1-7])$/);
-
     if (bassMatch) {
       const bassChord = scale[parseInt(bassPart) - 1];
-
-      // Bass should be a note only, so Dm becomes D, Am becomes A, etc.
       const bassNote = bassChord.replace('m', '');
-
       chord += '/' + bassNote;
     } else {
       chord += '/' + bassPart;
     }
   }
-
   return { num: n, chord };
 }
+
 function numToLines(input, key) {
   const scale = SCALE[key] || SCALE['C'];
   return (input || '').split('\n').map(l => l.trim()).filter(l => l).map(line =>
@@ -720,7 +650,7 @@ function getYoutubeId(url) {
 
 const LEADERS = ['','She','Xymon','Erica','JM','Patty','Francis','Women'];
 const INSTRUMENTS = [
-  { key:'drums',   label:'Drums',    members:['','Ochin','JC','Jerome', 'Jirah'] },
+  { key:'drums',   label:'Drums',    members:['','Ochin','JC','Jerome','Jirah'] },
   { key:'bass',    label:'Bass',     members:['','Ochin','Xymon'] },
   { key:'eguitar', label:'E Guitar', members:['','Ochin','JM'] },
   { key:'aguitar', label:'A Guitar', members:['','Frankie','Ochin','JM'] },
@@ -736,47 +666,41 @@ const defaultSongs = Array.from({length:6},(_,i)=>({
 }));
 
 let roster = defaultRoster();
-
 let songs = JSON.parse(JSON.stringify(defaultSongs));
 let active = 0;
 let mode = 'lineup';
 let saveTimeout = null;
 let overviewMode = false;
 
-// DATE — always automatic upcoming Sunday
+// ── LIBRARY STATE ──────────────────────────────────────
+let library = {}; // { firebaseKey: { title, keys, sections, savedAt } }
+let pendingLibrarySong = null; // song waiting to be loaded into a slot
+
+// DATE
 function nextSunday() {
   const d = new Date();
-  const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-
-  // Sunday should show today.
-  // Monday-Saturday should show the next upcoming Sunday.
+  const day = d.getDay();
   const diff = day === 0 ? 0 : 7 - day;
-
   d.setDate(d.getDate() + diff);
   return d.toISOString().slice(0, 10);
 }
-
 let serviceDate = nextSunday();
 
 function sundayWeekOfMonth(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
-  // Which Sunday of the month is this? Count Sundays up to and including this date
   const day = d.getDate();
-  // Find first Sunday of the month
   const first = new Date(d.getFullYear(), d.getMonth(), 1);
   const firstSunday = first.getDay() === 0 ? 1 : 8 - first.getDay();
   const weekNum = Math.floor((day - firstSunday) / 7) + 1;
   const labels = ['1st','2nd','3rd','4th','5th'];
   return labels[weekNum - 1] || weekNum + 'th';
 }
-
 function formatServiceDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const ord = sundayWeekOfMonth(dateStr);
   return `${ord} Sunday — ${months[d.getMonth()]} ${d.getDate()}`;
 }
-
 function renderDatePill() {
   const textEl = document.getElementById('datePillText');
   const weekEl = document.getElementById('datePillWeek');
@@ -789,12 +713,10 @@ function renderDatePill() {
 
 window.resetSunday = () => {
   if (!confirm('Reset this Sunday lineup? This will clear songs, leaders, notes, YouTube links, chords, and band roster.')) return;
-
   songs = JSON.parse(JSON.stringify(defaultSongs));
   roster = defaultRoster();
   active = 0;
   overviewMode = false;
-
   Promise.all([
     set(songsRef, songs),
     set(rosterRef, roster)
@@ -810,6 +732,7 @@ window.toggleDark = () => {
 };
 if (localStorage.getItem('rvcm-dark')==='1') document.body.classList.add('dark');
 
+// ── FIREBASE REFS ──────────────────────────────────────
 const rosterRef = ref(db, 'roster');
 onValue(rosterRef, snap => {
   const val = snap.val();
@@ -823,26 +746,27 @@ onValue(songsRef, snap => {
   const data = snap.val();
   if (data) {
     const arr = Array.isArray(data) ? data : Object.values(data);
-songs = [...arr];
-
-while (songs.length < 6) {
-  songs.push(JSON.parse(JSON.stringify(defaultSongs[songs.length])));
-}
-
-songs = songs.slice(0, 6).map((s, i) => ({
-  ...defaultSongs[i],
-  ...s,
-  keys: s.keys ? s.keys : (s.key ? [s.key] : ['—']),
-  youtube: s.youtube || '',
-  notes: s.notes || '',
-  leader: s.leader || ''
-}));
+    songs = [...arr];
+    while (songs.length < 6) songs.push(JSON.parse(JSON.stringify(defaultSongs[songs.length])));
+    songs = songs.slice(0, 6).map((s, i) => ({
+      ...defaultSongs[i], ...s,
+      keys: s.keys ? s.keys : (s.key ? [s.key] : ['—']),
+      youtube: s.youtube || '', notes: s.notes || '', leader: s.leader || ''
+    }));
     if (active >= songs.length) active = 0;
   }
   render();
 }, () => {
   document.getElementById('statusDot').className = 'status-dot';
   document.getElementById('statusText').textContent = 'disconnected';
+});
+
+// ── LIBRARY FIREBASE ───────────────────────────────────
+const libraryRef = ref(db, 'library');
+onValue(libraryRef, snap => {
+  const val = snap.val();
+  library = val || {};
+  if (mode === 'library') renderPanel();
 });
 
 function saveToFirebase() {
@@ -858,11 +782,134 @@ function saveToFirebase() {
   }, 600);
 }
 
+// ── LIBRARY ACTIONS ────────────────────────────────────
+
+// Save current active song to the library
+window.saveToLibrary = () => {
+  const s = songs[active];
+  const title = s.title && s.title !== `Song ${active+1}` ? s.title : null;
+  if (!title) {
+    alert('Give this song a title before saving to the library.');
+    return;
+  }
+
+  // Check if a song with the same title already exists
+  const existing = Object.entries(library).find(([,v]) => v.title.toLowerCase() === title.toLowerCase());
+  if (existing) {
+    if (!confirm(`"${title}" is already in the library. Overwrite it with the current chords?`)) return;
+    // Overwrite
+    const [existingKey] = existing;
+    set(ref(db, 'library/' + existingKey), {
+      title: s.title,
+      keys: s.keys,
+      sections: { ...s.sections },
+      savedAt: Date.now()
+    }).then(() => {
+      flashSaveBtn();
+      document.getElementById('syncIndicator').textContent = `"${s.title}" updated in library`;
+    });
+    return;
+  }
+
+  push(libraryRef, {
+    title: s.title,
+    keys: s.keys,
+    sections: { ...s.sections },
+    savedAt: Date.now()
+  }).then(() => {
+    flashSaveBtn();
+    document.getElementById('syncIndicator').textContent = `"${s.title}" saved to library`;
+  });
+};
+
+function flashSaveBtn() {
+  const btn = document.getElementById('saveToLibBtn');
+  if (!btn) return;
+  btn.textContent = '✓ Saved!';
+  btn.classList.add('saved');
+  setTimeout(() => {
+    btn.textContent = '+ Save to Library';
+    btn.classList.remove('saved');
+  }, 2000);
+}
+
+window.deleteFromLibrary = (key) => {
+  const song = library[key];
+  if (!song) return;
+  if (!confirm(`Remove "${song.title}" from the library?`)) return;
+  remove(ref(db, 'library/' + key)).then(() => {
+    document.getElementById('syncIndicator').textContent = `"${song.title}" removed`;
+  });
+};
+
+window.promptLoadLibrarySong = (key) => {
+  const song = library[key];
+  if (!song) return;
+  pendingLibrarySong = { key, song };
+
+  // Build slot picker
+  const grid = document.getElementById('slotPickerGrid');
+  const title = document.getElementById('slotPickerTitle');
+  title.textContent = `Load "${song.title}"`;
+
+  grid.innerHTML = songs.map((s, i) => {
+    const slotName = s.title && s.title !== `Song ${i+1}` ? s.title : `(empty slot ${i+1})`;
+    const keyLabel = s.keys && s.keys[0] !== '—' ? s.keys.join('/') : '';
+    return `<button class="slot-picker-btn" onclick="loadIntoSlot(${i})">
+      <span>${i+1}. ${slotName}</span>
+      ${keyLabel ? `<span class="slot-picker-btn-key">${keyLabel}</span>` : ''}
+    </button>`;
+  }).join('');
+
+  document.getElementById('slotPicker').style.display = 'flex';
+};
+
+window.loadIntoSlot = (slotIndex) => {
+  if (!pendingLibrarySong) return;
+  const { song } = pendingLibrarySong;
+
+  songs[slotIndex] = {
+    ...defaultSongs[slotIndex],
+    title: song.title,
+    keys: song.keys || ['—'],
+    sections: { ...defaultSongs[0].sections, ...song.sections },
+    youtube: songs[slotIndex].youtube || '',
+    notes: songs[slotIndex].notes || '',
+    leader: songs[slotIndex].leader || ''
+  };
+
+  closeSlotPicker();
+  active = slotIndex;
+  mode = 'zed';
+
+  saveToFirebase();
+  render();
+  document.getElementById('btnZed').classList.add('active');
+  ['schedule','lineup','band','capo','library'].forEach(x => {
+    const btn = document.getElementById('btn' + x[0].toUpperCase() + x.slice(1));
+    if (btn) btn.classList.remove('active');
+  });
+  document.getElementById('syncIndicator').textContent = `"${song.title}" loaded into slot ${slotIndex+1}`;
+};
+
+window.closeSlotPicker = (e) => {
+  if (e && e.target !== document.getElementById('slotPicker')) return;
+  document.getElementById('slotPicker').style.display = 'none';
+  pendingLibrarySong = null;
+};
+
+// ── LIBRARY SEARCH ─────────────────────────────────────
+window.onLibrarySearch = (val) => {
+  renderLibraryList(val.toLowerCase());
+};
+
+// ── MODES & TABS ───────────────────────────────────────
 window.setMode = m => {
   mode = m;
-  ['lineup','zed','band','capo','schedule'].forEach(x =>
-    document.getElementById('btn'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active', m===x)
-  );
+  ['lineup','zed','band','capo','schedule','library'].forEach(x => {
+    const btn = document.getElementById('btn' + x[0].toUpperCase() + x.slice(1));
+    if (btn) btn.classList.toggle('active', m === x);
+  });
   renderTabs();
   renderPanel();
 };
@@ -884,18 +931,15 @@ window.clearChords = i => {
 window.toggleKey = k => {
   const s = songs[active];
   if (k === '—') {
-    // selecting — clears everything and sets just —
     s.keys = ['—'];
   } else {
     const idx = s.keys.indexOf(k);
     if (idx === -1) {
-      // adding a real key — remove — if present
       s.keys = s.keys.filter(x => x !== '—');
       s.keys.push(k);
       s.keys.sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b));
     } else {
       s.keys.splice(idx, 1);
-      // if nothing left, fall back to —
       if (s.keys.length === 0) s.keys = ['—'];
     }
   }
@@ -936,7 +980,6 @@ function buildPreviewHtml(v, keys) {
 window.onLeaderChange = (i, v) => {
   songs[i].leader = v;
   saveToFirebase();
-  // re-style the select
   const sel = document.getElementById('leader-' + i);
   if (sel) sel.className = 'leader-select' + (v ? ' picked' : '');
 };
@@ -944,7 +987,6 @@ window.onLeaderChange = (i, v) => {
 window.onLineupNotesBlur = (i, el) => {
   songs[i].notes = el.value;
   saveToFirebase();
-  // sync the overview-notes read-only display
   const overviewNotes = el.parentElement.querySelector('.overview-notes');
   if (overviewNotes) {
     overviewNotes.textContent = el.value;
@@ -967,52 +1009,30 @@ window.copyLineup = async () => {
       const hasSections = SECTIONS.some(sec => s.sections && s.sections[sec]);
       return hasTitle || hasSections || s.youtube;
     });
-
   const songLines = activeSongs.map(s => {
-    const keyText = s.keys && s.keys[0] !== '—'
-      ? s.keys.join(' / ')
-      : 'No key';
-
+    const keyText = s.keys && s.keys[0] !== '—' ? s.keys.join(' / ') : 'No key';
     return `${s.title || 'Song ' + s.number} - ${keyText}`;
   });
-
-  const text = [
-    formatServiceDate(serviceDate),
-    '',
-    songLines.join('\n') || 'No songs yet.'
-  ].join('\n');
-
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (err) {
-    prompt('Copy this lineup:', text);
-  }
+  const text = [formatServiceDate(serviceDate), '', songLines.join('\n') || 'No songs yet.'].join('\n');
+  try { await navigator.clipboard.writeText(text); }
+  catch (err) { prompt('Copy this lineup:', text); }
 };
+
 window.toggleOverview = () => {
   overviewMode = !overviewMode;
   const screen = document.querySelector('.lineup-screen');
   const btn = document.getElementById('overviewBtn');
   if (screen) screen.classList.toggle('overview', overviewMode);
   if (btn) btn.classList.toggle('active', overviewMode);
-  // also hide/show band roster
-  const roster = document.querySelector('.band-roster');
-  if (roster) roster.style.display = overviewMode ? 'none' : '';
+  const rosterEl = document.querySelector('.band-roster');
+  if (rosterEl) rosterEl.style.display = overviewMode ? 'none' : '';
 };
 
 window.updateNotesStyle = el => {
   el.classList.toggle('has-content', el.value.trim().length > 0);
 };
-
-window.onNotesBlur = v => {
-  songs[active].notes = v;
-  saveToFirebase();
-};
-
-window.onYoutubeBlur = (i, v) => {
-  songs[i].youtube = v;
-  saveToFirebase();
-  renderPanel();
-};
+window.onNotesBlur = v => { songs[active].notes = v; saveToFirebase(); };
+window.onYoutubeBlur = (i, v) => { songs[i].youtube = v; saveToFirebase(); renderPanel(); };
 
 function songHasContent(s, i) {
   const hasTitle = s.title && s.title !== `Song ${i+1}`;
@@ -1021,18 +1041,12 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
-  // No tabs in lineup or schedule mode
-  if (mode === 'lineup' || mode === 'schedule') {
+  if (mode === 'lineup' || mode === 'schedule' || mode === 'library') {
     document.getElementById('tabBar').innerHTML = '';
     return;
   }
-
-  // FIX 2: in band/capo, show ALL songs that have content PLUS the active one
-  // (so clicking a song won't make it disappear from the tab bar)
   const tabBar = document.getElementById('tabBar');
   tabBar.innerHTML = songs.map((s,i) => {
-    // In edit mode: always show all 5 tabs
-    // In band/capo: show tabs that have content, or the currently active one
     const show = mode === 'zed' || songHasContent(s, i) || i === active;
     if (!show) return '';
     return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})" title="${s.title||'Song '+(i+1)}">${i+1}</button>`;
@@ -1040,14 +1054,9 @@ function renderTabs() {
 }
 
 function renderPanel() {
-  if (mode === 'lineup') {
-    document.getElementById('mainPanel').innerHTML = renderLineup();
-    return;
-  }
-  if (mode === 'schedule') {
-    document.getElementById('mainPanel').innerHTML = renderSchedule();
-    return;
-  }
+  if (mode === 'lineup') { document.getElementById('mainPanel').innerHTML = renderLineup(); return; }
+  if (mode === 'schedule') { document.getElementById('mainPanel').innerHTML = renderSchedule(); return; }
+  if (mode === 'library') { document.getElementById('mainPanel').innerHTML = renderLibraryScreen(); return; }
   document.getElementById('mainPanel').innerHTML =
     mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
   if (mode === 'zed') {
@@ -1060,19 +1069,18 @@ function renderPanel() {
   }
 }
 
+// ── RENDER FUNCTIONS ───────────────────────────────────
+
 function renderLineup() {
   const rows = songs.map((s, i) => {
     const hasTitle = s.title && s.title !== `Song ${i+1}`;
     const hasAnySections = SECTIONS.some(sec => s.sections[sec]);
     const ytId = getYoutubeId(s.youtube);
     const keyLabel = s.keys.length && s.keys[0] !== '—' ? s.keys.join(' / ') : null;
-
     if (!hasTitle && !hasAnySections && !s.youtube) return '';
-
     const leaderOpts = LEADERS.map(l =>
       `<option value="${l}" ${s.leader===l?'selected':''}>${l||'—'}</option>`
     ).join('');
-
     return `<div class="lineup-song-row">
       <span class="lineup-num">${i+1}</span>
       <div class="lineup-card">
@@ -1081,18 +1089,12 @@ function renderLineup() {
           <div class="lineup-song-key" style="${keyLabel?'':'color:#d1d5db;font-style:italic;'}">${keyLabel?'Key of '+keyLabel:'No key yet'}</div>
           <div class="lineup-leader-row">
             <span class="lineup-leader-label">Worship Lead:</span>
-            <select id="leader-${i}" class="leader-select${s.leader?' picked':''}"
-              onchange="onLeaderChange(${i}, this.value)">
-              ${leaderOpts}
-            </select>
+            <select id="leader-${i}" class="leader-select${s.leader?' picked':''}" onchange="onLeaderChange(${i}, this.value)">${leaderOpts}</select>
           </div>
           <textarea class="lineup-notes-input${s.notes?' has-content':''}" rows="1" placeholder="Notes.."
-            onblur="onLineupNotesBlur(${i}, this)"
-            oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
+            onblur="onLineupNotesBlur(${i}, this)" oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
           <div class="overview-notes${s.notes?' has-content':''}">${s.notes?s.notes.replace(/</g,'&lt;'):''}</div>
-          ${ytId ? `<div class="lineup-embed" id="embed-${i}">
-            <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe>
-          </div>` : ''}
+          ${ytId ? `<div class="lineup-embed" id="embed-${i}"><iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe></div>` : ''}
         </div>
         ${ytId ? `<div class="lineup-thumb">
           <div class="lineup-thumb-video" onclick="toggleEmbed(${i})" title="Click to expand">
@@ -1109,7 +1111,6 @@ function renderLineup() {
     return hasTitle || SECTIONS.some(sec=>s.sections[sec]) || s.youtube;
   });
 
-  // Band roster block
   const rosterHtml = INSTRUMENTS.map(inst => {
     const val = roster[inst.key] || '';
     const opts = inst.members.map(m =>
@@ -1117,10 +1118,7 @@ function renderLineup() {
     ).join('');
     return `<div class="roster-row">
       <span class="roster-instrument">${inst.label}</span>
-      <select id="roster-${inst.key}" class="roster-select${val?' assigned':''}"
-        onchange="onRosterChange('${inst.key}', this.value)">
-        ${opts}
-      </select>
+      <select id="roster-${inst.key}" class="roster-select${val?' assigned':''}" onchange="onRosterChange('${inst.key}', this.value)">${opts}</select>
     </div>`;
   }).join('');
 
@@ -1129,54 +1127,52 @@ function renderLineup() {
       <span class="overview-date" id="overviewDateLabel"></span>
       ${scheduleData.serviceTime ? `<span class="lineup-service-time">${scheduleData.serviceTime.replace(/</g,'&lt;')}</span>` : ''}
       <div class="lineup-header-actions">
-  <button class="copy-lineup-btn" onclick="copyLineup()">Copy</button>
-  <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
-</div>
+        <button class="copy-lineup-btn" onclick="copyLineup()">Copy</button>
+        <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
+      </div>
     </div>
     ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
- </div>
-<div class="band-roster"${overviewMode?' style="display:none"':''}>
-  <div class="band-roster-title">Band this Sunday</div>
-  <div class="roster-grid">${rosterHtml}</div>
-</div>
-
-<div class="lineup-reset-wrap"${overviewMode?' style="display:none"':''}>
-  <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
-</div>`;
+  </div>
+  <div class="band-roster"${overviewMode?' style="display:none"':''}>
+    <div class="band-roster-title">Band this Sunday</div>
+    <div class="roster-grid">${rosterHtml}</div>
+  </div>
+  <div class="lineup-reset-wrap"${overviewMode?' style="display:none"':''}>
+    <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
+  </div>`;
 }
 
 function renderZed() {
   const s = songs[active];
   return `<div class="song-panel">
     <div class="panel-header" style="display:block;">
-  <div class="edit-title-row">
-    <input class="song-title-input" value="${s.title}" placeholder="Song title..."
-      onblur="onTitleBlur(this.value)" />
-
-    <input class="edit-youtube-input" placeholder="Paste YouTube link..."
-      value="${s.youtube || ''}"
-      onblur="onYoutubeBlur(${active}, this.value)" />
-  </div>
-
-  <div class="edit-key-row">
-    <div class="key-selector">${KEYS.map(k=>
-      `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
-    ).join('')}</div>
-
-    <button class="reset-btn" onclick="clearChords(${active})" title="Reset this song">clear</button>
-  </div>
+      <div class="edit-title-row">
+  <input class="song-title-input" value="${s.title}" placeholder="Song title..."
+    onblur="onTitleBlur(this.value)" />
 </div>
+
+<div class="edit-youtube-row">
+  <input class="edit-youtube-input" placeholder="Paste YouTube link..."
+    value="${s.youtube || ''}"
+    onblur="onYoutubeBlur(${active}, this.value)" />
+
+  <button id="saveToLibBtn" class="save-to-lib-btn" onclick="saveToLibrary()">+ Save to Library</button>
+</div>
+      <div class="edit-key-row">
+        <div class="key-selector">${KEYS.map(k=>
+          `<button class="key-btn${k==='—'?' dash':''} ${s.keys.includes(k)?'active':''}" onclick="toggleKey('${k}')">${k}</button>`
+        ).join('')}</div>
+        <button class="reset-btn" onclick="clearChords(${active})" title="Reset this song">clear</button>
+      </div>
+    </div>
     <div class="divider"></div>
     <div class="sections">${SECTIONS.map(sec=>`
       <div class="section-row">
         <span class="section-label">${sec}</span>
         <div>
           <textarea class="section-input" rows="1" placeholder="${sec==='intro'?'e.g. 1 5 6 4&#10;1 6 4 5':''}"
-            onblur="onSectionBlur('${sec}', this.value)"
-            oninput="autoGrow(this)">${s.sections[sec]||''}</textarea>
-          <div class="chord-preview-wrap" id="preview-${sec}">
-            ${buildPreviewHtml(s.sections[sec]||'', s.keys)}
-          </div>
+            onblur="onSectionBlur('${sec}', this.value)" oninput="autoGrow(this)">${s.sections[sec]||''}</textarea>
+          <div class="chord-preview-wrap" id="preview-${sec}">${buildPreviewHtml(s.sections[sec]||'', s.keys)}</div>
         </div>
       </div>`).join('')}
     </div>
@@ -1190,48 +1186,39 @@ function renderBand() {
   const keyBlocks = realKeys.length === 0
     ? '<div class="empty-section" style="color:#d1d5db;font-style:italic;">No key yet.</div>'
     : realKeys.map((k, ki) => {
-    const sections = filled.map(sec => {
-      const lines = numToLines(s.sections[sec], k);
-      const linesHtml = lines.map(line =>
-        `<div class="band-chord-line">${line.map(p=>
-          `<div class="band-chord-group"><span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span></div>`
-        ).join('')}</div>`
-      ).join('');
-      return `<div class="band-section">
-        <div class="band-section-name">${sec}</div>
-        ${linesHtml}
-      </div>`;
-    }).join('');
-    return `<div class="band-key-block ${ki > 0 ? 'band-key-block--divider' : ''}">
-      <div class="band-key-header">Key of ${k}</div>
-      <div class="band-sections">${sections || '<div class="empty-section">No chords yet.</div>'}</div>
-    </div>`;
-  }).join('');
-  const bandMeta = [
-    s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
-  ].filter(Boolean).join('');
+        const sections = filled.map(sec => {
+          const lines = numToLines(s.sections[sec], k);
+          const linesHtml = lines.map(line =>
+            `<div class="band-chord-line">${line.map(p=>
+              `<div class="band-chord-group"><span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span></div>`
+            ).join('')}</div>`
+          ).join('');
+          return `<div class="band-section"><div class="band-section-name">${sec}</div>${linesHtml}</div>`;
+        }).join('');
+        return `<div class="band-key-block ${ki > 0 ? 'band-key-block--divider' : ''}">
+          <div class="band-key-header">Key of ${k}</div>
+          <div class="band-sections">${sections || '<div class="empty-section">No chords yet.</div>'}</div>
+        </div>`;
+      }).join('');
+  const bandMeta = s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : '';
   return `<div class="band-screen">
     <div class="band-song-title">${s.title}</div>
     ${bandMeta}
-    <div style="margin-top:${bandMeta?'12px':'0'}">
-    ${keyBlocks}
-    </div>
+    <div style="margin-top:${bandMeta?'12px':'0'}">${keyBlocks}</div>
   </div>`;
 }
 
 function renderCapo() {
   const s = songs[active];
   const filled = SECTIONS.filter(sec => s.sections[sec]);
-  const capoMeta = [
-    s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : ''
-  ].filter(Boolean).join('');
+  const capoMeta = s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : '';
   const realKeys = s.keys.filter(k => k !== '—');
   const capoOptionsHtml = realKeys.length === 0
     ? '<div class="empty-section" style="color:#d1d5db;font-style:italic;">No key yet.</div>'
     : realKeys.map((songKey, ki) => {
         const opts = getCapoOptions(songKey);
         if (!opts.length) return `<div class="capo-key-header">Key of ${songKey}</div><div class="empty-section">No capo within fret 8.</div>`;
-        const cards = opts.map((opt,oi) => {
+        const cards = opts.map(opt => {
           const fretLabel = opt.fret===0?'No capo':`Capo ${ORDINAL[opt.fret]} fret`;
           const sectionsHtml = filled.map(sec => {
             const lines = numToLines(s.sections[sec], songKey).map(line =>
@@ -1242,10 +1229,7 @@ function renderCapo() {
                 `<div class="capo-chord-group"><span class="capo-chord">${p.chord}</span><span class="capo-num">${p.num}</span></div>`
               ).join('')}</div>`
             ).join('');
-            return `<div class="capo-section-block">
-              <div class="capo-section-name">${sec}</div>
-              ${linesHtml}
-            </div>`;
+            return `<div class="capo-section-block"><div class="capo-section-name">${sec}</div>${linesHtml}</div>`;
           }).join('');
           return `<div class="capo-card">
             <div class="capo-fret">${fretLabel}<span>· play ${opt.shape} shapes</span></div>
@@ -1260,25 +1244,61 @@ function renderCapo() {
   return `<div class="capo-screen">
     <div class="capo-song-title">${s.title}</div>
     ${capoMeta}
-    <div style="margin-top:${capoMeta?'12px':'0'}">
-    <div class="capo-options">${capoOptionsHtml}</div>
-    </div>
+    <div style="margin-top:${capoMeta?'12px':'0'}"><div class="capo-options">${capoOptionsHtml}</div></div>
   </div>`;
 }
 
-window.toggleEmbed = i => {
-  const el = document.getElementById('embed-' + i);
-  if (!el) return;
-  el.classList.toggle('open');
-  const link = el.previousElementSibling && el.previousElementSibling.querySelector
-    ? null
-    : null;
-  // update expand label
-  const thumb = document.querySelector(`.lineup-thumb-expand[onclick="toggleEmbed(${i})"]`);
-  if (thumb) thumb.textContent = el.classList.contains('open') ? '▼ collapse' : '▶ expand';
+// ── LIBRARY RENDER ─────────────────────────────────────
+
+function renderLibraryScreen() {
+  const count = Object.keys(library).length;
+  return `<div class="library-screen">
+    <div class="library-header">
+      <span class="library-title">Song Library · ${count} song${count===1?'':'s'}</span>
+      <input class="library-search" id="librarySearch" placeholder="Search songs…"
+        oninput="onLibrarySearch(this.value)" />
+    </div>
+    <div id="libraryList">${buildLibraryListHtml('')}</div>
+  </div>`;
+}
+
+function buildLibraryListHtml(query) {
+  const entries = Object.entries(library)
+    .sort((a, b) => (a[1].title||'').localeCompare(b[1].title||''))
+    .filter(([,v]) => !query || v.title.toLowerCase().includes(query));
+
+  if (!entries.length) {
+    return query
+      ? `<div class="library-empty">No songs match "${query}".</div>`
+      : `<div class="library-empty">No songs saved yet. Open a song in Edit mode and tap "+ Save to Library".</div>`;
+  }
+
+  return entries.map(([key, song]) => {
+    const keys = (song.keys || ['—']).filter(k => k !== '—');
+    const keyLabel = keys.length ? keys.join(' / ') : 'No key';
+    const sectionCount = SECTIONS.filter(sec => song.sections && song.sections[sec]).length;
+    const sectionLabel = sectionCount ? `${sectionCount} section${sectionCount===1?'':'s'}` : 'No chords';
+
+    return `<div class="library-song-row">
+      <div class="library-song-info">
+        <div class="library-song-name">${song.title||'Untitled'}</div>
+        <div class="library-song-keys">Key of ${keyLabel}</div>
+        <div class="library-song-sections">${sectionLabel}</div>
+      </div>
+      <div class="library-actions">
+        <button class="lib-load-btn" onclick="promptLoadLibrarySong('${key}')">Load →</button>
+        <button class="lib-delete-btn" onclick="deleteFromLibrary('${key}')" title="Remove from library">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.renderLibraryList = (query) => {
+  const el = document.getElementById('libraryList');
+  if (el) el.innerHTML = buildLibraryListHtml(query || '');
 };
 
-// SCHEDULE DATA
+// ── SCHEDULE ───────────────────────────────────────────
 let scheduleData = { serviceTime: '', checks: {} };
 const scheduleRef = ref(db, 'schedule');
 onValue(scheduleRef, snap => {
@@ -1287,15 +1307,8 @@ onValue(scheduleRef, snap => {
   if (mode === 'schedule' || mode === 'lineup') renderPanel();
 });
 
-function saveSchedule() {
-  set(scheduleRef, scheduleData);
-}
-
-window.onServiceTimeBlur = v => {
-  scheduleData.serviceTime = v;
-  saveSchedule();
-};
-
+function saveSchedule() { set(scheduleRef, scheduleData); }
+window.onServiceTimeBlur = v => { scheduleData.serviceTime = v; saveSchedule(); };
 window.onScheduleCheck = (rowKey, slot, checked) => {
   if (!scheduleData.checks[rowKey]) scheduleData.checks[rowKey] = {};
   scheduleData.checks[rowKey][slot] = checked;
@@ -1305,70 +1318,50 @@ window.onScheduleCheck = (rowKey, slot, checked) => {
 function renderSchedule() {
   const SLOTS = ['fri-pm', 'sat-am', 'sat-pm'];
   const SLOT_LABELS = ['Fri PM', 'Sat AM', 'Sat PM'];
-
-  // Build rows: worship leads from LEADERS (skip empty first entry), then instruments
-  const worshipLeads = [...new Set(
-  songs
-    .map(s => s.leader)
-    .filter(Boolean)
-)];
+  const worshipLeads = [...new Set(songs.map(s => s.leader).filter(Boolean))];
   const rows = [];
-
-  // Worship leads group
   rows.push({ type: 'group', label: 'Worship Lead' });
-  worshipLeads.forEach((name, i) => {
-    rows.push({ type: 'row', key: 'lead-' + i, name });
-  });
-
-  // Instrument group
+  worshipLeads.forEach((name, i) => rows.push({ type: 'row', key: 'lead-' + i, name }));
   rows.push({ type: 'group', label: 'Band' });
   INSTRUMENTS.forEach(inst => {
     const assigned = roster[inst.key] || '';
     rows.push({ type: 'row', key: 'inst-' + inst.key, name: assigned, role: inst.label });
   });
-
   const tableRows = rows.map(r => {
-    if (r.type === 'group') {
-      return `<tr><td colspan="4" class="schedule-role-group">${r.label}</td></tr>`;
-    }
+    if (r.type === 'group') return `<tr><td colspan="4" class="schedule-role-group">${r.label}</td></tr>`;
     const checks = scheduleData.checks[r.key] || {};
     const nameDisplay = r.name
       ? `${r.name}${r.role ? `<span style="font-size:11px;color:#9ca3af;font-weight:400;margin-left:5px;">${r.role}</span>` : ''}`
       : `<span style="color:#d1d5db;font-style:italic;font-size:12px;">${r.role || '—'}</span>`;
-    const checkboxes = SLOTS.map((slot, si) =>
-      `<td class="schedule-check-cell">
-        <input type="checkbox" class="schedule-check" ${checks[slot]?'checked':''}
-          onchange="onScheduleCheck('${r.key}','${slot}',this.checked)" />
-      </td>`
+    const checkboxes = SLOTS.map((slot) =>
+      `<td class="schedule-check-cell"><input type="checkbox" class="schedule-check" ${checks[slot]?'checked':''}
+        onchange="onScheduleCheck('${r.key}','${slot}',this.checked)" /></td>`
     ).join('');
-    return `<tr>
-      <td class="schedule-name-cell">${nameDisplay}</td>
-      ${checkboxes}
-    </tr>`;
- }).join('');
-
+    return `<tr><td class="schedule-name-cell">${nameDisplay}</td>${checkboxes}</tr>`;
+  }).join('');
   return `<div class="schedule-screen">
     <input class="schedule-service-input" placeholder="e.g. 9pm Saturday"
       value="${(scheduleData.serviceTime||'').replace(/"/g,'&quot;')}"
       onblur="onServiceTimeBlur(this.value)" />
     <table class="schedule-table">
-      <thead>
-        <tr>
-          <th></th>
-          ${SLOT_LABELS.map(l=>`<th>${l}</th>`).join('')}
-        </tr>
-      </thead>
+      <thead><tr><th></th>${SLOT_LABELS.map(l=>`<th>${l}</th>`).join('')}</tr></thead>
       <tbody>${tableRows}</tbody>
     </table>
   </div>`;
 }
 
-window.render = render;
-
-window.autoGrow = el => {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
+// ── TOGGLE EMBED ───────────────────────────────────────
+window.toggleEmbed = i => {
+  const el = document.getElementById('embed-' + i);
+  if (!el) return;
+  el.classList.toggle('open');
+  const thumb = document.querySelector(`.lineup-thumb-expand[onclick="toggleEmbed(${i})"]`);
+  if (thumb) thumb.textContent = el.classList.contains('open') ? '▼ collapse' : '▶ expand';
 };
+
+// ── MAIN RENDER ────────────────────────────────────────
+window.render = render;
+window.autoGrow = el => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
 
 function render() {
   renderTabs();
