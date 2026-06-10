@@ -729,7 +729,7 @@ const INSTRUMENTS = [
 
 const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
 
-const defaultSongs = Array.from({length:5},(_,i)=>({
+const defaultSongs = Array.from({length:6},(_,i)=>({
   title:`Song ${i+1}`, keys:['—'],
   sections:{intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:''},
   youtube:'', notes:'', leader:''
@@ -823,13 +823,20 @@ onValue(songsRef, snap => {
   const data = snap.val();
   if (data) {
     const arr = Array.isArray(data) ? data : Object.values(data);
-    songs = arr.map(s => ({
-      ...s,
-      keys: s.keys ? s.keys : (s.key ? [s.key] : ['—']),
-      youtube: s.youtube || '',
-      notes: s.notes || '',
-      leader: s.leader || ''
-    }));
+songs = [...arr];
+
+while (songs.length < 6) {
+  songs.push(JSON.parse(JSON.stringify(defaultSongs[songs.length])));
+}
+
+songs = songs.slice(0, 6).map((s, i) => ({
+  ...defaultSongs[i],
+  ...s,
+  keys: s.keys ? s.keys : (s.key ? [s.key] : ['—']),
+  youtube: s.youtube || '',
+  notes: s.notes || '',
+  leader: s.leader || ''
+}));
     if (active >= songs.length) active = 0;
   }
   render();
