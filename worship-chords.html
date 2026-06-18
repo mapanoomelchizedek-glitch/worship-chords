@@ -825,7 +825,7 @@ const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
 
 const defaultSongs = Array.from({length:6},(_,i)=>({
   title:`Song ${i+1}`, keys:['—'],
-  sections:{intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:''},
+  sections:{intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:'',ending:''},
   youtube:'', notes:'', leader:''
 }));
 
@@ -1086,7 +1086,7 @@ window.setTab = i => {
 
 window.clearChords = i => {
   if (!confirm('Clear all chords?')) return;
-  songs[i].sections = {intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:''};
+  songs[i].sections = {intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:'',ending:''};
   songs[i].notes = '';
   saveToFirebase();
   render();
