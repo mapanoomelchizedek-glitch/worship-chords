@@ -391,7 +391,28 @@
   .reset-sunday-btn:hover { background: #fee2e2; }
   .copy-lineup-btn { font-size: 12px; padding: 5px 10px; border: 1px solid #bfdbfe; border-radius: 8px; background: #eff6ff; color: #1d4ed8; cursor: pointer; font-weight: 600; white-space: nowrap; }
   .copy-lineup-btn:hover { background: #dbeafe; }
+  .playlist-btn { font-size: 12px; padding: 5px 10px; border: 1px solid #a7f3d0; border-radius: 8px; background: #ecfdf5; color: #059669; cursor: pointer; font-weight: 600; white-space: nowrap; }
+  .playlist-btn:hover { background: #d1fae5; }
   .lineup-header-actions { display: flex; align-items: center; gap: 8px; }
+  body.dark .playlist-btn { background: #052e16; border-color: #065f46; color: #34d399; }
+  body.dark .playlist-btn:hover { background: #064e3b; }
+
+  /* PLAYLIST OVERLAY */
+  .playlist-overlay { position: fixed; inset: 0; z-index: 2200; background: rgba(0,0,0,0.72); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .playlist-box { width: min(720px, 100%); max-height: 88vh; overflow: auto; background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
+  body.dark .playlist-box { background: #1a1a1a; border: 1px solid #333; }
+  .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .playlist-title { font-size: 16px; font-weight: 700; color: #111; }
+  body.dark .playlist-title { color: #f0f0f0; }
+  .playlist-close-btn { border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #6b7280; font-size: 18px; line-height: 1; padding: 4px 9px; cursor: pointer; }
+  body.dark .playlist-close-btn { background: #222; border-color: #333; color: #777; }
+  .playlist-item { border: 1px solid #e5e7eb; border-radius: 12px; padding: 10px; margin-bottom: 12px; background: #fafafa; }
+  body.dark .playlist-item { background: #222; border-color: #2a2a2a; }
+  .playlist-song-name { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 6px; }
+  body.dark .playlist-song-name { color: #f0f0f0; }
+  .playlist-frame { width: 100%; aspect-ratio: 16 / 9; border: none; border-radius: 9px; display: block; background: #000; }
+  .playlist-link { display: block; font-size: 12px; color: #1d4ed8; margin-top: 6px; word-break: break-all; text-decoration: none; }
+  body.dark .playlist-link { color: #60a5fa; }
   body.dark .reset-sunday-btn { background: #2a1a1a; border-color: #7f1d1d; color: #f87171; }
   body.dark .copy-lineup-btn { background: #1e3a5f; border-color: #2563eb; color: #60a5fa; }
 
@@ -835,6 +856,7 @@ let active = 0;
 let mode = 'lineup';
 let saveTimeout = null;
 let overviewMode = false;
+let playlistMode = false;
 
 // ── LIBRARY STATE ──────────────────────────────────────
 let library = {}; // { firebaseKey: { title, keys, sections, savedAt } }
@@ -881,6 +903,7 @@ window.resetSunday = () => {
   roster = defaultRoster();
   active = 0;
   overviewMode = false;
+  playlistMode = false;
   Promise.all([
     set(songsRef, songs),
     set(rosterRef, roster)
@@ -1182,15 +1205,48 @@ window.copyLineup = async () => {
   catch (err) { prompt('Copy this lineup:', text); }
 };
 
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  }[m]));
+}
+
+window.togglePlaylist = () => {
+  playlistMode = !playlistMode;
+  if (playlistMode) overviewMode = false;
+  renderPanel();
+  renderDatePill();
+};
+
 window.toggleOverview = () => {
   overviewMode = !overviewMode;
-  const screen = document.querySelector('.lineup-screen');
-  const btn = document.getElementById('overviewBtn');
-  if (screen) screen.classList.toggle('overview', overviewMode);
-  if (btn) btn.classList.toggle('active', overviewMode);
-  const rosterEl = document.querySelector('.band-roster');
-  if (rosterEl) rosterEl.style.display = overviewMode ? 'none' : '';
+  if (overviewMode) playlistMode = false;
+  renderPanel();
+  renderDatePill();
 };
+
+function renderPlaylistView() {
+  const playlistSongs = songs
+    .map((s, i) => ({ ...s, number: i + 1, ytId: getYoutubeId(s.youtube) }))
+    .filter(s => s.ytId);
+
+  if (!playlistSongs.length) {
+    return `<div class="playlist-view">
+      <div class="playlist-title">Playlist</div>
+      <div class="lineup-empty">No YouTube links yet. Paste links in the Edit tab first.</div>
+    </div>`;
+  }
+
+  return `<div class="playlist-view">
+
+    ${playlistSongs.map(s => `
+      <div class="playlist-item">
+        <div class="playlist-song-name">${s.number}. ${escapeHtml(s.title || 'Song ' + s.number)}</div>
+        <iframe class="playlist-frame" src="https://www.youtube.com/embed/${s.ytId}" allowfullscreen loading="lazy"></iframe>
+      </div>
+    `).join('')}
+  </div>`;
+}
 
 window.updateNotesStyle = el => {
   el.classList.toggle('has-content', el.value.trim().length > 0);
@@ -1239,9 +1295,8 @@ function renderLineup() {
   const rows = songs.map((s, i) => {
     const hasTitle = s.title && s.title !== `Song ${i+1}`;
     const hasAnySections = SECTIONS.some(sec => s.sections[sec]);
-    const ytId = getYoutubeId(s.youtube);
     const keyLabel = s.keys.length && s.keys[0] !== '—' ? s.keys.join(' / ') : null;
-    if (!hasTitle && !hasAnySections && !s.youtube) return '';
+    if (!hasTitle && !hasAnySections) return '';
     const leaderOpts = LEADERS.map(l =>
       `<option value="${l}" ${s.leader===l?'selected':''}>${l||'—'}</option>`
     ).join('');
@@ -1258,21 +1313,14 @@ function renderLineup() {
           <textarea class="lineup-notes-input${s.notes?' has-content':''}" rows="1" placeholder="Notes.."
             onblur="onLineupNotesBlur(${i}, this)" oninput="autoGrow(this);updateNotesStyle(this)">${s.notes||''}</textarea>
           <div class="overview-notes${s.notes?' has-content':''}">${s.notes?s.notes.replace(/</g,'&lt;'):''}</div>
-          ${ytId ? `<div class="lineup-embed" id="embed-${i}"><iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe></div>` : ''}
         </div>
-        ${ytId ? `<div class="lineup-thumb">
-          <div class="lineup-thumb-video" onclick="toggleEmbed(${i})" title="Click to expand">
-            <iframe src="https://www.youtube.com/embed/${ytId}" tabindex="-1" loading="lazy"></iframe>
-          </div>
-          <a class="lineup-thumb-expand" onclick="toggleEmbed(${i})">▶ expand</a>
-        </div>` : ''}
       </div>
     </div>`;
   }).join('');
 
   const hasAny = songs.some((s,i) => {
     const hasTitle = s.title && s.title !== `Song ${i+1}`;
-    return hasTitle || SECTIONS.some(sec=>s.sections[sec]) || s.youtube;
+    return hasTitle || SECTIONS.some(sec=>s.sections[sec]);
   });
 
   const rosterHtml = INSTRUMENTS.map(inst => {
@@ -1288,20 +1336,21 @@ function renderLineup() {
 
   return `<div class="lineup-screen${overviewMode?' overview':''}">
     <div class="lineup-header">
-      <span class="overview-date" id="overviewDateLabel"></span>
-      ${scheduleData.serviceTime ? `<span class="lineup-service-time">${scheduleData.serviceTime.replace(/</g,'&lt;')}</span>` : ''}
+      <span class="overview-date"></span>
+      ${scheduleData.serviceTime && !playlistMode ? `<span class="lineup-service-time">${scheduleData.serviceTime.replace(/</g,'&lt;')}</span>` : ''}
       <div class="lineup-header-actions">
         <button class="copy-lineup-btn" onclick="copyLineup()">Copy</button>
+        <button class="playlist-btn${playlistMode?' active':''}" onclick="togglePlaylist()">Playlist</button>
         <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
       </div>
     </div>
-    ${hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>'}
+    ${playlistMode ? renderPlaylistView() : (hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>')}
   </div>
-  <div class="band-roster"${overviewMode?' style="display:none"':''}>
+  <div class="band-roster"${(overviewMode || playlistMode)?' style="display:none"':''}>
     <div class="band-roster-title">Band this Sunday</div>
     <div class="roster-grid">${rosterHtml}</div>
   </div>
-  <div class="lineup-reset-wrap"${overviewMode?' style="display:none"':''}>
+  <div class="lineup-reset-wrap"${(overviewMode || playlistMode)?' style="display:none"':''}>
     <button class="reset-sunday-btn" onclick="resetSunday()">Reset Sunday</button>
   </div>`;
 }
@@ -1511,15 +1560,6 @@ function renderSchedule() {
     </table>
   </div>`;
 }
-
-// ── TOGGLE EMBED ───────────────────────────────────────
-window.toggleEmbed = i => {
-  const el = document.getElementById('embed-' + i);
-  if (!el) return;
-  el.classList.toggle('open');
-  const thumb = document.querySelector(`.lineup-thumb-expand[onclick="toggleEmbed(${i})"]`);
-  if (thumb) thumb.textContent = el.classList.contains('open') ? '▼ collapse' : '▶ expand';
-};
 
 // ── MAIN RENDER ────────────────────────────────────────
 window.render = render;
