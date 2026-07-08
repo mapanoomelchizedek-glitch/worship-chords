@@ -1347,6 +1347,7 @@ function renderTabs() {
   }
 
   const tabBar = document.getElementById('tabBar');
+  tabBar.className = 'tabs';
 
   tabBar.innerHTML = songs.map((s, i) => {
     const show = mode === 'zed' || songHasContent(s, i) || i === active;
