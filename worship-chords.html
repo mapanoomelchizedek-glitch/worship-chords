@@ -1357,17 +1357,6 @@ function renderTabs() {
   }).join('');
 }
 
-  // Band and Capo stay normal
-  tabBar.className = 'tabs';
-
-  tabBar.innerHTML = songs.map((s, i) => {
-    const show = songHasContent(s, i) || i === active;
-    if (!show) return '';
-
-    return `<button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})" title="${s.title || 'Song ' + (i + 1)}">${i + 1}</button>`;
-  }).join('');
-}
-
 function renderPanel() {
   if (mode === 'lineup') { document.getElementById('mainPanel').innerHTML = renderLineup(); return; }
   if (mode === 'schedule') { document.getElementById('mainPanel').innerHTML = renderSchedule(); return; }
@@ -1461,13 +1450,13 @@ function renderZed() {
 
 <div class="edit-reorder-row">
   <button class="edit-reorder-btn" onclick="moveSong(${active}, -1, event)" ${active === 0 ? 'disabled' : ''}>
-    ← Move Left
+    ⇦ move left
   </button>
 
   <span class="edit-reorder-label">Song ${active + 1}</span>
 
   <button class="edit-reorder-btn" onclick="moveSong(${active}, 1, event)" ${active === songs.length - 1 ? 'disabled' : ''}>
-    Move Right →
+    move right ⇨
   </button>
 </div>
 
