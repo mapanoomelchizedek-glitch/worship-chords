@@ -66,21 +66,21 @@
 
   .tabs { display: flex; gap: 0; margin-bottom: 0; flex-wrap: wrap; padding: 0 4px; }
   .tab-btn { padding: 8px 14px; border: 1px solid #d1d5db; border-bottom: none; border-radius: 8px 8px 0 0; background: #f0f0f0; color: #6b7280; font-size: 13px; cursor: pointer; margin-right: 4px; position: relative; bottom: -1px; }
- .tab-wrap {
+ /* Edit mode rearrange tabs only */
+.edit-tabs {
+  gap: 5px;
+}
+
+.edit-tabs .tab-wrap {
   display: inline-flex;
   align-items: center;
   gap: 2px;
   margin-right: 4px;
 }
 
-.tab-move-controls {
-  display: inline-flex;
-  gap: 2px;
-}
-
-.tab-move-btn {
+.edit-tabs .tab-move-btn {
   width: 22px;
-  height: 24px;
+  height: 26px;
   border: 1px solid #d1d5db;
   border-radius: 5px;
   background: #f9fafb;
@@ -90,15 +90,41 @@
   line-height: 1;
 }
 
-.tab-move-btn:disabled {
+.edit-tabs .tab-move-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-body.dark .tab-move-btn {
+body.dark .edit-tabs .tab-move-btn {
   background: #222;
   border-color: #333;
   color: #777;
+}
+
+@media (max-width: 600px) {
+  .edit-tabs {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .edit-tabs .tab-wrap {
+    flex: 0 0 calc(33.333% - 4px);
+    display: grid;
+    grid-template-columns: 24px 1fr 24px;
+    gap: 3px;
+    margin-right: 0;
+  }
+
+  .edit-tabs .tab-btn {
+    width: 100%;
+    height: 34px;
+    padding: 0;
+  }
+
+  .edit-tabs .tab-move-btn {
+    width: 100%;
+    height: 34px;
+  }
 }
   .tab-btn.active { color: #111; border-color: #d1d5db; border-bottom: 1px solid #fff; background: #fff; font-weight: 500; z-index: 1; }
   body.dark .tab-btn { background: #111; border-color: #2a2a2a; color: #555; }
@@ -1314,32 +1340,43 @@ function songHasContent(s, i) {
 }
 
 function renderTabs() {
+  const tabBar = document.getElementById('tabBar');
+
   if (mode === 'lineup' || mode === 'schedule' || mode === 'library') {
-    document.getElementById('tabBar').innerHTML = '';
+    tabBar.innerHTML = '';
+    tabBar.className = 'tabs';
     return;
   }
 
-  const tabBar = document.getElementById('tabBar');
+  // Only Edit mode gets rearrange buttons
+  if (mode === 'zed') {
+    tabBar.className = 'tabs edit-tabs';
+
+    tabBar.innerHTML = songs.map((s, i) => {
+      return `
+        <div class="tab-wrap">
+          <button class="tab-move-btn" onclick="moveSong(${i}, -1, event)" ${i === 0 ? 'disabled' : ''}>‹</button>
+
+          <button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})" title="${s.title || 'Song ' + (i + 1)}">
+            ${i + 1}
+          </button>
+
+          <button class="tab-move-btn" onclick="moveSong(${i}, 1, event)" ${i === songs.length - 1 ? 'disabled' : ''}>›</button>
+        </div>
+      `;
+    }).join('');
+
+    return;
+  }
+
+  // Band and Capo stay normal
+  tabBar.className = 'tabs';
 
   tabBar.innerHTML = songs.map((s, i) => {
-    const show = mode === 'zed' || songHasContent(s, i) || i === active;
+    const show = songHasContent(s, i) || i === active;
     if (!show) return '';
 
-    const moveControls = mode === 'zed'
-      ? `<span class="tab-move-controls">
-          <button class="tab-move-btn" onclick="moveSong(${i}, -1, event)" ${i === 0 ? 'disabled' : ''}>‹</button>
-          <button class="tab-move-btn" onclick="moveSong(${i}, 1, event)" ${i === songs.length - 1 ? 'disabled' : ''}>›</button>
-        </span>`
-      : '';
-
-    return `
-      <div class="tab-wrap">
-        <button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})" title="${s.title || 'Song ' + (i + 1)}">
-          ${i + 1}
-        </button>
-        ${moveControls}
-      </div>
-    `;
+    return `<button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})" title="${s.title || 'Song ' + (i + 1)}">${i + 1}</button>`;
   }).join('');
 }
 
