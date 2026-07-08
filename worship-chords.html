@@ -66,6 +66,40 @@
 
   .tabs { display: flex; gap: 0; margin-bottom: 0; flex-wrap: wrap; padding: 0 4px; }
   .tab-btn { padding: 8px 14px; border: 1px solid #d1d5db; border-bottom: none; border-radius: 8px 8px 0 0; background: #f0f0f0; color: #6b7280; font-size: 13px; cursor: pointer; margin-right: 4px; position: relative; bottom: -1px; }
+ .tab-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.tab-move-controls {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.tab-move-btn {
+  width: 22px;
+  height: 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background: #f9fafb;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.tab-move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+body.dark .tab-move-btn {
+  background: #222;
+  border-color: #333;
+  color: #777;
+}
   .tab-btn.active { color: #111; border-color: #d1d5db; border-bottom: 1px solid #fff; background: #fff; font-weight: 500; z-index: 1; }
   body.dark .tab-btn { background: #111; border-color: #2a2a2a; color: #555; }
   body.dark .tab-btn.active { background: #1a1a1a; color: #f0f0f0; border-color: #444; border-bottom-color: #1a1a1a; }
@@ -1105,6 +1139,27 @@ window.setTab = i => {
   renderPanel();
 };
 
+window.moveSong = (fromIndex, direction, e) => {
+  if (e) e.stopPropagation();
+
+  const toIndex = fromIndex + direction;
+
+  if (toIndex < 0 || toIndex >= songs.length) return;
+
+  const temp = songs[fromIndex];
+  songs[fromIndex] = songs[toIndex];
+  songs[toIndex] = temp;
+
+  if (active === fromIndex) {
+    active = toIndex;
+  } else if (active === toIndex) {
+    active = fromIndex;
+  }
+
+  saveToFirebase();
+  render();
+};
+ 
 window.clearChords = i => {
   if (!confirm('Clear all chords?')) return;
   songs[i].sections = {intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:'',ending:''};
@@ -1263,11 +1318,28 @@ function renderTabs() {
     document.getElementById('tabBar').innerHTML = '';
     return;
   }
+
   const tabBar = document.getElementById('tabBar');
-  tabBar.innerHTML = songs.map((s,i) => {
+
+  tabBar.innerHTML = songs.map((s, i) => {
     const show = mode === 'zed' || songHasContent(s, i) || i === active;
     if (!show) return '';
-    return `<button class="tab-btn ${i===active?'active':''}" onclick="setTab(${i})" title="${s.title||'Song '+(i+1)}">${i+1}</button>`;
+
+    const moveControls = mode === 'zed'
+      ? `<span class="tab-move-controls">
+          <button class="tab-move-btn" onclick="moveSong(${i}, -1, event)" ${i === 0 ? 'disabled' : ''}>‹</button>
+          <button class="tab-move-btn" onclick="moveSong(${i}, 1, event)" ${i === songs.length - 1 ? 'disabled' : ''}>›</button>
+        </span>`
+      : '';
+
+    return `
+      <div class="tab-wrap">
+        <button class="tab-btn ${i === active ? 'active' : ''}" onclick="setTab(${i})" title="${s.title || 'Song ' + (i + 1)}">
+          ${i + 1}
+        </button>
+        ${moveControls}
+      </div>
+    `;
   }).join('');
 }
 
