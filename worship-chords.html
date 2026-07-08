@@ -927,7 +927,10 @@ function nextSunday() {
   const day = d.getDay();
   const diff = day === 0 ? 0 : 7 - day;
   d.setDate(d.getDate() + diff);
-  return d.toISOString().slice(0, 10);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
 }
 let serviceDate = nextSunday();
 
@@ -1425,7 +1428,7 @@ function renderLineup() {
       <div class="lineup-header-actions">
         <button class="copy-lineup-btn" onclick="copyLineup()">Copy</button>
         <button class="playlist-btn${playlistMode?' active':''}" onclick="togglePlaylist()">Playlist</button>
-        <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">◉</button>
+        <button id="overviewBtn" class="overview-btn${overviewMode?' active':''}" onclick="toggleOverview()" title="Overview">☰</button>
       </div>
     </div>
     ${playlistMode ? renderPlaylistView() : (hasAny ? rows : '<div class="lineup-empty">Add song titles and content to see them here.</div>')}
