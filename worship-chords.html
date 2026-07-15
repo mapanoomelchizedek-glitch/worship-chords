@@ -996,8 +996,8 @@ onValue(songsRef, snap => {
   if (data) {
     const arr = Array.isArray(data) ? data : Object.values(data);
     songs = [...arr];
-    while (songs.length < 6) songs.push(JSON.parse(JSON.stringify(defaultSongs[songs.length])));
-    songs = songs.slice(0, 6).map((s, i) => ({
+    while (songs.length < 12) songs.push(JSON.parse(JSON.stringify(defaultSongs[songs.length])));
+    songs = songs.slice(0, 12).map((s, i) => ({
       ...defaultSongs[i], ...s,
       keys: s.keys ? s.keys : (s.key ? [s.key] : ['—']),
       youtube: s.youtube || '', notes: s.notes || '', leader: s.leader || ''
