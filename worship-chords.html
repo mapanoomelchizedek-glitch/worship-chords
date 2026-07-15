@@ -903,7 +903,7 @@ const INSTRUMENTS = [
 
 const defaultRoster = () => Object.fromEntries(INSTRUMENTS.map(i=>[i.key,'']));
 
-const defaultSongs = Array.from({length:6},(_,i)=>({
+const defaultSongs = Array.from({length:12},(_,i)=>({
   title:`Song ${i+1}`, keys:['—'],
   sections:{intro:'',verse:'','pre-chorus':'',chorus:'','chorus 2':'',bridge:'','bridge 2':'',instrumental:'',ending:''},
   youtube:'', notes:'', leader:''
