@@ -411,9 +411,8 @@ body.dark .edit-reorder-label {
     .mode-toggle { width: 100%; flex: none; display: flex; }
     .mode-btn { flex: 1; padding: 9px 4px; font-size: 11px; text-align: center; }
 
-    .tabs { display: flex; flex-wrap: nowrap; gap: 5px; padding: 0 2px; margin-bottom: 6px; width: 100%; }
-    .tab-btn { flex: 1 1 0; width: auto; height: 34px; padding: 0; border-radius: 8px; border: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; background: #f0f0f0; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; bottom: 0; margin-right: 0; }
-    .tab-btn.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; border-bottom-color: #1d4ed8; }
+    .tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; padding: 0 2px; margin-bottom: 6px; width: 100%; }
+    .tab-btn { width: auto; height: 34px; padding: 0; border-radius: 8px; border: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; background: #f0f0f0; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; bottom: 0; margin-right: 0; }    .tab-btn.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; border-bottom-color: #1d4ed8; }
     body.dark .tab-btn { background: #222; border-color: #333; color: #666; }
     body.dark .tab-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
 
