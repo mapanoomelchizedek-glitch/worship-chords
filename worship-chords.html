@@ -694,6 +694,13 @@ body.dark .edit-reorder-label {
   }
 }
 
+ .kb-shifts { display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 16px; }
+.kb-shift { display:inline-flex; align-items:baseline; gap:8px; padding:6px 14px; border-radius:10px; background:#eff6ff; color:#1d4ed8; font-size:28px; font-weight:700; }
+.kb-shift-key { font-size:12px; font-weight:600; color:#6b7280; }
+body.dark .kb-shift { background:#1e3a5f; color:#60a5fa; }
+body.dark .kb-shift-key { color:#9ca3af; }
+@media (max-width:600px){ .mode-btn { font-size:10px; padding:9px 2px; } }
+
 </style>
 </head>
 <body>
@@ -732,6 +739,7 @@ body.dark .edit-reorder-label {
       <button class="mode-btn" id="btnZed" onclick="setMode('zed')">Edit</button>
       <button class="mode-btn" id="btnBand" onclick="setMode('band')">Band</button>
       <button class="mode-btn" id="btnCapo" onclick="setMode('capo')">Capo</button>
+      <button class="mode-btn" id="btnKeyboard" onclick="setMode('keyboard')">Keyboard C</button>
       <button class="mode-btn" id="btnLibrary" onclick="setMode('library')">Library</button>
     </div>
   </div>
@@ -1133,7 +1141,7 @@ window.loadIntoSlot = (slotIndex) => {
   saveToFirebase();
   render();
   document.getElementById('btnZed').classList.add('active');
-  ['schedule','lineup','band','capo','library'].forEach(x => {
+  ['schedule','lineup','band','capo','keyboard','library'].forEach(x => {
     const btn = document.getElementById('btn' + x[0].toUpperCase() + x.slice(1));
     if (btn) btn.classList.remove('active');
   });
@@ -1154,7 +1162,7 @@ window.onLibrarySearch = (val) => {
 // ── MODES & TABS ───────────────────────────────────────
 window.setMode = m => {
   mode = m;
-  ['lineup','zed','band','capo','schedule','library'].forEach(x => {
+  ['lineup','zed','band','capo','keyboard','schedule','library'].forEach(x => {
     const btn = document.getElementById('btn' + x[0].toUpperCase() + x.slice(1));
     if (btn) btn.classList.toggle('active', m === x);
   });
@@ -1364,7 +1372,7 @@ function renderPanel() {
   if (mode === 'schedule') { document.getElementById('mainPanel').innerHTML = renderSchedule(); return; }
   if (mode === 'library') { document.getElementById('mainPanel').innerHTML = renderLibraryScreen(); return; }
   document.getElementById('mainPanel').innerHTML =
-    mode==='zed' ? renderZed() : mode==='band' ? renderBand() : renderCapo();
+  mode==='zed' ? renderZed() : mode==='band' ? renderBand() : mode==='keyboard' ? renderKeyboard() : renderCapo();
   if (mode === 'zed') {
     setTimeout(() => {
       document.querySelectorAll('.section-input, .notes-input').forEach(el => {
@@ -1556,6 +1564,45 @@ function renderCapo() {
     <div class="capo-song-title">${s.title}</div>
     ${capoMeta}
     <div style="margin-top:${capoMeta?'12px':'0'}"><div class="capo-options">${capoOptionsHtml}</div></div>
+  </div>`;
+}
+
+ function keyShift(k) {
+  const real = KEYS.filter(x => x !== '—');
+  const i = real.indexOf(k);
+  if (i < 0) return null;
+  return i > 6 ? i - 12 : i;   // C#=+1 ... F#=+6, G=-5 ... A=-3, B=-1
+}
+function fmtShift(n) { return n > 0 ? '+' + n : String(n); }
+
+function renderKeyboard() {
+  const s = songs[active];
+  const filled = SECTIONS.filter(sec => s.sections[sec]);
+  const realKeys = s.keys.filter(k => k !== '—');
+  const meta = s.notes ? `<div style="font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 9px;margin-top:4px;">${s.notes.replace(/</g,'&lt;')}</div>` : '';
+
+  const shifts = realKeys.length
+    ? `<div class="kb-shifts">${realKeys.map(k =>
+        `<span class="kb-shift"><span class="kb-shift-key">${k}</span>${fmtShift(keyShift(k))}</span>`
+      ).join('')}</div>`
+    : '<div class="empty-section" style="margin:6px 0 16px;color:#d1d5db;">No key yet.</div>';
+
+  const sectionsHtml = filled.map(sec => {
+    const linesHtml = numToLines(s.sections[sec], 'C').map(line =>
+      `<div class="band-chord-line">${line.map(p =>
+        `<div class="band-chord-group"><span class="band-chord">${p.chord}</span><span class="band-num">${p.num}</span></div>`
+      ).join('')}</div>`
+    ).join('');
+    return `<div class="band-section"><div class="band-section-name">${sec}</div>${linesHtml}</div>`;
+  }).join('');
+
+  return `<div class="band-screen">
+    <div class="band-song-title">${s.title}</div>
+    ${meta}
+    <div style="margin-top:${meta ? '12px' : '0'}">
+      ${shifts}
+      <div class="band-sections">${sectionsHtml || '<div class="empty-section">No chords yet.</div>'}</div>
+    </div>
   </div>`;
 }
 
